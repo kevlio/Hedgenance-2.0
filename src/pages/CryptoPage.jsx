@@ -154,11 +154,11 @@ function CryptoPage() {
         >
           {coins.map((product) => (
             <Box
+              key={product.id}
               display="flex"
               flexDirection="column"
               justifyContent="space-between"
               textAlign="left"
-              key={product.id}
               border="#48BB78 solid 1px"
               borderRadius="14px"
               p={4}

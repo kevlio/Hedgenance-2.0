@@ -23,3 +23,9 @@ export const singleCryptoState = atom({
   default: [],
   effects_UNSTABLE: [localStorageEffect("singleCrypto")],
 });
+
+export const watchCryptoState = atom({
+  key: "watchCryptoState",
+  default: [],
+  effects_UNSTABLE: [localStorageEffect("watchCrypto")],
+});

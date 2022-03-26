@@ -56,7 +56,10 @@ function Footer() {
             <ListHeader>Company</ListHeader>
             <Link href={"#"}>About</Link>
             <Link href={"#"}>Contact</Link>
-            <Link href={"#"}>Partners</Link>
+            <Link href={"#"} color="green.400" fontWeight="bold">
+              [admin-page]
+              {/* Employees */}
+            </Link>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Support</ListHeader>

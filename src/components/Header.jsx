@@ -66,6 +66,7 @@ const Header = () => {
           </Text>
           <GiHedgehog size={70} color="#48BB78" />
         </Box>
+        [pet hog for admin dblclick]
       </Link>
       {/* MenuToggle */}
       <Box
@@ -90,9 +91,8 @@ const Header = () => {
           fontSize="2xl"
         >
           <Link href="/">home</Link>
-          <Link href="/products">hedgeproducts</Link>
-          <Link href="/crypto">cryptostore</Link>
-          <Link href="/crypto">test trade mode</Link>
+          <Link href="/products">commodities</Link>
+          <Link href="/crypto">cryptos</Link>
 
           <Link href={`${logged ? "/myaccount" : "/signup"}`}>{`${
             logged ? "account" : "sign up"

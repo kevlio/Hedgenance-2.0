@@ -46,7 +46,7 @@ function App() {
         <Route path="/signup" element={<SignUp />}></Route>
 
         <Route path="/crypto" element={<Crypto />}></Route>
-        {/* <Route path="/cryptopage" element={<CryptoPage />}></Route> */}
+        <Route path="/cryptopage" element={<CryptoPage />}></Route>
         {/* <Route path="/cryptopage/:id" element={<SingleCrypto />}></Route> */}
         <Route path="/crypto/:id" element={<SingleCryptoPage />}></Route>
       </Routes>
