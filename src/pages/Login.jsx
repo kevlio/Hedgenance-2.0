@@ -14,6 +14,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginState, userState } from "../stores/auth/atom";
 import { useRecoilState } from "recoil";
 
+// https://k4backend.osuka.dev/
+// https://k4backend.osuka.dev/docs/
+
 function Login() {
   const [username, setUsername] = useRecoilState(userState);
   const [logged, setLogged] = useRecoilState(loginState);

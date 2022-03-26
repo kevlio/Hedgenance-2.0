@@ -91,8 +91,8 @@ const Header = () => {
           fontSize="2xl"
         >
           <Link href="/">home</Link>
-          <Link href="/products">commodities</Link>
           <Link href="/crypto">cryptos</Link>
+          <Link href="/products">commodities</Link>
 
           <Link href={`${logged ? "/myaccount" : "/signup"}`}>{`${
             logged ? "account" : "sign up"

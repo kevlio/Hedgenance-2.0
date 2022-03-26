@@ -48,8 +48,8 @@ function Crypto() {
       )
       .then((res) => {
         setCoins(res.data);
+        setFilter(res.data);
         console.log(res.data);
-        setFilter(coins);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -87,11 +87,25 @@ function Crypto() {
 
   const watchlistCrypto = (e) => {
     // Lära mig denna logik perfekt. Går den att skriva på andra sätt?
-    const addCrypto = e.target.name;
+    const newCrypto = e.target.name;
     console.log(watchlist);
+    // if (!watchlist.includes(newCrypto)) {
     setWatchlist((prevCrypto) => {
-      return [...prevCrypto, addCrypto];
+      return [...prevCrypto, newCrypto];
     });
+    // }
+    if (watchlist.includes(newCrypto)) {
+      console.log("already exist");
+
+      const removeArr = [...watchlist].filter((crypto) => crypto !== newCrypto);
+      setWatchlist(removeArr);
+      // setWatchlist(watchlist.splice(indexOf(newCrypto)));
+    }
+
+    // function removeActivity(id) {
+    //   const removeArr = [...filtered].filter((activity) => activity.id !== id);
+    //   setActivities(removeArr);
+    // }
   };
 
   const showWatchlist = () => {
@@ -215,11 +229,11 @@ function Crypto() {
                 alignItems="center"
                 fontSize="2xl"
               >
-                <Text>Cap Rank: {coin.market_cap_rank}</Text>
-                <Text>{coin.current_price.toLocaleString()}€ </Text>
+                <Text>Market Cap</Text>
+                <Text>€{(coin.market_cap / (1000000 * 1000)).toFixed(2)}B</Text>
               </Box>
               <Box display="flex" fontSize="2xl" justifyContent="space-between">
-                <Text>24h</Text>
+                <Text>€{coin.current_price.toLocaleString()}</Text>
                 <Text
                   color={coin.price_change_percentage_24h > 0 ? "green" : "red"}
                 >
@@ -231,8 +245,8 @@ function Crypto() {
                 // alignSelf="flex-end"
                 justifyContent="space-between"
               >
-                <Text>High: {coin.high_24h.toLocaleString()}</Text>
-                <Text>Low: {coin.low_24h.toLocaleString()}</Text>
+                <Text>24h High: {coin.high_24h.toLocaleString()}</Text>
+                <Text>24h Low: {coin.low_24h.toLocaleString()}</Text>
               </Box>
               <Box
                 display="flex"
@@ -259,7 +273,7 @@ function Crypto() {
                   width="100%"
                   justifyContent="center"
                 >
-                  <Button mr="-px" name={coin.name}>
+                  <Button mr="-px" name={coin.name} width="100%">
                     {watchlist.includes(coin.name)
                       ? "Remove from watchlist"
                       : "Add to watchlist"}
