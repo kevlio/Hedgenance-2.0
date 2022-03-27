@@ -56,7 +56,7 @@ function Footer() {
             <ListHeader>Company</ListHeader>
             <Link href={"#"}>About</Link>
             <Link href={"#"}>Contact</Link>
-            <Link href="admin" color="green.400" fontWeight="bold">
+            <Link href="adminlogin" color="green.400" fontWeight="bold">
               [admin-page]
               {/* Employees */}
             </Link>

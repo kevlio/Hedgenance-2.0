@@ -58,12 +58,14 @@ function ProductSlide() {
                 <StatHelpText>
                   <StatArrow
                     type={
-                      coin.market_data.price_change_percentage_24h > 0
+                      coin && coin.market_data.price_change_percentage_24h > 0
                         ? "increase"
                         : "decrease"
                     }
                   />
-                  {coin.market_data.price_change_percentage_24h.toFixed(2)}%
+                  {coin &&
+                    coin.market_data.price_change_percentage_24h.toFixed(2)}
+                  %
                 </StatHelpText>
               </Stat>
             </StatGroup>
@@ -80,7 +82,7 @@ function ProductSlide() {
             <StatGroup color="var(--chakra-colors-gray-300)">
               <Stat>
                 <StatLabel>Gold price</StatLabel>
-                <StatNumber>$2,060</StatNumber>
+                <StatNumber>€2,060</StatNumber>
                 <StatHelpText>
                   <StatArrow type="increase" />
                   10.52%
@@ -100,7 +102,7 @@ function ProductSlide() {
             <StatGroup color="var(--chakra-colors-gray-300)">
               <Stat>
                 <StatLabel>Soft index</StatLabel>
-                <StatNumber>$1,060</StatNumber>
+                <StatNumber>€1,060</StatNumber>
                 <StatHelpText>
                   <StatArrow type="increase" />
                   43.12%
@@ -120,7 +122,7 @@ function ProductSlide() {
             <StatGroup color="var(--chakra-colors-gray-300)">
               <Stat>
                 <StatLabel>Uranium spotprice</StatLabel>
-                <StatNumber>$60.42</StatNumber>
+                <StatNumber>€60.42</StatNumber>
                 <StatHelpText>
                   <StatArrow type="increase" />
                   23.36%

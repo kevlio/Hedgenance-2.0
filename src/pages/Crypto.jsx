@@ -32,7 +32,7 @@ import { MdRemove } from "react-icons/md";
 
 function Crypto() {
   // https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false: NOTERA ANVÄNDBART: EUR, ORDER !, PER PAGE https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=price_change_percentage_desc&per_page=100&page=1&sparkline=false
-  
+
   const params = useParams();
   const navigate = useNavigate();
   const [coins, setCoins] = useRecoilState(cryptoState);
@@ -174,8 +174,8 @@ function Crypto() {
           color="gray.300"
         >
           <Text>Sort by % Change 24h</Text>
-          <Checkbox name="All">(High, Low)</Checkbox>
-          <Checkbox name="All">(Low, High)</Checkbox>
+          <Checkbox name="All">High, Low</Checkbox>
+          <Checkbox name="All">Low, High</Checkbox>
         </Stack>
       </CheckboxGroup>
       <SimpleGrid
@@ -216,19 +216,13 @@ function Crypto() {
               <Text textColor="blue.400" alignSelf="flex-start">
                 {coin.last_updated.replace(/[T_Z]/g, " ").slice(10, -5)}
               </Text>
+
               <Box
                 display="flex"
-                flexWrap="none"
-                wordBreak="none"
-                gap="12px"
-                justifyContent="space-between"
-                alignItems="center"
                 fontSize="2xl"
+                justifyContent="space-between"
+                fontWeight="bold"
               >
-                <Text>Market Cap</Text>
-                <Text>€{(coin.market_cap / (1000000 * 1000)).toFixed(2)}B</Text>
-              </Box>
-              <Box display="flex" fontSize="2xl" justifyContent="space-between">
                 <Text>€{coin.current_price.toLocaleString()}</Text>
                 <Text
                   color={coin.price_change_percentage_24h > 0 ? "green" : "red"}
@@ -243,6 +237,19 @@ function Crypto() {
               >
                 <Text>24h High: {coin.high_24h.toLocaleString()}</Text>
                 <Text>24h Low: {coin.low_24h.toLocaleString()}</Text>
+              </Box>
+              <Box
+                display="flex"
+                flexWrap="none"
+                wordBreak="none"
+                gap="12px"
+                justifyContent="space-between"
+                alignItems="center"
+                fontSize="2xl"
+                color="gray.400"
+              >
+                <Text>Market Cap</Text>
+                <Text>€{(coin.market_cap / (1000000 * 1000)).toFixed(2)}B</Text>
               </Box>
               <Box
                 display="flex"

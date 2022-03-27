@@ -7,6 +7,8 @@ import {
   Heading,
   Text,
   FormControl,
+  Fade,
+  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useRef, useEffect } from "react";
 import AnimatedPage from "../components/AnimatedPage";
@@ -20,6 +22,8 @@ import { useRecoilState } from "recoil";
 function Login() {
   const [username, setUsername] = useRecoilState(userState);
   const [logged, setLogged] = useRecoilState(loginState);
+
+  const { isOpen, onToggle } = useDisclosure();
 
   const navigate = useNavigate();
 
@@ -75,6 +79,17 @@ function Login() {
               <Button type="submit" onClick={login}>
                 Login
               </Button>
+              <Fade in={isOpen}>
+                <Button
+                  width="100%"
+                  color="white"
+                  bg="red.600"
+                  rounded="md"
+                  shadow="md"
+                >
+                  Incorrect username or password
+                </Button>
+              </Fade>
             </Stack>
           </Box>
         </Box>

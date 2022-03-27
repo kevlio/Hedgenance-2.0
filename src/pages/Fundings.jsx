@@ -82,7 +82,7 @@ function Fundings() {
               fontWeight={600}
               fontSize={{ base: "2xl", sm: "2xl", md: "4xl" }}
               lineHeight={"110%"}
-              color={"var(--chakra-colors-gray-300)"}
+              color="gray.300"
               padding={2}
             >
               Insert fundings <br />
@@ -139,9 +139,9 @@ function Fundings() {
                   </Fade>
                 </FormControl>
               </form>
-              <Container color="var(--chakra-colors-gray-300)" maxW="100%">
+              <Container color="gray.300" maxW="100%">
                 <Text fontSize="3xl">Funding history</Text>
-                <Text fontSize="2xl" color="var(--chakra-colors-gray-400)">
+                <Text fontSize="2xl" color="gray.400">
                   Total available funds:{" "}
                   {totalFunds && totalFunds.toLocaleString()} USD
                 </Text>
