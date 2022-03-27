@@ -66,7 +66,6 @@ const Header = () => {
           </Text>
           <GiHedgehog size={70} color="#48BB78" />
         </Box>
-        [pet hog for admin dblclick]
       </Link>
       {/* MenuToggle */}
       <Box

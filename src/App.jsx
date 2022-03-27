@@ -14,6 +14,7 @@ import Crypto from "./pages/Crypto";
 import CryptoPage from "./pages/CryptoPage";
 // import SingleCrypto from "./pages/SingleCrypto";
 import { SingleCryptoPage } from "./pages/SingleCrypto";
+import Admin from "./pages/Admin";
 
 //
 // {!auth.token ? (
@@ -36,6 +37,7 @@ function App() {
 
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
+        <Route path="/signup" element={<SignUp />}></Route>
 
         <Route path="/myaccount" element={<MyAccount />}></Route>
         <Route path="/trades" element={<Trades />}></Route>
@@ -43,9 +45,11 @@ function App() {
 
         <Route path="/products" element={<ProductPage />}></Route>
         <Route path="/products/:id" element={<SingleProduct />}></Route>
-        <Route path="/signup" element={<SignUp />}></Route>
+        <Route path="/admin" element={<Admin />}></Route>
 
         <Route path="/crypto" element={<Crypto />}></Route>
+
+        {/* This should be replaced with /crypto when done */}
         <Route path="/cryptopage" element={<CryptoPage />}></Route>
         {/* <Route path="/cryptopage/:id" element={<SingleCrypto />}></Route> */}
         <Route path="/crypto/:id" element={<SingleCryptoPage />}></Route>

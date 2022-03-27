@@ -228,7 +228,7 @@ function MyAccount() {
                     <Button
                       colorScheme="green"
                       width="100%"
-                      wordWrap="break-word"
+                      // wordWrap="break-word"
                       whiteSpace="normal"
                       size="sm"
                       fontSize={{
