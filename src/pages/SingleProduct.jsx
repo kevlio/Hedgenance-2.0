@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import InfoButton from "../components/InfoButton";
 
 import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { cryptoProductState } from "../stores/products/crypto";
 import { energyProductState } from "../stores/products/energy";
 import { metalProductState } from "../stores/products/metal";
 import { softsProductState } from "../stores/products/softs";
@@ -32,7 +30,6 @@ import { productHoldingStatus } from "../stores/holdings/selector";
 
 function SingleProduct() {
   const params = useParams();
-  const cryptos = useRecoilValue(cryptoProductState);
   const metals = useRecoilValue(metalProductState);
   const energys = useRecoilValue(energyProductState);
   const softs = useRecoilValue(softsProductState);
@@ -44,9 +41,7 @@ function SingleProduct() {
 
   const { productStore } = useRecoilValue(productHoldingStatus);
 
-  const allProducts = cryptos
-    .concat(metals, energys, softs)
-    .filter((id) => id !== "");
+  const allProducts = softs.concat(metals, energys).filter((id) => id !== "");
 
   useEffect(() => {
     inputRef.current.focus();

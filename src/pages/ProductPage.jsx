@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { cryptoProductState } from "../stores/products/crypto";
 import { energyProductState } from "../stores/products/energy";
 import { metalProductState } from "../stores/products/metal";
 import { softsProductState } from "../stores/products/softs";
@@ -33,8 +32,6 @@ import AnimatedPage from "../components/AnimatedPage";
 import { useNavigate } from "react-router-dom";
 
 function ProductPage() {
-  // Varför ska dessa ens finnas i ett State?... -> KK4
-  const cryptos = useRecoilValue(cryptoProductState);
   const metals = useRecoilValue(metalProductState);
   const energys = useRecoilValue(energyProductState);
   const softs = useRecoilValue(softsProductState);
@@ -46,9 +43,7 @@ function ProductPage() {
   const [filters, setFilters] = useState([]);
   const [filtersAll, setFiltersAll] = useState(false);
 
-  const allProducts = cryptos
-    .concat(metals, energys, softs)
-    .filter((id) => id !== "");
+  const allProducts = softs.concat(metals, energys).filter((id) => id !== "");
 
   function handleCheck(event) {
     const name = event.target.name;
@@ -92,13 +87,6 @@ function ProductPage() {
               isChecked={filtersAll}
             >
               Select all
-            </Checkbox>
-            <Checkbox
-              name="Cryptocurrencies"
-              onChange={handleCheck}
-              isChecked={filters.includes("Cryptocurrencies")}
-            >
-              Crypto currencies
             </Checkbox>
             <Checkbox
               name="Soft commodities"

@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { holdingState } from "../stores/holdings/atom";
-import { GiHedgehog } from "react-icons/gi";
 
 import { fundingState } from "../stores/fundings/atom";
 import { fundingStatus } from "../stores/fundings/selector";
@@ -12,16 +11,13 @@ import { fundingStatus } from "../stores/fundings/selector";
 import {
   Box,
   Text,
-  Stack,
   Button,
   Center,
   Input,
   Image,
   Container,
-  Link,
   SimpleGrid,
   useDisclosure,
-  Fade,
   Collapse,
   Table,
   Thead,

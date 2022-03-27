@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Link,
   Box,
@@ -15,11 +15,24 @@ import {
   Stack,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { GiHedgehog, GiGoldBar, GiWheat } from "react-icons/gi";
+import { GiGoldBar, GiWheat } from "react-icons/gi";
 import { FaBitcoin } from "react-icons/fa";
 import { IoMdNuclear } from "react-icons/io";
 
+import axios from "axios";
+
 function ProductSlide() {
+  const [coin, setCoin] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`https://api.coingecko.com/api/v3/coins/bitcoin`)
+      .then((res) => {
+        setCoin(res.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <Center>
       <Container as={Stack} maxW={"6xl"} py={{ base: 4, md: 4 }}>
@@ -29,7 +42,7 @@ function ProductSlide() {
         >
           <Link
             color="var(--chakra-colors-pink-700)"
-            href="/products"
+            href="/crypto"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -39,10 +52,18 @@ function ProductSlide() {
             <StatGroup color="var(--chakra-colors-gray-300)">
               <Stat>
                 <StatLabel>Bitcoin</StatLabel>
-                <StatNumber>$39,060.51</StatNumber>
+                <StatNumber>
+                  €{coin && coin.market_data.current_price.eur.toLocaleString()}
+                </StatNumber>
                 <StatHelpText>
-                  <StatArrow type="increase" />
-                  5.38%
+                  <StatArrow
+                    type={
+                      coin.market_data.price_change_percentage_24h > 0
+                        ? "increase"
+                        : "decrease"
+                    }
+                  />
+                  {coin.market_data.price_change_percentage_24h.toFixed(2)}%
                 </StatHelpText>
               </Stat>
             </StatGroup>
@@ -59,7 +80,7 @@ function ProductSlide() {
             <StatGroup color="var(--chakra-colors-gray-300)">
               <Stat>
                 <StatLabel>Gold price</StatLabel>
-                <StatNumber>$2,060.51</StatNumber>
+                <StatNumber>$2,060</StatNumber>
                 <StatHelpText>
                   <StatArrow type="increase" />
                   10.52%
@@ -79,7 +100,7 @@ function ProductSlide() {
             <StatGroup color="var(--chakra-colors-gray-300)">
               <Stat>
                 <StatLabel>Soft index</StatLabel>
-                <StatNumber>$1,060.76</StatNumber>
+                <StatNumber>$1,060</StatNumber>
                 <StatHelpText>
                   <StatArrow type="increase" />
                   43.12%
