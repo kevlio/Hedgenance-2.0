@@ -32,8 +32,8 @@ function AdminLogin() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: adminUsername,
-        password: adminPassword,
+        username: adminUsername === "admin" ? adminUsername : "incorrect",
+        password: adminPassword === "admin" ? adminPassword : "incorrect",
       }),
     })
       .then((res) => res.json())
@@ -88,7 +88,7 @@ function AdminLogin() {
               <Button
                 width="100%"
                 color="white"
-                bg="red.600"
+                bg="red"
                 rounded="md"
                 shadow="md"
               >

@@ -20,6 +20,24 @@ export const loginState = atom({
 
 export const userState = atom({
   key: "username",
-  default: "",
+  default: [],
   effects_UNSTABLE: [localStorageEffect("username")],
+});
+
+export const passState = atom({
+  key: "password",
+  default: [],
+  effects_UNSTABLE: [localStorageEffect("password")],
+});
+
+export const usersState = atom({
+  key: "users",
+  default: [],
+  effects_UNSTABLE: [localStorageEffect("users")],
+});
+
+export const updatedUsersState = atom({
+  key: "updatedUsers",
+  default: [],
+  effects_UNSTABLE: [localStorageEffect("updatedUsers")],
 });

@@ -50,16 +50,16 @@ function LocalNav() {
           <Button color="white" variant="link" as="a" href="/trades" bg="none">
             trading history
           </Button>
-          {/* <Button
+          <Button
             color="white"
             variant="link"
             as="a"
-            href="/purchases"
+            href="/userinfo"
             bg="none"
-            rightIcon={<MdBuild size={15} alignSelf />}
+            rightIcon={<MdBuild size={15} />}
           >
             settings
-          </Button> */}
+          </Button>
         </Box>
       </Container>
     </Center>

@@ -10,34 +10,75 @@ import {
   Fade,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import AnimatedPage from "../components/AnimatedPage";
 import { Link, useNavigate } from "react-router-dom";
-import { loginState, userState } from "../stores/auth/atom";
-import { useRecoilState } from "recoil";
+import {
+  loginState,
+  userState,
+  passState,
+  usersState,
+  updatedUsersState,
+} from "../stores/auth/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 // https://k4backend.osuka.dev/
 // https://k4backend.osuka.dev/docs/
 
 function Login() {
-  const [username, setUsername] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [logged, setLogged] = useRecoilState(loginState);
+
+  const [users, setUsers] = useRecoilState(usersState);
+
+  const updatedUsers = useRecoilValue(updatedUsersState);
 
   const { isOpen, onToggle } = useDisclosure();
 
   const navigate = useNavigate();
 
   const inputRef = useRef();
-  useEffect(() => {
-    inputRef.current.focus();
-  });
+  // useEffect(() => {
+  //   inputRef.current.focus();
+  // });
 
-  const login = () => {
-    navigate("/myaccount");
-    setLogged(true);
+  const userChecked = updatedUsers.find(
+    (user) => user.username === username && user.password === password
+  );
 
-    console.log(logged);
-    console.log(username);
+  console.log(userChecked);
+
+  const loginb = () => {
+    fetch("https://k4backend.osuka.dev/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setLogged(json);
+        setUser(json);
+        navigate("/myaccount");
+      })
+      .catch((error) => {
+        if (!userChecked) {
+          onToggle();
+          console.log(error);
+        }
+      });
+
+    if (userChecked) {
+      setUser(userChecked);
+      setLogged(true);
+      navigate("/myaccount");
+    }
   };
 
   return (
@@ -62,10 +103,10 @@ function Login() {
             <Stack>
               <Input
                 isRequired
-                ref={inputRef}
+                // ref={inputRef}
                 color="white"
                 name="username"
-                value={username}
+                // value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Username"
                 type="text"
@@ -73,10 +114,12 @@ function Login() {
               <Input
                 color="white"
                 name="password"
+                // value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
                 type="password"
               ></Input>
-              <Button type="submit" onClick={login}>
+              <Button type="submit" onClick={loginb}>
                 Login
               </Button>
               <Fade in={isOpen}>

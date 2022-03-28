@@ -17,8 +17,19 @@ import {
 } from "@chakra-ui/react";
 import ProductSlide from "../components/ProductSlide";
 import AnimatedPage from "../components/AnimatedPage";
+import { usersState } from "../stores/auth/atom";
+import { useRecoilState } from "recoil";
+import React, { useRef, useEffect, useState } from "react";
 
 function Home() {
+
+  const [users, setUsers] = useRecoilState(usersState);
+  useEffect(() => {
+    fetch("https://k4backend.osuka.dev/users")
+      .then((res) => res.json())
+      .then((json) => setUsers(json));
+  }, []);
+
   return (
     <>
       <AnimatedPage>
