@@ -12,6 +12,9 @@ function Admin() {
 
   const usersUpdated = updatedUsers ? updatedUsers : users;
 
+  console.log(users);
+  console.log(updatedUsers);
+
   return (
     <Center>
       <SimpleGrid

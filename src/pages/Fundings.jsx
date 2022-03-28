@@ -25,16 +25,51 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { fundingState } from "../stores/fundings/atom";
+import { fundingState, fundsTotal } from "../stores/fundings/atom";
 import { fundingStatus } from "../stores/fundings/selector";
 import LocalNav from "../components/LocalNav";
+
+import {
+  loginState,
+  userState,
+  passState,
+  usersState,
+  updatedUsersState,
+} from "../stores/auth/atom";
 
 function Fundings() {
   const [input, setInput] = useState("");
   const [fundings, setFundings] = useRecoilState(fundingState);
   const { totalFunds } = useRecoilValue(fundingStatus);
 
+  const userTotalFunds = totalFunds;
+
+  const [userFunds, setUserFunds] = useRecoilState(userState);
+  const [users, setUsers] = useRecoilState(usersState);
+  const [updatedUsers, setUpdatedUsers] = useRecoilState(updatedUsersState);
+
   const { isOpen, onToggle } = useDisclosure();
+
+  // Måste uppdatera users listan, ej single user
+  // Bara uppdatera just funds
+  // Skissa på detta
+
+  // function addFunds() {
+  //   setUpdatedUsers(
+  //     updatedUsers.map((user) => {
+  //       if (user.username === userFunds.username) {
+  //         return {
+  //           ...updatedUsers,
+  //           // funds: funds,
+  //           totalfunds: userTotalFunds,
+  //         };
+  //       }
+  //       return updatedUsers;
+  //     })
+  //   );
+  // }
+
+  console.log(updatedUsers);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -62,7 +97,17 @@ function Fundings() {
     setFundings((prevFunds) => {
       return [newFund, ...prevFunds];
     });
+
+    setUserFunds((prevFunds) => {
+      return {
+        userFunds,
+        ...prevFunds,
+        funds: fundings,
+        totalFunds: userTotalFunds,
+      };
+    });
     setInput("");
+    addFunds();
   };
 
   function handleField() {
@@ -77,6 +122,7 @@ function Fundings() {
       <LocalNav />
       <Center>
         <Box flex-direction="column">
+          <Text textColor="white">{userFunds.username}</Text>
           <Box>
             <Heading
               fontWeight={600}
@@ -143,7 +189,7 @@ function Fundings() {
                 <Text fontSize="3xl">Funding history</Text>
                 <Text fontSize="2xl" color="gray.400">
                   Total available funds:{" "}
-                  {totalFunds && totalFunds.toLocaleString()} USD
+                  {userTotalFunds && userTotalFunds.toLocaleString()} USD
                 </Text>
                 <Table variant="simple" size="sm">
                   {/* Todo: Dynamic sizing table  size={{ base: "sm", sm: "md", md: "md" }} */}
@@ -153,14 +199,15 @@ function Fundings() {
                       <Th isNumeric>Time</Th>
                     </Tr>
                   </Thead>
-                  {fundings.map((funding) => (
-                    <Tbody key={funding.id}>
-                      <Tr>
-                        <Td>{funding.input.toLocaleString()}</Td>
-                        <Td isNumeric>{funding.date}</Td>
-                      </Tr>
-                    </Tbody>
-                  ))}
+                  {userFunds.funds &&
+                    userFunds.funds.map((funding) => (
+                      <Tbody key={funding.id}>
+                        <Tr>
+                          <Td>{funding.input.toLocaleString()}</Td>
+                          <Td isNumeric>{funding.date}</Td>
+                        </Tr>
+                      </Tbody>
+                    ))}
                   <Tfoot>
                     <Tr>
                       <Th>Funding</Th>

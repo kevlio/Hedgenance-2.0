@@ -73,6 +73,7 @@ function SignUp() {
       id: Math.floor(Math.random() * 10000),
       role: "user",
       phone: phone,
+      totalfunds: 0,
     };
 
     setUpdatedUsers((prevUsers) => {
