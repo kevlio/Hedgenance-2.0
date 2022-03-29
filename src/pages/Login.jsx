@@ -13,13 +13,7 @@ import {
 import React, { useRef, useEffect, useState } from "react";
 import AnimatedPage from "../components/AnimatedPage";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  loginState,
-  userState,
-  passState,
-  usersState,
-  updatedUsersState,
-} from "../stores/auth/atom";
+import { loginState, userState, usersState } from "../stores/auth/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 // https://k4backend.osuka.dev/
@@ -33,8 +27,6 @@ function Login() {
 
   const [users, setUsers] = useRecoilState(usersState);
 
-  const updatedUsers = useRecoilValue(updatedUsersState);
-
   const { isOpen, onToggle } = useDisclosure();
 
   const navigate = useNavigate();
@@ -44,7 +36,11 @@ function Login() {
   //   inputRef.current.focus();
   // });
 
-  const userChecked = updatedUsers.find(
+  // finns inga updatedusers här..
+
+  console.log(users);
+
+  const userChecked = users.find(
     (user) => user.username === username && user.password === password
   );
 
@@ -64,7 +60,7 @@ function Login() {
       .then((res) => res.json())
       .then((json) => {
         setLogged(json);
-        setUser(json);
+        setUser(userChecked);
         navigate("/myaccount");
       })
       .catch((error) => {

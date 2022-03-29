@@ -108,7 +108,7 @@ function MyAccount() {
             alignItems="center"
             gap={2}
           >
-            <Text fontSize="3xl">Hey hog: {user.username}</Text>
+            <Text fontSize="3xl">Hey hog: {user && user.username}</Text>
             <GiHedgehog size={50} />
           </Box>
           <StatGroup

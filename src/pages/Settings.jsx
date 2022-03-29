@@ -20,14 +20,9 @@ import { useRecoilState } from "recoil";
 import { AiOutlineEdit } from "react-icons/ai";
 
 import LocalNav from "../components/LocalNav";
-import {
-  loginState,
-  userState,
-  passState,
-  usersState,
-} from "../stores/auth/atom";
+import { loginState, userState, usersState } from "../stores/auth/atom";
 
-function UserInfo() {
+function Settings() {
   const [users, setUsers] = useRecoilState(usersState);
   const [user, setUser] = useRecoilState(userState);
 
@@ -38,6 +33,7 @@ function UserInfo() {
     //   OnClick edit-icon change disabled to false
   }
 
+  // Får felmeddelande "Found 8 elements with non-unique id, fields"
   return (
     <div>
       <LocalNav />
@@ -86,4 +82,4 @@ function UserInfo() {
   );
 }
 
-export default UserInfo;
+export default Settings;

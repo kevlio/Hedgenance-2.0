@@ -12,12 +12,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useRef, useEffect } from "react";
 import AnimatedPage from "../components/AnimatedPage";
-import {
-  loginState,
-  userState,
-  usersState,
-  updatedUsersState,
-} from "../stores/auth/atom";
+import { loginState, userState, usersState } from "../stores/auth/atom";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { fundingState } from "../stores/fundings/atom";
@@ -46,7 +41,6 @@ function SignUp() {
   const [lastname, setLastname] = useState("");
 
   const [users, setUsers] = useRecoilState(usersState);
-  const [updatedUsers, setUpdatedUsers] = useRecoilState(updatedUsersState);
 
   // Update list of users
 
@@ -73,14 +67,15 @@ function SignUp() {
       id: Math.floor(Math.random() * 10000),
       role: "user",
       phone: phone,
-      totalfunds: 0,
+      funds: [{ history: 0 }, { total: 0 }],
+      holdings: [{ holdings: 0 }, { total: 0 }],
     };
 
-    setUpdatedUsers((prevUsers) => {
-      return [...prevUsers, ...users, newUser];
-    });
-
     setCurrentUser(newUser);
+
+    setUsers((prevUsers) => {
+      return [newUser, ...prevUsers];
+    });
 
     console.log(users);
 

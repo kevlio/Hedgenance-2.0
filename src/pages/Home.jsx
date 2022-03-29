@@ -22,13 +22,33 @@ import { useRecoilState } from "recoil";
 import React, { useRef, useEffect, useState } from "react";
 
 function Home() {
+  const [fetchedUsers, setFetchedUsers] = useState([]);
 
   const [users, setUsers] = useRecoilState(usersState);
   useEffect(() => {
     fetch("https://k4backend.osuka.dev/users")
       .then((res) => res.json())
-      .then((json) => setUsers(json));
+      .then((json) => {
+        setFetchedUsers(json);
+      });
   }, []);
+
+  useEffect(() => {
+    const newUsers = fetchedUsers.filter(
+      (fetchedUser) => !users.some((user) => fetchedUser.id === user.id)
+    );
+
+    console.log(newUsers);
+
+    if (newUsers.length > 0) {
+      setUsers([newUsers, ...users]);
+      console.log(fetchedUsers);
+      console.log(users);
+    }
+  }, [fetchedUsers]);
+
+  console.log(fetchedUsers);
+  console.log(users);
 
   return (
     <>

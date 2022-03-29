@@ -16,7 +16,7 @@ import CryptoPage from "./pages/CryptoPage";
 import { SingleCryptoPage } from "./pages/SingleCrypto";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
-import UserInfo from "./pages/UserInfo";
+import Settings from "./pages/Settings";
 
 //
 // {!auth.token ? (
@@ -50,7 +50,7 @@ function App() {
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/adminlogin" element={<AdminLogin />}></Route>
 
-        <Route path="/userinfo" element={<UserInfo />}></Route>
+        <Route path="/settings" element={<Settings />}></Route>
 
         <Route path="/crypto" element={<Crypto />}></Route>
 

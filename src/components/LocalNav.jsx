@@ -54,7 +54,7 @@ function LocalNav() {
             color="white"
             variant="link"
             as="a"
-            href="/userinfo"
+            href="/settings"
             bg="none"
             rightIcon={<MdBuild size={15} />}
           >

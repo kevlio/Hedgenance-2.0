@@ -29,52 +29,33 @@ import { fundingState, fundsTotal } from "../stores/fundings/atom";
 import { fundingStatus } from "../stores/fundings/selector";
 import LocalNav from "../components/LocalNav";
 
-import {
-  loginState,
-  userState,
-  passState,
-  usersState,
-  updatedUsersState,
-} from "../stores/auth/atom";
+import { loginState, userState, usersState } from "../stores/auth/atom";
 
 function Fundings() {
   const [input, setInput] = useState("");
-  const [fundings, setFundings] = useRecoilState(fundingState);
-  const { totalFunds } = useRecoilValue(fundingStatus);
+  // Moves this to users LocalStorage instead
+  // const [fundings, setFundings] = useRecoilState(fundingState);
+  // const { totalFunds } = useRecoilValue(fundingStatus);
+  const [fundings, setFundings] = useState([]);
 
-  const userTotalFunds = totalFunds;
+  const totalFunds = fundings.reduce((total, current) => {
+    const formattedAmount = parseInt(current.input);
+    return total + formattedAmount;
+  }, 0);
+  console.log(totalFunds);
 
-  const [userFunds, setUserFunds] = useRecoilState(userState);
+  const [currentUser, setUser] = useRecoilState(userState);
   const [users, setUsers] = useRecoilState(usersState);
-  const [updatedUsers, setUpdatedUsers] = useRecoilState(updatedUsersState);
 
   const { isOpen, onToggle } = useDisclosure();
-
-  // Måste uppdatera users listan, ej single user
-  // Bara uppdatera just funds
-  // Skissa på detta
-
-  // function addFunds() {
-  //   setUpdatedUsers(
-  //     updatedUsers.map((user) => {
-  //       if (user.username === userFunds.username) {
-  //         return {
-  //           ...updatedUsers,
-  //           // funds: funds,
-  //           totalfunds: userTotalFunds,
-  //         };
-  //       }
-  //       return updatedUsers;
-  //     })
-  //   );
-  // }
-
-  console.log(updatedUsers);
 
   function handleSubmit(event) {
     event.preventDefault();
   }
   const todoRef = useRef();
+
+  console.log(currentUser);
+  console.log(users);
 
   const createFunding = () => {
     if (input <= 0) return;
@@ -98,17 +79,24 @@ function Fundings() {
       return [newFund, ...prevFunds];
     });
 
-    setUserFunds((prevFunds) => {
-      return {
-        userFunds,
-        ...prevFunds,
-        funds: fundings,
-        totalFunds: userTotalFunds,
-      };
-    });
+    setUsers(
+      users.map((user) => {
+        if (user.id === currentUser.id) {
+          return {
+            ...user,
+            funds: { history: fundings, total: totalFunds },
+          };
+        }
+        return user;
+      })
+    );
+
     setInput("");
-    addFunds();
   };
+
+  const user = users.filter((user) => user.id === currentUser.id);
+  console.log(user);
+  console.log(user[0].funds.history);
 
   function handleField() {
     todoRef.current.value = null;
@@ -117,12 +105,13 @@ function Fundings() {
     todoRef.current.focus();
   });
 
+
   return (
     <Container minHeight="100vh" alignItems="flex-start" maxW="100%">
       <LocalNav />
       <Center>
         <Box flex-direction="column">
-          <Text textColor="white">{userFunds.username}</Text>
+          <Text textColor="white">{currentUser.username}</Text>
           <Box>
             <Heading
               fontWeight={600}
@@ -189,7 +178,9 @@ function Fundings() {
                 <Text fontSize="3xl">Funding history</Text>
                 <Text fontSize="2xl" color="gray.400">
                   Total available funds:{" "}
-                  {userTotalFunds && userTotalFunds.toLocaleString()} USD
+                  {user[0].funds && user[0].funds.total.toLocaleString()} USD
+                  {currentUser.funds.total &&
+                    currentUser.funds.total.toLocaleString()}
                 </Text>
                 <Table variant="simple" size="sm">
                   {/* Todo: Dynamic sizing table  size={{ base: "sm", sm: "md", md: "md" }} */}
@@ -199,12 +190,12 @@ function Fundings() {
                       <Th isNumeric>Time</Th>
                     </Tr>
                   </Thead>
-                  {userFunds.funds &&
-                    userFunds.funds.map((funding) => (
-                      <Tbody key={funding.id}>
+                  {user[0].funds &&
+                    user[0].funds.history.map((funds) => (
+                      <Tbody key={funds.id}>
                         <Tr>
-                          <Td>{funding.input.toLocaleString()}</Td>
-                          <Td isNumeric>{funding.date}</Td>
+                          <Td>{funds.input.toLocaleString()}</Td>
+                          <Td isNumeric>{funds.date}</Td>
                         </Tr>
                       </Tbody>
                     ))}
@@ -225,3 +216,4 @@ function Fundings() {
 }
 
 export default Fundings;
+
