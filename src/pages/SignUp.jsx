@@ -9,6 +9,7 @@ import {
   Text,
   Fade,
   useDisclosure,
+  FormLabel,
 } from "@chakra-ui/react";
 import React, { useState, useRef, useEffect } from "react";
 import AnimatedPage from "../components/AnimatedPage";
@@ -16,6 +17,7 @@ import { loginState, userState, usersState } from "../stores/auth/atom";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { fundingState } from "../stores/fundings/atom";
+import { GiHedgehog } from "react-icons/gi";
 
 function SignUp() {
   const [logged, setLogged] = useRecoilState(loginState);
@@ -81,24 +83,24 @@ function SignUp() {
 
     setLogged(true);
     onToggle();
-    let date = new Date();
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, "0");
-    const dd = String(date.getDate()).padStart(2, "0");
-    const hour = String(date.getHours()).padStart(2, "0");
-    const min = String(date.getMinutes()).padStart(2, "0");
-    const sec = String(date.getSeconds()).padStart(2, "0");
+    // let date = new Date();
+    // const yyyy = date.getFullYear();
+    // const mm = String(date.getMonth() + 1).padStart(2, "0");
+    // const dd = String(date.getDate()).padStart(2, "0");
+    // const hour = String(date.getHours()).padStart(2, "0");
+    // const min = String(date.getMinutes()).padStart(2, "0");
+    // const sec = String(date.getSeconds()).padStart(2, "0");
 
-    date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
+    // date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
 
-    const newFund = {
-      input: 1000,
-      date: date,
-      id: Math.floor(Math.random() * 10000),
-    };
-    setFundings((prevFunds) => {
-      return [newFund, ...prevFunds];
-    });
+    // const newFund = {
+    //   input: 1000,
+    //   date: date,
+    //   id: Math.floor(Math.random() * 10000),
+    // };
+    // setFundings((prevFunds) => {
+    //   return [newFund, ...prevFunds];
+    // });
 
     console.log(logged);
     console.log(username);
@@ -114,7 +116,7 @@ function SignUp() {
           <Box>
             <Heading
               fontWeight={600}
-              fontSize={{ base: "1xl", sm: "2xl", md: "4xl" }}
+              fontSize={{ base: "2xl", sm: "2xl", md: "4xl" }}
               lineHeight={"110%"}
               color={"var(--chakra-colors-gray-300)"}
               padding="3"
@@ -127,16 +129,27 @@ function SignUp() {
           </Box>
           <Box max-width="250px">
             <Stack>
-              <Input
-                isRequired
-                // ref={inputRef}
-                autoComplete="off"
-                color="white"
-                name="username"
-                placeholder="Hogname"
-                type="text"
-                onChange={(e) => setUsername(e.target.value)}
-              ></Input>
+              <FormLabel color="white">User information</FormLabel>
+              <Box display="flex" flexDirection="row">
+                <Input
+                  isRequired
+                  // ref={inputRef}
+                  autoComplete="off"
+                  color="white"
+                  name="username"
+                  placeholder="Hogname"
+                  type="text"
+                  onChange={(e) => setUsername(e.target.value)}
+                ></Input>
+                <Input
+                  name="password"
+                  color="white"
+                  placeholder="Password"
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                ></Input>
+              </Box>
+
               <Box display="flex" flexDirection="row">
                 <Input
                   name="firstname"
@@ -170,24 +183,19 @@ function SignUp() {
                   onChange={(e) => setPhone(e.target.value)}
                 ></Input>
               </Box>
-              <Input
-                name="password"
-                color="white"
-                placeholder="Password"
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-              ></Input>
+
               {/* <Fade in={isOpen}> */}
+              <FormLabel color="white">User address</FormLabel>
               <Box display="flex" flexDirection="row">
                 <Input
-                  name="password"
+                  name="street"
                   color="white"
                   placeholder="Street name"
                   type="text"
                   onChange={(e) => setStreet(e.target.value)}
                 ></Input>
                 <Input
-                  name="text"
+                  name="street number"
                   color="white"
                   placeholder="Street number"
                   type="number"
@@ -210,8 +218,13 @@ function SignUp() {
                   onChange={(e) => setZipcode(e.target.value)}
                 ></Input>
               </Box>
-              <Button type="submit" onClick={login}>
-                Sign up now and get $1000 =)
+              <Button
+                colorScheme="green"
+                type="submit"
+                onClick={login}
+                rightIcon={<GiHedgehog />}
+              >
+                Sign up
               </Button>
               {/* </Fade> */}
               <Progress value={20} size="xs" colorScheme="pink" />

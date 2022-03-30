@@ -1,5 +1,5 @@
-import React from "react";
-import { userState } from "../stores/auth/atom";
+import React, { useEffect, useState } from "react";
+import { userState, usersState } from "../stores/auth/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { holdingState } from "../stores/holdings/atom";
 import { fundingState } from "../stores/fundings/atom";
@@ -30,13 +30,36 @@ import LocalNav from "../components/LocalNav";
 import { PieChart, Pie, Label, ResponsiveContainer } from "recharts";
 
 function MyAccount() {
-  const user = useRecoilValue(userState);
   const [holdings, setHoldings] = useRecoilState(holdingState);
   const [fundings, setFundings] = useRecoilState(fundingState);
   const { totalHolding } = useRecoilValue(holdingStatus);
-  console.log(`User: ${user}`);
+
   console.log(holdings);
-  const { totalFunds } = useRecoilValue(fundingStatus);
+
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const [users, setUsers] = useRecoilState(usersState);
+
+  const [totalFunds, setTotalFunds] = useState(0);
+  const [totalHoldings, setTotalHoldings] = useState(0);
+
+  console.log(currentUser);
+  const user = users.filter((user) => user.id === currentUser.id);
+  console.log(user);
+
+  useEffect(() => {
+    const user = users.filter((user) => user.id === currentUser.id);
+    const totalFunds = user[0].funds && user[0].funds.total;
+    const totalHoldings = user[0].holdings && user[0].holdings.total;
+    setTotalFunds(totalFunds);
+    setTotalHoldings(totalHoldings);
+    console.log(user);
+  }, [users]);
+
+  console.log(users);
+
+  // Går ej att logga ut från MyAccount
+
+  // const { totalFunds } = useRecoilValue(fundingStatus);
 
   const { categoryStore } = useRecoilValue(categoryHoldingStatus);
 
@@ -108,7 +131,7 @@ function MyAccount() {
             alignItems="center"
             gap={2}
           >
-            <Text fontSize="3xl">Hey hog: {user && user.username}</Text>
+            <Text fontSize="3xl">Hey hog: {currentUser.username}</Text>
             <GiHedgehog size={50} />
           </Box>
           <StatGroup
@@ -132,13 +155,18 @@ function MyAccount() {
             >
               {" "}
               <Text fontSize="2xl" color="white">
-                Total value: ${(totalHolding + totalFunds).toLocaleString()}
+                Total value: ${/* Fixa felhantering också... */}
+                {(
+                  (totalFunds && totalFunds) + (totalHoldings && totalHoldings)
+                ).toLocaleString()}
               </Text>
               <Text fontSize="1xl" alignSelf="flex-end">
-                Available funds: {totalFunds.toLocaleString()}
+                Available funds:{" "}
+                {(totalFunds ? totalFunds : 0).toLocaleString()}
               </Text>
               <Text fontSize="1xl" alignSelf="flex-end">
-                Hedge value: {totalHolding.toLocaleString()}
+                Hedge value:{" "}
+                {(totalHoldings ? totalHoldings : 0).toLocaleString()}
               </Text>
             </Box>
           </Center>
@@ -206,9 +234,10 @@ function MyAccount() {
             gap={4}
             py={2}
           >
-            {productStore &&
-              productStore.map((holding) =>
-                holding.value ? (
+            {/* Fixa så att det samlas som Single Product igen */}
+            {user[0].holdings.holdings &&
+              user[0].holdings.holdings.map(
+                (holding) => (
                   <Box
                     maxW="350px"
                     display="flex"
@@ -224,7 +253,7 @@ function MyAccount() {
                       {holding.title}
                     </Link>
                     <Text>Amont: {holding.amount.toLocaleString()}</Text>
-                    <Text>Value: {holding.value.toLocaleString()}</Text>
+                    <Text>Value: {holding.price.toLocaleString()}</Text>
                     <Button
                       colorScheme="green"
                       width="100%"
@@ -243,10 +272,8 @@ function MyAccount() {
                       Sell All {holding.title}s
                     </Button>
                   </Box>
-                ) : (
-                  <></>
-                  // Correct this for KK4
                 )
+                // Correct this for KK4
               )}
           </SimpleGrid>
         </Container>

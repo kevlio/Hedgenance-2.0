@@ -23,8 +23,8 @@ import React, { useRef, useEffect, useState } from "react";
 
 function Home() {
   const [fetchedUsers, setFetchedUsers] = useState([]);
-
   const [users, setUsers] = useRecoilState(usersState);
+
   useEffect(() => {
     fetch("https://k4backend.osuka.dev/users")
       .then((res) => res.json())
@@ -37,13 +37,16 @@ function Home() {
     const newUsers = fetchedUsers.filter(
       (fetchedUser) => !users.some((user) => fetchedUser.id === user.id)
     );
-
     console.log(newUsers);
+    console.log(newUsers.length);
 
-    if (newUsers.length > 0) {
-      setUsers([newUsers, ...users]);
-      console.log(fetchedUsers);
-      console.log(users);
+    if (newUsers.length > 0 && users.length === 0) {
+      console.log("First User Object Created");
+      setUsers(newUsers);
+    }
+    if (users.length > 0 && newUsers.length > 0) {
+      console.log("New Users + Prev users");
+      setUsers([...newUsers, ...users]);
     }
   }, [fetchedUsers]);
 

@@ -84,7 +84,7 @@ function Login() {
           <Box>
             <Heading
               fontWeight={600}
-              fontSize={{ base: "1xl", sm: "2xl", md: "4xl" }}
+              fontSize={{ base: "2xl", sm: "2xl", md: "4xl" }}
               lineHeight={"110%"}
               color={"var(--chakra-colors-gray-300)"}
               padding="3"

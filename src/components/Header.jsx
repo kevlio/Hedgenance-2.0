@@ -96,6 +96,7 @@ const Header = () => {
           <Link href={`${logged ? "/myaccount" : "/signup"}`}>{`${
             logged ? "account" : "sign up"
           }`}</Link>
+          {/* Funkar inte att logga ut från page myaccount */}
           <Link
             href={`${logged ? "/myaccount" : "/login"}`}
             onClick={handleLogged}

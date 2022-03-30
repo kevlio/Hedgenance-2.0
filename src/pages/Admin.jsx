@@ -10,6 +10,8 @@ import UserInfo from "./Settings";
 function Admin() {
   const [users, setUsers] = useRecoilState(usersState);
 
+  console.log(users);
+
   return (
     <Center>
       <Box>

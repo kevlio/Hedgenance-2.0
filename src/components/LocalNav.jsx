@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text, Container, Center, Button } from "@chakra-ui/react";
+import { Box, Text, Container, Center, Button, Stack } from "@chakra-ui/react";
 import { MdBuild } from "react-icons/md";
 
 function LocalNav() {
@@ -13,12 +13,17 @@ function LocalNav() {
         fontSize="2xl"
         mb={2}
       >
-        <Box
+        <Stack
           display="flex"
           justifyContent="center"
-          color="white"
+          // color="white"
           gap={8}
           my={2}
+          // <Stack
+          // my={5}
+          spacing={[1, 5]}
+          // Kanske bättre att använda SimpleGrid här? Fult att visa 5 på rad
+          direction={["column", "row"]}
         >
           <Button
             color="white"
@@ -29,14 +34,8 @@ function LocalNav() {
           >
             account
           </Button>
-          <Button
-            color="white"
-            variant="link"
-            as="a"
-            href="/products"
-            bg="none"
-          >
-            products
+          <Button color="white" variant="link" as="a" href="/crypto" bg="none">
+            cryptos
           </Button>
           <Button
             color="white"
@@ -60,7 +59,7 @@ function LocalNav() {
           >
             settings
           </Button>
-        </Box>
+        </Stack>
       </Container>
     </Center>
   );

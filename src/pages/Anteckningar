@@ -1,0 +1,413 @@
+[
+  {
+    "id": 125078740260091,
+    "email": "email@email.com",
+    "username": "username",
+    "password": "password",
+    "role": "user",
+    "name": {
+      "firstname": "firstname",
+      "lastname": "lastname"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "number": 1,
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 391743186585198,
+    "email": "email@email.com",
+    "username": "user",
+    "password": "password",
+    "role": "user",
+    "name": {
+      "firstname": "firstname",
+      "lastname": "lastname"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 1067338971576384,
+    "email": "bajs",
+    "username": "bajs",
+    "password": "bajs",
+    "role": "user",
+    "name": {
+      "firstname": "bajs",
+      "lastname": "bajs"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 1216874387060039,
+    "email": "admin@osuka.dev",
+    "username": "admin",
+    "password": "admin",
+    "role": "admin",
+    "name": {
+      "firstname": "Admin",
+      "lastname": "Adminsson"
+    },
+    "address": {
+      "city": "Malmö",
+      "street": "Sagas gränd",
+      "number": 4,
+      "zipcode": "21536"
+    },
+    "phone": "+46709123456",
+    "__v": 0
+  },
+  {
+    "id": 1643013846150707,
+    "email": "bajs",
+    "username": "bajs",
+    "password": "bajs",
+    "role": "user",
+    "name": {
+      "firstname": "bajs",
+      "lastname": "bajs"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 1868317369672606,
+    "email": "email@email.com",
+    "username": "user",
+    "password": "password",
+    "role": "user",
+    "name": {
+      "firstname": "firstname",
+      "lastname": "lastname"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "__v": 0
+  },
+  {
+    "id": 2177572676368595,
+    "email": "email@email.com",
+    "username": "user",
+    "password": "password",
+    "role": "user",
+    "name": {
+      "firstname": "firstname",
+      "lastname": "lastname"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 2875327804576428,
+    "email": "a",
+    "username": "a",
+    "password": "a",
+    "role": "user",
+    "name": {
+      "firstname": "a",
+      "lastname": "a"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 3571154366027012,
+    "email": "test@test.test",
+    "username": "test2",
+    "password": "test",
+    "role": "user",
+    "name": {
+      "firstname": "test",
+      "lastname": "test"
+    },
+    "address": {
+      "city": "test",
+      "street": "test",
+      "number": 0,
+      "zipcode": "1"
+    },
+    "phone": "1",
+    "__v": 0
+  },
+  {
+    "id": 3800885332578977,
+    "email": "bajs",
+    "username": "bajs",
+    "password": "bajs",
+    "role": "user",
+    "name": {
+      "firstname": "bajs",
+      "lastname": "bajs"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 4788486019726752,
+    "email": "email@email.com",
+    "username": "user",
+    "password": "password",
+    "role": "user",
+    "name": {
+      "firstname": "firstname",
+      "lastname": "lastname"
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 5484084105515292,
+    "email": "test@test.test",
+    "username": "test",
+    "password": "test",
+    "role": "user",
+    "name": {
+      "firstname": "test",
+      "lastname": "test"
+    },
+    "address": {
+      "city": "test",
+      "street": "test",
+      "number": 0,
+      "zipcode": "1"
+    },
+    "phone": "1",
+    "__v": 0
+  },
+  {
+    "id": 5570237960676271,
+    "email": "j@query.com",
+    "username": "jQuery4Life",
+    "password": "$('br')",
+    "role": "user",
+    "name": {
+      "firstname": "Jay",
+      "lastname": "Query"
+    },
+    "address": {
+      "city": "Quebec",
+      "street": "Main Street",
+      "number": 1,
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 5635841959340793,
+    "email": "test",
+    "username": "mor_2314",
+    "password": "83r5^_",
+    "role": "user",
+    "name": {
+      "firstname": "test",
+      "lastname": "test"
+    },
+    "address": {
+      "city": "test",
+      "street": "test",
+      "number": 4,
+      "zipcode": "test"
+    },
+    "phone": "test",
+    "__v": 0
+  },
+  {
+    "id": 5720998064225771,
+    "email": "123@gmail.com",
+    "username": "123",
+    "password": "123",
+    "role": "user",
+    "name": {
+      "firstname": "Hans",
+      "lastname": "Zimmer"
+    },
+    "address": {
+      "city": "Blåkulla",
+      "street": "Häxstigen",
+      "number": 666,
+      "zipcode": "666 66"
+    },
+    "phone": "123 456 78 90",
+    "__v": 0
+  },
+  {
+    "id": 6507149855165176,
+    "email": "hehehehe",
+    "username": "tomat",
+    "password": "citron",
+    "role": "user",
+    "name": {
+      "firstname": "blalbal",
+      "lastname": "tomte"
+    },
+    "address": {
+      "city": "nisse",
+      "street": "lillgatan",
+      "number": 90897,
+      "zipcode": "45678"
+    },
+    "phone": "2345678",
+    "__v": 0
+  },
+  {
+    "id": 6607091449158918,
+    "email": "test@test.test",
+    "username": "test3",
+    "password": "test",
+    "role": "user",
+    "name": {
+      "firstname": "test",
+      "lastname": "test"
+    },
+    "address": {
+      "city": "test",
+      "street": "test",
+      "number": 0,
+      "zipcode": "1"
+    },
+    "__v": 0
+  },
+  {
+    "id": 6627608403175190,
+    "email": "John@gmail.com",
+    "username": "nils",
+    "password": "nils",
+    "role": "user",
+    "name": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "address": {
+      "city": "kilcoole",
+      "street": "7835 new road",
+      "number": 3,
+      "zipcode": "12926-3874"
+    },
+    "phone": "1-570-236-7033",
+    "__v": 0
+  },
+  {
+    "id": 7017716455917306,
+    "email": "a",
+    "username": "a",
+    "password": "a",
+    "role": "user",
+    "name": {
+      "firstname": "a",
+      "lastname": "a"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 7086321478702950,
+    "email": "a",
+    "username": "a",
+    "password": "a",
+    "role": "user",
+    "name": {
+      "firstname": "a",
+      "lastname": "a"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 7846999304941420,
+    "email": "email@email.com",
+    "username": "user",
+    "password": "password",
+    "role": "user",
+    "name": {
+      "firstname": "firstname",
+      "lastname": "lastname"
+    },
+    "__v": 0
+  },
+  {
+    "id": 8622883457351716,
+    "email": "bajs",
+    "username": "bajs",
+    "password": "bajs",
+    "role": "user",
+    "name": {
+      "firstname": "bajs",
+      "lastname": "bajs"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  },
+  {
+    "id": 8844208359295523,
+    "email": "a",
+    "username": "a",
+    "password": "a",
+    "role": "user",
+    "name": {
+      "firstname": "a",
+      "lastname": "a"
+    },
+    "address": {
+      "city": "",
+      "street": "",
+      "zipcode": ""
+    },
+    "phone": "",
+    "__v": 0
+  }
+]
