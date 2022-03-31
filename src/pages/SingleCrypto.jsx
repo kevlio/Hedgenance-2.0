@@ -66,21 +66,24 @@ function SingleFetchedProduct() {
   const params = useParams();
   const [coin, setCoin] = useRecoilState(singleCryptoState);
   const [amount, setAmount] = useState("");
-  const [price, setPrice] = useState("");
   const [amountMax, setAmountMax] = useState(0);
 
   const [holdings, setHoldings] = useState([]);
   const [fundings, setFundings] = useState([]);
-  const [prevHoldings, setPrevHoldings] = useState([]);
 
-  if (currentUser.holdings.history) {
-    setPrevHoldings(currentUser.holdings.history);
-    console.log(prevHoldings);
-  }
+  const [holdingStore, setHoldingsStore] = useRecoilState(holdingState);
 
-  // useEffect(() => {
-  //   if (currentUser.holdings.total) setHoldings(currentUser.holdings.holdings);
-  // }, []);
+  useEffect(() => {
+    if (currentUser.holdings.history) {
+      setHoldingsStore(currentUser.holdings.history);
+      console.log(holdingStore);
+    }
+    setHoldings(holdingStore);
+    console.log(holdings);
+  }, []);
+  console.log(holdingStore);
+  console.log(currentUser.holdings.history);
+  console.log(holdings);
 
   console.log(fundings);
 
@@ -115,55 +118,42 @@ function SingleFetchedProduct() {
 
   // Jobba på denna logik, undvik repetition:
 
-  // useEffect(() => {
-  //   setFundings(currentUser[0].funds.history);
-  // }, []);
-
-  console.log(coinData.name);
-
   const [totalFundsUser, setTotalFundsUser] = useState();
+  const [totalHoldingsUser, setTotalHoldingsUser] = useState();
   const [totalHoldingAmount, setTotalHoldingAmount] = useState();
   const [totalHoldingPrice, setTotalHoldingPrice] = useState();
 
   // Kan UseCallback vara användbart???
 
   useEffect(() => {
-    const totalFundsUser =
-      fundings &&
-      fundings.reduce((total, current) => {
-        const formattedPrice = parseInt(current.input);
-        return total + formattedPrice;
-      }, 0);
-    setTotalFundsUser(totalFundsUser);
-
     if (currentUser.holdings.history) {
-      const currentCrypto = currentUser.holdings.history.filter(
-        (crypto) => crypto.title === coinData.name
-      );
-      console.log(currentCrypto);
-
-      const currentCryptoAmount = currentCrypto.reduce((total, current) => {
-        const formattedAmount = parseInt(current.amount);
-        return total + formattedAmount;
-      }, 0);
-
-      // Fråga Oscar om denna...
-      const currentCryptoValue = currentCrypto.reduce((total, current) => {
-        const formattedPrice = parseInt(current.price);
-        return total + formattedPrice;
-      }, 0);
-
-      const cryptoPrice = currentCrypto.map((crypto) => crypto.price);
-
-      const totalCryptoHolding = cryptoPrice.reduce(
-        (previousValue, currentValue) => previousValue + currentValue,
-        0
-      );
-
       setTotalHoldingAmount(currentCryptoAmount);
-      setTotalHoldingPrice(totalCryptoHolding);
+      setTotalHoldingPrice(currentCryptoHolding);
     }
-  }, [holdings]);
+  }, [currentUser.holdings.history]);
+
+  const currentCrypto = holdings.filter(
+    (crypto) => crypto.title === coinData.name
+  );
+  console.log(currentCrypto);
+  const currentCryptoAmount = currentCrypto.reduce((total, current) => {
+    const formattedAmount = parseInt(current.amount);
+    return total + formattedAmount;
+  }, 0);
+  const cryptoPrice = currentCrypto.map((crypto) => crypto.price);
+  const currentCryptoHolding = cryptoPrice.reduce(
+    (previousValue, currentValue) => previousValue + currentValue,
+    0
+  );
+  // Fråga Oscar om denna...
+  // const currentCryptoHolding = currentCrypto.reduce((total, current) => {
+  //   const formattedPrice = parseInt(current.price);
+  //   return total + formattedPrice;
+  // }, 0);
+
+  console.log(totalHoldingAmount);
+  console.log(totalHoldingAmount * coinData.price);
+  console.log(totalHoldingPrice);
 
   console.log(holdings);
 
@@ -171,20 +161,46 @@ function SingleFetchedProduct() {
     // setUserHistoryFunds(fundings);
     // setUserTotalFunds(totalFunds);
     // Kan man sätta object key till coinData.name?
+
+    // const holdingsArray = currentUser.holdings.history
+    //   ? [...holdings, ...currentUser.holdings.history]
+    //   : [...holdings];
+
+    const fundingsArray = currentUser.funds.history
+      ? [...fundings, ...currentUser.funds.history]
+      : [...fundings];
+
+    const totalFunds =
+      fundingsArray &&
+      fundingsArray.reduce((total, current) => {
+        const formattedAmount = parseInt(current.input);
+        return total + formattedAmount;
+      }, 0);
+
+    setTotalFundsUser(totalFunds);
+
+    const totalHoldings = holdings.reduce((total, current) => {
+      const formattedAmount = parseInt(current.price);
+      return total + formattedAmount;
+    }, 0);
+
+    setTotalHoldingsUser(totalHoldings);
+
+    console.log(totalFunds);
+    console.log(totalHoldings);
+
     setUpdateUsers(
       updateUsers.map((user) => {
         if (user.id === currentUserID) {
           return {
             ...user,
             funds: {
-              history: [...fundings],
-              // ...currentUser.funds.history,
-              total: currentUser.funds.total + totalFundsUser,
+              history: fundingsArray,
+              total: totalFunds,
             },
             holdings: {
-              history: [...holdings],
-              // ...currentUser.holdings.history,
-              total: currentUser.holdings.total + totalHoldingPrice,
+              history: { ...holdings },
+              total: totalHoldings,
             },
           };
         }
@@ -193,12 +209,76 @@ function SingleFetchedProduct() {
     );
   }, [holdings]);
 
+  const totalHoldingz = currentUser.holdings.history.reduce(
+    (total, current) => {
+      const formattedAmount = parseInt(current.price);
+      return total + formattedAmount;
+    },
+    0
+  );
+
+  const totalFundz = currentUser.funds.history.reduce((total, current) => {
+    const formattedAmount = parseInt(current.input);
+    return total + formattedAmount;
+  }, 0);
+
+  console.log(totalHoldingz);
+  console.log(totalFundz);
+
   console.log(updateUsers);
+
+  const [test, setTest] = useState([]);
+
+  function placeOrder() {
+    // setPrice(coinData.price);
+    if (orderMode === "buy") {
+      buy();
+    }
+    if (orderMode === "sell") {
+      sell();
+    }
+
+    const holdingsArray = currentUser.holdings.history
+      ? [...holdings, ...currentUser.holdings.history]
+      : [...holdings];
+
+    const fundingsArray = currentUser.funds.history
+      ? [...fundings, ...currentUser.funds.history]
+      : [...fundings];
+
+    const totalFunds =
+      fundingsArray &&
+      fundingsArray.reduce((total, current) => {
+        const formattedAmount = parseInt(current.input);
+        return total + formattedAmount;
+      }, 0);
+
+    const totalHoldings =
+      holdingsArray &&
+      holdingsArray.reduce((total, current) => {
+        const formattedAmount = parseInt(current.price);
+        return total + formattedAmount;
+      }, 0);
+
+    console.log(totalFunds);
+    console.log(totalHoldings);
+
+    setCurrentUser({
+      ...currentUser,
+      funds: {
+        history: fundingsArray,
+        total: totalFunds,
+      },
+      holdings: {
+        history: holdingsArray,
+        total: totalHoldings,
+      },
+    });
+  }
 
   function handleChange(event) {
     const value = event.target.value;
     setAmount(value);
-    console.log(amount);
   }
 
   // Definiera alla coins etc så vi kan återanvända dom direkt.
@@ -208,7 +288,7 @@ function SingleFetchedProduct() {
   function selectedMode(e) {
     const mode = e.target.value;
     setOrderMode(mode);
-    const buyOrder = "green.500";
+    // setHoldingsStore([]);
   }
 
   function maxAmount() {
@@ -225,29 +305,6 @@ function SingleFetchedProduct() {
     }
   }
 
-  function placeOrder() {
-    // setPrice(coinData.price);
-    if (orderMode === "buy") {
-      buy();
-    }
-    if (orderMode === "sell") {
-      sell();
-    }
-
-    setCurrentUser({
-      ...currentUser,
-      funds: {
-        history: [...fundings],
-        // ...currentUser.funds.history,
-        total: currentUser.funds.total + totalFundsUser,
-      },
-      holdings: {
-        history: [...holdings],
-        // ...currentUser.holdings.history,
-        total: currentUser.holdings.total + totalHoldingPrice,
-      },
-    });
-  }
   let date = new Date();
   const yyyy = date.getFullYear();
   const mm = String(date.getMonth() + 1).padStart(2, "0");
@@ -259,8 +316,6 @@ function SingleFetchedProduct() {
   date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
   // Maybe put these together
   const buy = () => {
-    console.log(coin.market_data.current_price.eur * amount);
-
     if (
       amount <= 0 ||
       currentUser.funds.total < coin.market_data.current_price.eur * amount
@@ -291,6 +346,7 @@ function SingleFetchedProduct() {
     setFundings((prevFunds) => {
       return [...prevFunds, reduceFunds];
     });
+
     console.log(holdings);
     console.log(fundings);
   };
@@ -315,8 +371,8 @@ function SingleFetchedProduct() {
       date: date,
       id: Math.floor(Math.random() * 10000),
     };
-    setHoldings((prevBuy) => {
-      return [...prevBuy, newSell];
+    setHoldings((prevSell) => {
+      return [...prevSell, newSell];
     });
     const increaseFunds = {
       input: +coinData.price * amount,
@@ -328,13 +384,9 @@ function SingleFetchedProduct() {
     });
   };
 
-  console.log(price);
-
   if (!coin) {
     return <p>Loading profile...</p>;
   }
-
-  console.log(amountMax);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -426,6 +478,9 @@ function SingleFetchedProduct() {
               Available funds: €
               {currentUser.funds.total &&
                 currentUser.funds.total.toLocaleString()}
+            </Text>
+            <Text ml="130px" mr="50px">
+              {totalHoldingz}
             </Text>
             <Box display="flex" flexDirection="row" ml="130px">
               <Button
@@ -536,10 +591,18 @@ function SingleFetchedProduct() {
           </Thead>
           <Tbody>
             <Tr>
+              <Td>Total value</Td>
+              <Td isNumeric>
+                {totalHoldingPrice && totalHoldingPrice.toFixed(3)}
+              </Td>
+            </Tr>
+          </Tbody>
+          <Tbody>
+            <Tr>
               <Td>Avg. purchase price</Td>
               <Td isNumeric>
                 {totalHoldingAmount &&
-                  (totalHoldingPrice / totalHoldingAmount).toFixed(3)}
+                  (totalHoldingPrice / totalHoldingAmount).toFixed(5)}
               </Td>
             </Tr>
           </Tbody>
