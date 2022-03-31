@@ -13,7 +13,12 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useRef, useEffect } from "react";
 import AnimatedPage from "../components/AnimatedPage";
-import { loginState, userState, usersState } from "../stores/auth/atom";
+import {
+  loginState,
+  userState,
+  usersState,
+  currentIDState,
+} from "../stores/auth/atom";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { fundingState } from "../stores/fundings/atom";
@@ -26,6 +31,7 @@ function SignUp() {
   const [fundings, setFundings] = useRecoilState(fundingState);
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const [currentUserID, setCurrentUserID] = useRecoilState(currentIDState);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -73,11 +79,12 @@ function SignUp() {
       holdings: [{ holdings: 0 }, { total: 0 }],
     };
 
-    setCurrentUser(newUser);
-
     setUsers((prevUsers) => {
       return [newUser, ...prevUsers];
     });
+
+    setCurrentUser(newUser);
+    setCurrentUserID(newUser.id);
 
     console.log(users);
 

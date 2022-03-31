@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { loginState, userState } from "../stores/auth/atom";
+import { loginState, userState, usersState } from "../stores/auth/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { holdingState } from "../stores/holdings/atom";
 
@@ -18,9 +18,16 @@ import {
 } from "@chakra-ui/react";
 import LocalNav from "../components/LocalNav";
 function Trades() {
-  const user = useRecoilValue(userState);
+  const users = useRecoilValue(usersState);
+  const currentUser = useRecoilValue(userState);
+
+  const user = users.filter((user) => user.id === currentUser.id);
+  console.log(user);
+
   const [holdings, setHoldings] = useRecoilState(holdingState);
-  console.log(`User: ${user}`);
+  console.log(currentUser);
+  console.log(users);
+
   console.log(holdings);
 
   return (
@@ -44,16 +51,17 @@ function Trades() {
                 <Th isNumeric>amount x price</Th>
               </Tr>
             </Thead>
-            {holdings.map((holding) => (
-              <Tbody key={holding.id}>
-                <Tr>
-                  <Td>{holding.title}</Td>
-                  <Td isNumeric>{holding.price.toLocaleString()}</Td>
-                  <Td isNumeric>{holding.amount}</Td>
-                  <Td isNumeric>{holding.price.toLocaleString()}</Td>
-                </Tr>
-              </Tbody>
-            ))}
+            {user[0].holdings.holdings &&
+              user[0].holdings.holdings.map((holding) => (
+                <Tbody key={holding.id}>
+                  <Tr>
+                    <Td>{holding.title}</Td>
+                    <Td isNumeric>{holding.price.toLocaleString()}</Td>
+                    <Td isNumeric>{holding.amount}</Td>
+                    <Td isNumeric>{holding.price.toLocaleString()}</Td>
+                  </Tr>
+                </Tbody>
+              ))}
             <Tfoot>
               <Tr>
                 <Th>Item</Th>

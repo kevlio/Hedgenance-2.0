@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { userState, usersState } from "../stores/auth/atom";
+import { userState, usersState, currentIDState } from "../stores/auth/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { holdingState } from "../stores/holdings/atom";
 import { fundingState } from "../stores/fundings/atom";
@@ -37,23 +37,35 @@ function MyAccount() {
   console.log(holdings);
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
+
+  const currentUserID = useRecoilValue(currentIDState);
+
   const [users, setUsers] = useRecoilState(usersState);
 
   const [totalFunds, setTotalFunds] = useState(0);
   const [totalHoldings, setTotalHoldings] = useState(0);
 
   console.log(currentUser);
-  const user = users.filter((user) => user.id === currentUser.id);
-  console.log(user);
+  console.log(currentUserID);
+  // const user = users.filter((user) => user.id === currentUserID);
+  // console.log(user);
 
   useEffect(() => {
-    const user = users.filter((user) => user.id === currentUser.id);
-    const totalFunds = user[0].funds && user[0].funds.total;
-    const totalHoldings = user[0].holdings && user[0].holdings.total;
-    setTotalFunds(totalFunds);
-    setTotalHoldings(totalHoldings);
-    console.log(user);
-  }, [users]);
+    // if (!currentUser) {
+    //   setCurrentUser(user);
+    // }
+    // const user = users.filter((user) => user.id === currentUserID);
+    // const totalFunds = currentUser.funds[1].total;
+    // const totalHoldings = currentUser.holdings[1].total;
+    // setTotalFunds(totalFunds);
+    // setTotalHoldings(totalHoldings);
+    // console.log(user);
+  }, []);
+
+  // console.log(totalFunds);
+  // console.log(totalHoldings);
+  // console.log(currentUser.holdings[1].total);
+  // console.log(currentUser.funds[1].total);
 
   console.log(users);
 
@@ -64,6 +76,13 @@ function MyAccount() {
   const { categoryStore } = useRecoilValue(categoryHoldingStatus);
 
   const { productStore } = useRecoilValue(productHoldingStatus);
+
+  // if (user[0].holdings.holdings) {
+  //   const uniqueProduct = [
+  //     ...new Set(user[0].holdings.holdings.map((holding) => holding.title)),
+  //   ];
+  //   console.log(uniqueProduct);
+  // }
 
   const pieData = categoryStore.map((holding) => {
     return {
@@ -157,12 +176,16 @@ function MyAccount() {
               <Text fontSize="2xl" color="white">
                 Total value: ${/* Fixa felhantering också... */}
                 {(
-                  (totalFunds && totalFunds) + (totalHoldings && totalHoldings)
+                  (currentUser.funds.total && currentUser.funds.total) +
+                  (totalHoldings && totalHoldings)
                 ).toLocaleString()}
               </Text>
               <Text fontSize="1xl" alignSelf="flex-end">
                 Available funds:{" "}
-                {(totalFunds ? totalFunds : 0).toLocaleString()}
+                {(currentUser.funds.total
+                  ? currentUser.funds.total
+                  : 0
+                ).toLocaleString()}
               </Text>
               <Text fontSize="1xl" alignSelf="flex-end">
                 Hedge value:{" "}
@@ -234,8 +257,8 @@ function MyAccount() {
             gap={4}
             py={2}
           >
-            {/* Fixa så att det samlas som Single Product igen */}
-            {user[0].holdings.holdings &&
+            {/* Fixa så att det samlas som Single Product igen+ */}
+            {/* {user[0].holdings.holdings &&
               user[0].holdings.holdings.map(
                 (holding) => (
                   <Box
@@ -274,7 +297,7 @@ function MyAccount() {
                   </Box>
                 )
                 // Correct this for KK4
-              )}
+              )} */}
           </SimpleGrid>
         </Container>
       </Center>

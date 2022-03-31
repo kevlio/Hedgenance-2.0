@@ -29,12 +29,18 @@ import { fundingState, fundsTotal } from "../stores/fundings/atom";
 import { fundingStatus } from "../stores/fundings/selector";
 import LocalNav from "../components/LocalNav";
 
-import { loginState, userState, usersState } from "../stores/auth/atom";
+import {
+  loginState,
+  userState,
+  usersState,
+  currentIDState,
+} from "../stores/auth/atom";
 
 function Fundings() {
   const [users, setUsers] = useRecoilState(usersState);
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [input, setInput] = useState("");
+  const currentUserID = useRecoilValue(currentIDState);
   // Moves this to users LocalStorage instead
   // const [fundings, setFundings] = useRecoilState(fundingState);
   // const { totalFunds } = useRecoilValue(fundingStatus);
@@ -43,6 +49,18 @@ function Fundings() {
   const [userTotalFunds, setUserTotalFunds] = useState(0);
 
   console.log(fundings);
+
+  console.log(currentUser);
+
+  // Skulle vara användbart att sätta CurrentUser till user en gång, till andra sidor...
+
+  // const user = users.filter((user) => user.id === currentUser.id);
+  // console.log(user);
+  // console.log(user[0].funds);
+
+  // useEffect(() => {
+  //   if (user[0].funds.total) setFundings(user[0].funds.history);
+  // }, []);
 
   const totalFunds =
     fundings &&
@@ -53,22 +71,13 @@ function Fundings() {
 
   console.log(totalFunds);
 
-  console.log(currentUser);
-
-  const user = users.filter((user) => user.id === currentUser.id);
-  console.log(user);
-  console.log(user[0].funds);
-
   useEffect(() => {
-    if (user[0].funds.total) setFundings(user[0].funds.history);
-  }, []);
-
-  useEffect(() => {
+    console.log(totalFunds);
     setUserHistoryFunds(fundings);
     setUserTotalFunds(totalFunds);
     setUsers(
       users.map((user) => {
-        if (user.id === currentUser.id) {
+        if (user.id === currentUserID) {
           return {
             ...user,
             funds: { history: fundings, total: totalFunds },
@@ -77,6 +86,16 @@ function Fundings() {
         return user;
       })
     );
+    const user = users.filter((user) => user.id === currentUserID);
+
+    setCurrentUser({
+      ...currentUser,
+      funds: { history: fundings, total: totalFunds },
+    });
+
+    console.log(currentUser);
+    console.log(user);
+    console.log(user[0]);
   }, [fundings]);
 
   const { isOpen, onToggle } = useDisclosure();
@@ -86,7 +105,7 @@ function Fundings() {
   }
   const todoRef = useRef();
 
-  console.log(currentUser);
+  // console.log(currentUser);
   console.log(users);
 
   const createFunding = () => {
@@ -200,7 +219,10 @@ function Fundings() {
                   Total available funds:{" "}
                   {/* {user[0].funds && user[0].funds.total.toLocaleString()} USD */}
                   {/* {totalFundsUser && totalFundsUser.toLocaleString()} */}
-                  {userTotalFunds && userTotalFunds.toLocaleString()}
+                  {(currentUser.funds.total
+                    ? currentUser.funds.total
+                    : 0
+                  ).toLocaleString()}
                 </Text>
                 <Table variant="simple" size="sm">
                   {/* Todo: Dynamic sizing table  size={{ base: "sm", sm: "md", md: "md" }} */}

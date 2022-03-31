@@ -76,7 +76,8 @@ function Home() {
                 as={"span"}
                 color={"green.400"}
               >
-                The Hedgehog
+                The Hedgehog <br /> [OBS. WORK IN PROGRESS. WELCOME BACK 5
+                APRIL]
                 <br />
               </Text>
               If you bet with the Internet, bet against institutions. Here att
