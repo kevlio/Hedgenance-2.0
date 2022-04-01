@@ -48,19 +48,19 @@ function Fundings() {
   const [userHistoryFunds, setUserHistoryFunds] = useState([]);
   const [userTotalFunds, setUserTotalFunds] = useState(0);
 
+  useEffect(() => {
+    if (currentUser.funds.history) {
+      const newFundings = currentUser.funds.history.filter(
+        (prevFundings) => !fundings.some((fund) => prevFundings.id === fund.id)
+      );
+      console.log(newFundings);
+      setFundings([...fundings, ...newFundings]);
+    }
+  }, []);
+
   console.log(fundings);
 
   console.log(currentUser);
-
-  // Skulle vara användbart att sätta CurrentUser till user en gång, till andra sidor...
-
-  // const user = users.filter((user) => user.id === currentUser.id);
-  // console.log(user);
-  // console.log(user[0].funds);
-
-  // useEffect(() => {
-  //   if (user[0].funds.total) setFundings(user[0].funds.history);
-  // }, []);
 
   const totalFunds =
     fundings &&

@@ -13,11 +13,10 @@ import Fundings from "./pages/Fundings";
 import Crypto from "./pages/Crypto";
 import CryptoPage from "./pages/CryptoPage";
 // import SingleCrypto from "./pages/SingleCrypto";
-import { SingleCryptoPage } from "./pages/SingleCrypto";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
 import Settings from "./pages/Settings";
-import { SingleCryptoPage2 } from "./pages/SingleCryptoBU";
+import { SingleCryptoPage } from "./pages/SingleCrypto";
 
 //
 // {!auth.token ? (
@@ -59,7 +58,7 @@ function App() {
         <Route path="/cryptopage" element={<CryptoPage />}></Route>
         {/* <Route path="/cryptopage/:id" element={<SingleCrypto />}></Route> */}
         {/* <Route path="/crypto/:id" element={<SingleCryptoPage />}></Route> */}
-        <Route path="/crypto/:id" element={<SingleCryptoPage2 />}></Route>
+        <Route path="/crypto/:id" element={<SingleCryptoPage />}></Route>
       </Routes>
       <Footer />
     </div>

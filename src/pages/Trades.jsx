@@ -18,17 +18,7 @@ import {
 } from "@chakra-ui/react";
 import LocalNav from "../components/LocalNav";
 function Trades() {
-  const users = useRecoilValue(usersState);
   const currentUser = useRecoilValue(userState);
-
-  const user = users.filter((user) => user.id === currentUser.id);
-  console.log(user);
-
-  const [holdings, setHoldings] = useRecoilState(holdingState);
-  console.log(currentUser);
-  console.log(users);
-
-  console.log(holdings);
 
   return (
     <Box minH="100vh" maxW="100%">
@@ -51,8 +41,8 @@ function Trades() {
                 <Th isNumeric>amount x price</Th>
               </Tr>
             </Thead>
-            {user[0].holdings.holdings &&
-              user[0].holdings.holdings.map((holding) => (
+            {currentUser.holdings.history &&
+              currentUser.holdings.history.map((holding) => (
                 <Tbody key={holding.id}>
                   <Tr>
                     <Td>{holding.title}</Td>

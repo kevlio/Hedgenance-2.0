@@ -179,7 +179,7 @@ function MyAccount() {
                 Total value: ${/* Fixa felhantering också... */}
                 {(
                   (currentUser.funds.total && currentUser.funds.total) +
-                  (totalHoldings && totalHoldings)
+                  (currentUser.holdings.total && currentUser.holdings.total)
                 ).toLocaleString()}
               </Text>
               <Text fontSize="1xl" alignSelf="flex-end">
@@ -191,7 +191,9 @@ function MyAccount() {
               </Text>
               <Text fontSize="1xl" alignSelf="flex-end">
                 Hedge value:{" "}
-                {(totalHoldings ? totalHoldings : 0).toLocaleString()}
+                {(
+                  currentUser.holdings.total && currentUser.holdings.total
+                ).toLocaleString()}
               </Text>
             </Box>
           </Center>

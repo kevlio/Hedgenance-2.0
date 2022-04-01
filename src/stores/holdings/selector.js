@@ -91,7 +91,7 @@ export const productHoldingStatus = selector({
         0
       );
 
-      const cryptoPrice = productTotal[0].map((crypto) => crypto.price);
+      const cryptoPrice = productTotal[i].map((crypto) => crypto.price);
       const currentCryptoHolding = cryptoPrice.reduce(
         (previousValue, currentValue) => previousValue + currentValue,
         0
@@ -99,6 +99,7 @@ export const productHoldingStatus = selector({
 
       console.log(cryptoPrice);
       console.log(currentCryptoHolding);
+      console.log(productStore);
 
       productStore.push({
         id: i,
