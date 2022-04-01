@@ -29,66 +29,75 @@ import LocalNav from "../components/LocalNav";
 
 import { PieChart, Pie, Label, ResponsiveContainer } from "recharts";
 
+import axios from "axios";
+
 function MyAccount() {
   const [holdings, setHoldings] = useRecoilState(holdingState);
-  const [fundings, setFundings] = useRecoilState(fundingState);
-
   console.log(holdings);
+  const [fundings, setFundings] = useRecoilState(fundingState);
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
 
-  const currentUserID = useRecoilValue(currentIDState);
-
-  const [users, setUsers] = useRecoilState(usersState);
-
-  // const [totalFunds, setTotalFunds] = useState(0);
+  // const currentUserID = useRecoilValue(currentIDState);
+  // const [users, setUsers] = useRecoilState(usersState);
+  // const { categoryStore } = useRecoilValue(categoryHoldingStatus);
+  // const { productStore } = useRecoilValue(productHoldingStatus);
+  // console.log(currentUserID);
 
   const { totalFunds } = useRecoilValue(fundingStatus);
   const { totalHolding } = useRecoilValue(holdingStatus);
-  const [totalHoldings, setTotalHoldings] = useState(0);
+  const [totalHoldings, setTotalHoldings] = useState([]);
 
   console.log(currentUser);
-  console.log(currentUserID);
-  // const user = users.filter((user) => user.id === currentUserID);
-  // console.log(user);
 
-  useEffect(() => {
-    // if (!currentUser) {
-    //   setCurrentUser(user);
-    // }
-    // const user = users.filter((user) => user.id === currentUserID);
-    // const totalFunds = currentUser.funds[1].total;
-    // const totalHoldings = currentUser.holdings[1].total;
-    // setTotalFunds(totalFunds);
-    // setTotalHoldings(totalHoldings);
-    // console.log(user);
-  }, []);
+  if (currentUser.holdings.history) {
+    const cryptoAssemble = currentUser.holdings.history;
+    console.log(cryptoAssemble);
 
-  // console.log(totalFunds);
-  // console.log(totalHoldings);
-  // console.log(currentUser.holdings[1].total);
-  // console.log(currentUser.funds[1].total);
+    const uniqueCrypto = [
+      ...new Set(cryptoAssemble.map((holding) => holding.title)),
+    ];
 
-  console.log(users);
+    let categoryTotal = [];
+    let cryptoStore = [];
 
-  // Går ej att logga ut från MyAccount
+    useEffect(() => {
+      for (let i = 0; i < uniqueCrypto.length; i++) {
+        categoryTotal[i] = cryptoAssemble.filter(
+          (crypto) => crypto.title === uniqueCrypto[i]
+        );
 
-  // const { totalFunds } = useRecoilValue(fundingStatus);
+        const totalAmountCategory = categoryTotal[i].reduce(
+          (previousValue, currentValue) =>
+            previousValue + parseInt(currentValue.amount),
+          0
+        );
+        const totalPriceCategory = categoryTotal[i].reduce(
+          (previousValue, currentValue) =>
+            previousValue + parseInt(currentValue.price),
+          0
+        );
+        cryptoStore.push({
+          id: i,
+          title: uniqueCrypto[i],
+          amount: totalAmountCategory,
+          value: totalPriceCategory,
+        });
+        console.log(categoryTotal);
+        console.log(cryptoStore);
+      }
+    }, []);
 
-  const { categoryStore } = useRecoilValue(categoryHoldingStatus);
+    useEffect(() => {
+      console.log("setting total holdings");
+      setTotalHoldings(cryptoStore);
+      console.log(totalHoldings);
+    }, [cryptoStore.length]);
+  }
 
-  const { productStore } = useRecoilValue(productHoldingStatus);
-
-  // if (user[0].holdings.holdings) {
-  //   const uniqueProduct = [
-  //     ...new Set(user[0].holdings.holdings.map((holding) => holding.title)),
-  //   ];
-  //   console.log(uniqueProduct);
-  // }
-
-  const pieData = categoryStore.map((holding) => {
+  const pieData = totalHoldings.map((holding) => {
     return {
-      category: holding.category,
+      category: holding.title,
       value: holding.value,
     };
   });
@@ -103,24 +112,54 @@ function MyAccount() {
 
   date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
 
+  const [coin, setCoin] = useState([]);
+
   const sellAll = (event) => {
     const name = event.target.name;
-    const product = holdings.find((product) => product.title === name);
-    const { value, amount } = productStore.find(
+    console.log(name);
+    const product = currentUser.holdings.history.find(
+      (product) => product.title === name
+    );
+    console.log(product);
+    const { value, amount, title } = totalHoldings.find(
       (product) => product.title === name
     );
 
-    if (value <= 0) return;
+    console.log(product.coinID);
+
+    console.log(value);
+    console.log(amount);
+    console.log(title);
+
+    // Get current value of this Crypto
+    const cryptoById = (name) => {
+      axios
+        .get(`https://api.coingecko.com/api/v3/coins/${name}`)
+        .then((res) => {
+          setCoin(res.data);
+          console.log(res.data);
+          // navigate(`/crypto/${coin}`);
+        })
+        .catch((error) => console.log(error));
+    };
+    cryptoById(product.coinID);
+    console.log(coin);
+
+    const currentCoinPrice = coin.market_data.current_price.eur;
+    console.log(currentCoinPrice);
+
+    // if (amount <= 0) return;
 
     const newSell = {
       title: product.title,
-      category: product.category,
-      currentPrice: product.price,
+      category: "Cryptocurrencies",
+      currentPrice: currentCoinPrice,
       trade: "sell",
-      price: -value,
+      price: -currentCoinPrice * amount,
       amount: -amount,
       date: date,
       id: Math.floor(Math.random() * 10000),
+      coinID: product.coinID,
     };
     setHoldings((prevSell) => {
       return [...prevSell, newSell];
@@ -134,6 +173,9 @@ function MyAccount() {
       return [...prevFunds, increaseFunds];
     });
   };
+
+  console.log(fundings);
+  console.log(holdings);
 
   return (
     <Box minH="100vh">
@@ -191,9 +233,8 @@ function MyAccount() {
               </Text>
               <Text fontSize="1xl" alignSelf="flex-end">
                 Hedge value:{" "}
-                {(
-                  currentUser.holdings.total && currentUser.holdings.total
-                ).toLocaleString()}
+                {currentUser.holdings.total &&
+                  currentUser.holdings.total.toLocaleString()}
               </Text>
             </Box>
           </Center>
@@ -261,47 +302,45 @@ function MyAccount() {
             gap={4}
             py={2}
           >
-            {/* Fixa så att det samlas som Single Product igen+ */}
-            {currentUser.holdings.history &&
-              currentUser.holdings.history.map(
-                (holding) => (
-                  <Box
-                    maxW="350px"
-                    display="flex"
-                    flexDirection="column"
-                    border="1px white solid"
-                    borderRadius="12px"
-                    key={holding.id}
-                    alignItems="flex-start"
-                    p={2}
-                    fontSize={{ base: "smaller", sm: "lg", md: "lg" }}
+            {totalHoldings.map(
+              (holding) => (
+                <Box
+                  maxW="350px"
+                  display="flex"
+                  flexDirection="column"
+                  border="1px white solid"
+                  borderRadius="12px"
+                  key={holding.id}
+                  alignItems="flex-start"
+                  p={2}
+                  fontSize={{ base: "smaller", sm: "lg", md: "lg" }}
+                >
+                  <Link href="#" fontWeight="bold">
+                    {holding.title}
+                  </Link>
+                  <Text>Amont: {holding.amount.toLocaleString()}</Text>
+                  <Text>Value: {holding.value.toLocaleString()}</Text>
+                  <Button
+                    colorScheme="green"
+                    width="100%"
+                    // wordWrap="break-word"
+                    whiteSpace="normal"
+                    size="sm"
+                    fontSize={{
+                      base: "smaller",
+                      sm: "sm",
+                      md: "sm",
+                      lg: "medium",
+                    }}
+                    name={holding.title}
+                    onClick={sellAll}
                   >
-                    <Link href="#" fontWeight="bold">
-                      {holding.title}
-                    </Link>
-                    <Text>Amont: {holding.amount.toLocaleString()}</Text>
-                    <Text>Value: {holding.price.toLocaleString()}</Text>
-                    <Button
-                      colorScheme="green"
-                      width="100%"
-                      // wordWrap="break-word"
-                      whiteSpace="normal"
-                      size="sm"
-                      fontSize={{
-                        base: "smaller",
-                        sm: "sm",
-                        md: "sm",
-                        lg: "medium",
-                      }}
-                      name={holding.title}
-                      onClick={sellAll}
-                    >
-                      Sell All {holding.title}s
-                    </Button>
-                  </Box>
-                )
-                // Correct this for KK4
-              )}
+                    Sell All {holding.title}s
+                  </Button>
+                </Box>
+              )
+              // Correct this for KK4
+            )}
           </SimpleGrid>
         </Container>
       </Center>

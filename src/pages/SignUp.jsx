@@ -75,8 +75,10 @@ function SignUp() {
       id: Math.floor(Math.random() * 10000),
       role: "user",
       phone: phone,
-      funds: [{ history: 0 }, { total: 0 }],
-      holdings: [{ holdings: 0 }, { total: 0 }],
+      // funds: [{ history: 0 }, { total: 0 }],
+      funds: { history: 0, total: 0 },
+      holdings: { history: 0, total: 0 },
+      // holdings: [{ holdings: 0 }, { total: 0 }],
     };
 
     setUsers((prevUsers) => {

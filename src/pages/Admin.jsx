@@ -31,42 +31,28 @@ function Admin() {
               borderRadius="12px"
               whiteSpace="nowrap"
               textColor="white"
+              alignItems="flex-start"
+              p={2}
             >
-              <h1>Funds: {user.funds && user.funds.total}</h1>
-              <Box
-                display="flex"
-                flexDirection="row"
-                gap={2}
-                alignSelf="center"
-              >
-                <h1>ID: {user.id}</h1>
-                <h1>{user.name.firstname}</h1>
-                <h1>{user.name.lastname}</h1>
+              <Text>Funds: {user.funds && user.funds.total}</Text>
+              <Text>Holdings: {user.holdings && user.holdings.total}</Text>
+              <Box display="flex" flexDirection="row" gap={2}>
+                <Text>ID: {user.id}</Text>
+                <Text>{user.name.firstname}</Text>
+                <Text>{user.name.lastname}</Text>
               </Box>
-              <Box
-                display="flex"
-                flexDirection="row"
-                gap={2}
-                alignSelf="center"
-              >
-                <h1>{user.username}</h1>
-                <h1>{user.password}</h1>
+              <Box display="flex" flexDirection="row" gap={2}>
+                <Text>{user.username}</Text>
+                <Text>{user.password}</Text>
               </Box>
-              <h1>{user.email}</h1>
-              <Box
-                display="flex"
-                flexDirection="row"
-                gap={2}
-                alignSelf="center"
-              >
+              <Text>{user.email}</Text>
+              <Box display="flex" flexDirection="row" gap={2}>
                 {/* Varför funkar det inte utan att göra &&??? */}
-                <h1>{user.address && user.address.city}</h1>
-                <h1>{user.address && user.address.street}</h1>
-                <h1>{user.address && user.address.number}</h1>
-                <h1>{user.address && user.address.zipcode}</h1>
+                <Text>{user.address && user.address.city}</Text>
+                <Text>{user.address && user.address.street}</Text>
+                <Text>{user.address && user.address.number}</Text>
+                <Text>{user.address && user.address.zipcode}</Text>
               </Box>
-              <h1>Funds:</h1>
-              <h1>Holdings:</h1>
             </Box>
           ))}
         </SimpleGrid>

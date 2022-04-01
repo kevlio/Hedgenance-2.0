@@ -67,6 +67,8 @@ function SingleFetchedProduct() {
   const [amountMax, setAmountMax] = useState(0);
 
   const [holdings, setHoldings] = useRecoilState(holdingState);
+
+  console.log(holdings);
   const { totalFunds } = useRecoilValue(fundingStatus);
 
   const { totalHolding } = useRecoilValue(holdingStatus);
@@ -222,6 +224,7 @@ function SingleFetchedProduct() {
       amount: +amount,
       date: date,
       id: Math.floor(Math.random() * 10000),
+      coinID: coinData.id,
     };
     setHoldings((prevBuy) => {
       return [...prevBuy, newBuy];
