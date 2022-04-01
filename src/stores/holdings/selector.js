@@ -77,21 +77,34 @@ export const productHoldingStatus = selector({
         (product) => product.title === uniqueProduct[i]
       );
 
+      console.log(productTotal);
+
       const totalAmountProduct = productTotal[i].reduce(
         (previousValue, currentValue) =>
           previousValue + parseInt(currentValue.amount),
         0
       );
+      // Funkar ej
       const totalPriceProduct = productTotal[i].reduce(
         (previousValue, currentValue) =>
           previousValue + parseInt(currentValue.price),
         0
       );
+
+      const cryptoPrice = productTotal[0].map((crypto) => crypto.price);
+      const currentCryptoHolding = cryptoPrice.reduce(
+        (previousValue, currentValue) => previousValue + currentValue,
+        0
+      );
+
+      console.log(cryptoPrice);
+      console.log(currentCryptoHolding);
+
       productStore.push({
         id: i,
         title: uniqueProduct[i],
         amount: totalAmountProduct,
-        value: totalPriceProduct,
+        value: currentCryptoHolding,
       });
     }
     return {
