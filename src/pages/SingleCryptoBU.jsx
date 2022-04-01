@@ -8,6 +8,8 @@ import { holdingState } from "../stores/holdings/atom";
 import { fundingState } from "../stores/fundings/atom";
 import { fundingStatus } from "../stores/fundings/selector";
 
+import { holdingStatus } from "../stores/holdings/selector";
+
 import {
   Box,
   Text,
@@ -60,6 +62,10 @@ function SingleFetchedProduct() {
 
   const [holdings, setHoldings] = useRecoilState(holdingState);
   const { totalFunds } = useRecoilValue(fundingStatus);
+
+  const { totalHolding } = useRecoilValue(holdingStatus);
+
+  console.log(totalHolding);
   const [fundings, setFundings] = useRecoilState(fundingState);
 
   const coinData = {
@@ -124,6 +130,7 @@ function SingleFetchedProduct() {
             },
             holdings: {
               history: holdings,
+              total: totalHolding,
             },
           };
         }
@@ -138,6 +145,7 @@ function SingleFetchedProduct() {
       },
       holdings: {
         history: holdings,
+        total: totalHolding,
       },
     });
 
@@ -449,7 +457,9 @@ function SingleFetchedProduct() {
               <Td>Avg. purchase price</Td>
               <Td isNumeric>
                 {holdingSingleProduct &&
-                  holdingSingleProduct.value / holdingSingleProduct.amount}
+                  (
+                    holdingSingleProduct.value / holdingSingleProduct.amount
+                  ).toFixed(4)}
               </Td>
             </Tr>
           </Tbody>
@@ -466,11 +476,11 @@ function SingleFetchedProduct() {
               <Td>Value change %</Td>
               <Td isNumeric>
                 {holdingSingleProduct &&
-                  1 -
-                    (
-                      holdingSingleProduct.value /
+                  (
+                    1 -
+                    holdingSingleProduct.value /
                       (coinData.price * holdingSingleProduct.amount)
-                    ).toFixed(3)}
+                  ).toFixed(5)}
               </Td>
             </Tr>
           </Tbody>

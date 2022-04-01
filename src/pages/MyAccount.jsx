@@ -32,7 +32,6 @@ import { PieChart, Pie, Label, ResponsiveContainer } from "recharts";
 function MyAccount() {
   const [holdings, setHoldings] = useRecoilState(holdingState);
   const [fundings, setFundings] = useRecoilState(fundingState);
-  const { totalHolding } = useRecoilValue(holdingStatus);
 
   console.log(holdings);
 
@@ -42,7 +41,10 @@ function MyAccount() {
 
   const [users, setUsers] = useRecoilState(usersState);
 
-  const [totalFunds, setTotalFunds] = useState(0);
+  // const [totalFunds, setTotalFunds] = useState(0);
+
+  const { totalFunds } = useRecoilValue(fundingStatus);
+  const { totalHolding } = useRecoilValue(holdingStatus);
   const [totalHoldings, setTotalHoldings] = useState(0);
 
   console.log(currentUser);
@@ -258,8 +260,8 @@ function MyAccount() {
             py={2}
           >
             {/* Fixa så att det samlas som Single Product igen+ */}
-            {/* {user[0].holdings.holdings &&
-              user[0].holdings.holdings.map(
+            {currentUser.holdings.history &&
+              currentUser.holdings.history.map(
                 (holding) => (
                   <Box
                     maxW="350px"
@@ -297,7 +299,7 @@ function MyAccount() {
                   </Box>
                 )
                 // Correct this for KK4
-              )} */}
+              )}
           </SimpleGrid>
         </Container>
       </Center>
