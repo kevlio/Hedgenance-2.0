@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { loginState, userState } from "../stores/auth/atom";
-import { useRecoilState } from "recoil";
+
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { GiHedgehog } from "react-icons/gi";
 import {
   AiOutlineMenu as MenuIcon,
@@ -23,10 +23,27 @@ import {
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { isMobile } from "react-device-detect";
 
+import { holdingState } from "../stores/holdings/atom";
+import { fundingState } from "../stores/fundings/atom";
+import { fundingStatus } from "../stores/fundings/selector";
+
+import {
+  holdingStatus,
+  categoryHoldingStatus,
+  productHoldingStatus,
+} from "../stores/holdings/selector";
+
+import {
+  loginState,
+  userState,
+  usersState,
+  currentIDState,
+} from "../stores/auth/atom";
+
 const Header = () => {
   const [logged, setLogged] = useRecoilState(loginState);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [username, setUsername] = useRecoilState(userState);
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: accIsOpen,
@@ -34,12 +51,31 @@ const Header = () => {
     onClose: accOnClose,
   } = useDisclosure();
 
+  const [users, setUsers] = useRecoilState(usersState);
+  const [fundings, setFundings] = useRecoilState(fundingState);
+  const [holdings, setHoldings] = useRecoilState(holdingState);
+
   const handleLogged = () => {
     if (logged) {
       setLogged(false);
-      setUsername("");
+      setFundings([]);
+      setHoldings([]);
+
+      const filteredUsers = users.filter((user) => user.id !== currentUser.id);
+
+      setUsers([currentUser, ...filteredUsers]);
+      // Lägga till användare i UsersState
+      useResetRecoilState(fundingState);
+
+      useResetRecoilState(holdingState);
+      useResetRecoilState(holdingStatus);
+      useResetRecoilState(fundingStatus);
+      useResetRecoilState(productHoldingStatus);
+      setCurrentUser("");
     }
   };
+
+  console.log(users);
 
   const toggleMenu = () => {
     setMenuIsOpen(!menuIsOpen);

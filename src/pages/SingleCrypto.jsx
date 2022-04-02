@@ -69,14 +69,16 @@ function SingleFetchedProduct() {
   const [amount, setAmount] = useState("");
   const [amountMax, setAmountMax] = useState(0);
 
-  const [holdings, setHoldings] = useRecoilState(holdingState);
-
   const { totalFunds } = useRecoilValue(fundingStatus);
 
   const { totalHolding } = useRecoilValue(holdingStatus);
 
-  console.log(totalHolding);
+  const [holdings, setHoldings] = useRecoilState(holdingState);
   const [fundings, setFundings] = useRecoilState(fundingState);
+  console.log(totalHolding);
+  console.log(totalFunds);
+  console.log(holdings);
+  console.log(fundings);
 
   const coinData = {
     name: coin.name,
@@ -115,57 +117,24 @@ function SingleFetchedProduct() {
   }
 
   useEffect(() => {
-    if (currentUser.funds.history) {
-      const newFundings = currentUser.funds.history.filter(
-        (prevFundings) => !fundings.some((fund) => prevFundings.id === fund.id)
-      );
-      console.log(newFundings);
-      setFundings([...fundings, ...newFundings]);
-    }
-    if (currentUser.holdings.history) {
-      const newHolding = currentUser.holdings.history.filter(
-        (prevHoldings) =>
-          !holdings.some((holding) => prevHoldings.id === holding.id)
-      );
-      console.log(newHolding);
-      setHoldings([...holdings, ...newHolding]);
-    }
+    // if (currentUser.funds.history) {
+    //   const newFundings = currentUser.funds.history.filter(
+    //     (prevFundings) => !fundings.some((fund) => prevFundings.id === fund.id)
+    //   );
+    //   console.log(newFundings);
+    //   setFundings([...fundings, ...newFundings]);
+    // }
+    // if (currentUser.holdings.history) {
+    //   const newHolding = currentUser.holdings.history.filter(
+    //     (prevHoldings) =>
+    //       !holdings.some((holding) => prevHoldings.id === holding.id)
+    //   );
+    //   console.log(newHolding);
+    //   setHoldings([...holdings, ...newHolding]);
+    // }
   }, []);
 
-  useEffect(() => {
-    setUpdateUsers(
-      updateUsers.map((user) => {
-        if (user.id === currentUserID) {
-          console.log("true");
-          return {
-            ...user,
-            funds: {
-              history: fundings,
-              total: totalFunds,
-            },
-            holdings: {
-              history: holdings,
-              total: totalHolding,
-            },
-          };
-        }
-        return user;
-      })
-    );
-    setCurrentUser({
-      ...currentUser,
-      funds: {
-        history: fundings,
-        total: totalFunds,
-      },
-      holdings: {
-        history: holdings,
-        total: totalHolding,
-      },
-    });
-
-    console.log(fundings);
-  }, [holdings]);
+  useEffect(() => {}, [holdings]);
 
   // Definiera alla coins etc så vi kan återanvända dom direkt.
   // Ändra mins eller plus tecken beroende på buy sell mode
@@ -242,6 +211,18 @@ function SingleFetchedProduct() {
     });
     console.log(holdings);
     console.log(fundings);
+    setCurrentUser({
+      ...currentUser,
+      funds: {
+        history: fundings,
+        total: totalFunds,
+      },
+      holdings: {
+        history: holdings,
+        total: totalHolding,
+      },
+    });
+    console.log(fundings);
   };
 
   const sell = () => {
@@ -264,8 +245,8 @@ function SingleFetchedProduct() {
       date: date,
       id: Math.floor(Math.random() * 10000),
     };
-    setHoldings((prevBuy) => {
-      return [...prevBuy, newSell];
+    setHoldings((prevSell) => {
+      return [...prevSell, newSell];
     });
     const increaseFunds = {
       input: +coinData.price * amount,
@@ -275,7 +256,34 @@ function SingleFetchedProduct() {
     setFundings((prevFunds) => {
       return [...prevFunds, increaseFunds];
     });
+    setCurrentUser({
+      ...currentUser,
+      funds: {
+        history: fundings,
+        total: totalFunds,
+      },
+      holdings: {
+        history: holdings,
+        total: totalHolding,
+      },
+    });
+    console.log(fundings);
   };
+
+  // useEffect(() => {
+  //   setCurrentUser({
+  //     ...currentUser,
+  //     // funds: {
+  //     //   history: fundings,
+  //     //   total: totalFunds,
+  //     // },
+  //     holdings: {
+  //       history: holdings,
+  //       total: totalHolding,
+  //     },
+  //   });
+  //   console.log(fundings);
+  // }, [holdings]);
 
   function handleChange(event) {
     const value = event.target.value;

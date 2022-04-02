@@ -26,6 +26,8 @@ export const assemblyStatus = selector({
   get: ({ get }) => {
     const productHolding = get(productHoldingStatus);
     const fundingTotal = get(fundingStatus);
+    const holdingTotal = get(holdingStatus);
+    const { totalHolding } = holdingTotal;
     const { totalFunds } = fundingTotal;
     const { productStore } = productHolding;
     console.log(productStore);
@@ -40,10 +42,12 @@ export const assemblyStatus = selector({
         user: userStore,
         funds: fundingStore,
         totalFunds,
+        totalHolding,
         holdings: holdingStore,
         sortedHoldings: productStore,
       },
     };
+
     console.log(assemblyStore);
     return { assemblyStore };
   },
@@ -51,6 +55,6 @@ export const assemblyStatus = selector({
 
 export const assemblyState = atom({
   key: "assembly",
-  default: [userState],
+  default: [],
   effects_UNSTABLE: [localStorageEffect("assembly")],
 });

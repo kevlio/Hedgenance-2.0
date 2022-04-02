@@ -39,17 +39,19 @@ import {
 import { assemblyStatus } from "../stores/assembly/atom";
 
 function Fundings() {
-  const [users, setUsers] = useRecoilState(usersState);
+  // const [users, setUsers] = useRecoilState(usersState);
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [input, setInput] = useState("");
-  const currentUserID = useRecoilValue(currentIDState);
+  // const currentUserID = useRecoilValue(currentIDState);
   // Moves this to users LocalStorage instead
   // const [fundings, setFundings] = useRecoilState(fundingState);
-  // const { totalFunds } = useRecoilValue(fundingStatus);
+  const { totalFunds } = useRecoilValue(fundingStatus);
+  console.log(totalFunds);
+
   const [fundings, setFundings] = useRecoilState(fundingState);
   // Flytta till Recpoil Fundings? vad skulle hända då
-  const [userHistoryFunds, setUserHistoryFunds] = useState([]);
-  const [userTotalFunds, setUserTotalFunds] = useState(0);
+  // const [userHistoryFunds, setUserHistoryFunds] = useState([]);
+  // const [userTotalFunds, setUserTotalFunds] = useState(0);
 
   useEffect(() => {
     if (currentUser.funds.history) {
@@ -68,31 +70,31 @@ function Fundings() {
 
   console.log(currentUser);
 
-  const totalFunds =
-    fundings &&
-    fundings.reduce((total, current) => {
-      const formattedAmount = parseInt(current.input);
-      return total + formattedAmount;
-    }, 0);
+  // const totalFunds2 =
+  //   fundings &&
+  //   fundings.reduce((total, current) => {
+  //     const formattedAmount = parseInt(current.input);
+  //     return total + formattedAmount;
+  //   }, 0);
 
-  console.log(totalFunds);
+  // console.log(totalFunds2);
 
   useEffect(() => {
-    console.log(totalFunds);
-    setUserHistoryFunds(fundings);
-    setUserTotalFunds(totalFunds);
-    setUsers(
-      users.map((user) => {
-        if (user.id === currentUserID) {
-          return {
-            ...user,
-            funds: { history: fundings, total: totalFunds },
-          };
-        }
-        return user;
-      })
-    );
-    const user = users.filter((user) => user.id === currentUserID);
+    // console.log(totalFunds2);
+    // setUserHistoryFunds(fundings);
+    // setUserTotalFunds(totalFunds2);
+    // setUsers(
+    //   users.map((user) => {
+    //     if (user.id === currentUserID) {
+    //       return {
+    //         ...user,
+    //         funds: { history: fundings, total: totalFunds2 },
+    //       };
+    //     }
+    //     return user;
+    //   })
+    // );
+    // const user = users.filter((user) => user.id === currentUserID);
 
     setCurrentUser({
       ...currentUser,
@@ -100,8 +102,6 @@ function Fundings() {
     });
 
     console.log(currentUser);
-    console.log(user);
-    console.log(user[0]);
   }, [fundings]);
 
   const { isOpen, onToggle } = useDisclosure();
@@ -112,7 +112,7 @@ function Fundings() {
   const todoRef = useRef();
 
   // console.log(currentUser);
-  console.log(users);
+  // console.log(users);
 
   const createFunding = () => {
     if (input <= 0) return;
@@ -238,8 +238,8 @@ function Fundings() {
                       <Th isNumeric>Time</Th>
                     </Tr>
                   </Thead>
-                  {userHistoryFunds &&
-                    userHistoryFunds.map((funds) => (
+                  {fundings &&
+                    fundings.map((funds) => (
                       <Tbody key={funds.id}>
                         <Tr>
                           <Td>{funds.input.toLocaleString()}</Td>

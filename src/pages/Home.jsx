@@ -40,10 +40,22 @@ function Home() {
     console.log(newUsers);
     console.log(newUsers.length);
 
+    const addData = {
+      funds: { history: 0, total: 0 },
+      holdings: { history: 0, total: 0 },
+    };
+
+    const newUsersWithData = newUsers.map((user) => {
+      Object.assign(user, addData);
+    });
+
     if (newUsers.length > 0 && users.length === 0) {
       console.log("First User Object Created");
       setUsers(newUsers);
+      console.log(users);
     }
+
+    // { funds: { history: 0, total: 0 }, holdings: { history: 0, total: 0 } },
     if (users.length > 0 && newUsers.length > 0) {
       console.log("New Users + Prev users");
       setUsers([...newUsers, ...users]);

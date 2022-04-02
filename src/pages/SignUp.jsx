@@ -21,11 +21,23 @@ import {
 } from "../stores/auth/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
-import { fundingState } from "../stores/fundings/atom";
+
 import { GiHedgehog } from "react-icons/gi";
 import { assemblyState } from "../stores/assembly/atom";
 
 import { assemblyStatus } from "../stores/assembly/atom";
+
+import { fundingStatus } from "../stores/fundings/selector";
+
+import { holdingState } from "../stores/holdings/atom";
+
+import { fundingState } from "../stores/fundings/atom";
+
+import {
+  holdingStatus,
+  categoryHoldingStatus,
+  productHoldingStatus,
+} from "../stores/holdings/selector";
 
 function SignUp() {
   const [logged, setLogged] = useRecoilState(loginState);
@@ -60,6 +72,9 @@ function SignUp() {
 
   const [users, setUsers] = useRecoilState(usersState);
 
+  const { totalFunds } = useRecoilValue(fundingStatus);
+  const { totalHolding } = useRecoilValue(holdingStatus);
+
   // Update list of users
 
   const inputRef = useRef();
@@ -67,7 +82,36 @@ function SignUp() {
   //   inputRef.current.focus();
   // });
 
+  useEffect(() => {
+    let date = new Date();
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    const hour = String(date.getHours()).padStart(2, "0");
+    const min = String(date.getMinutes()).padStart(2, "0");
+    const sec = String(date.getSeconds()).padStart(2, "0");
+
+    date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
+
+    if (fundings.length === 0) {
+      const newFund = {
+        input: 1000,
+        date: date,
+        id: Math.floor(Math.random() * 10000),
+      };
+      setFundings((prevFunds) => {
+        return [newFund, ...prevFunds];
+      });
+    }
+  }, []);
+
+  console.log(fundings);
+  console.log(fundings.length);
+
   const login = () => {
+    setLogged(true);
+    onToggle();
+
     const newUser = {
       username: username,
       password: password,
@@ -86,38 +130,25 @@ function SignUp() {
       role: "user",
       phone: phone,
       // funds: [{ history: 0 }, { total: 0 }],
-      funds: { history: 0, total: 0 },
+      funds: { history: fundings, total: 0 },
       holdings: { history: 0, total: 0 },
       // holdings: [{ holdings: 0 }, { total: 0 }],
     };
 
-    setUsers((prevUsers) => {
-      return [newUser, ...prevUsers];
-    });
+    // setUsers((prevUsers) => {
+    //   return [newUser, ...prevUsers];
+    // });
 
     setCurrentUser(newUser);
     setCurrentUserID(newUser.id);
 
-    setLogged(true);
-    onToggle();
-    let date = new Date();
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, "0");
-    const dd = String(date.getDate()).padStart(2, "0");
-    const hour = String(date.getHours()).padStart(2, "0");
-    const min = String(date.getMinutes()).padStart(2, "0");
-    const sec = String(date.getSeconds()).padStart(2, "0");
-
-    date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
-
-    const newFund = {
-      input: 1000,
-      date: date,
-      id: Math.floor(Math.random() * 10000),
-    };
-    setFundings((prevFunds) => {
-      return [newFund, ...prevFunds];
-    });
+    // setCurrentUser({
+    //   ...currentUser,
+    //   funds: {
+    //     history: fundings,
+    //     total: totalFunds,
+    //   },
+    // });
 
     console.log(logged);
     console.log(username);
@@ -241,7 +272,7 @@ function SignUp() {
                 onClick={login}
                 rightIcon={<GiHedgehog />}
               >
-                Sign up
+                Sign up and get 1000 EUR =)
               </Button>
               {/* </Fade> */}
               <Progress value={20} size="xs" colorScheme="pink" />

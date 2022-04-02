@@ -15,7 +15,9 @@ import AnimatedPage from "../components/AnimatedPage";
 import { Link, useNavigate } from "react-router-dom";
 import { loginState, userState, usersState } from "../stores/auth/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { holdingState } from "../stores/holdings/atom";
 
+import { fundingState } from "../stores/fundings/atom";
 // https://k4backend.osuka.dev/
 // https://k4backend.osuka.dev/docs/
 
@@ -26,6 +28,8 @@ function Login() {
   const [logged, setLogged] = useRecoilState(loginState);
 
   const [users, setUsers] = useRecoilState(usersState);
+  const [holdings, setHoldings] = useRecoilState(holdingState);
+  const [fundings, setFundings] = useRecoilState(fundingState);
 
   const { isOpen, onToggle } = useDisclosure();
 
@@ -44,36 +48,49 @@ function Login() {
     (user) => user.username === username && user.password === password
   );
 
-  console.log(userChecked);
-
   const loginb = () => {
-    fetch("https://k4backend.osuka.dev/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setLogged(json);
-        setUser(userChecked);
-        navigate("/myaccount");
-      })
-      .catch((error) => {
-        if (!userChecked) {
-          onToggle();
-          console.log(error);
-        }
-      });
+    // fetch("https://k4backend.osuka.dev/auth/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     username: username,
+    //     password: password,
+    //   }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     setLogged(json);
+    //     setUser(userChecked);
+    //     navigate("/myaccount");
+    //   })
+    //   .catch((error) => {
+    //     if (!userChecked) {
+    //       onToggle();
+    //       console.log(error);
+    //     }
+    //   });
+
+    console.log(userChecked);
 
     if (userChecked) {
       setUser(userChecked);
+
+      if (userChecked.funds.history.length > 0) {
+        setFundings(userChecked.funds.history);
+      }
+      if (userChecked.holdings.history.length > 0) {
+        setHoldings(userChecked.holdings.history);
+      }
+
+      console.log(userChecked);
       setLogged(true);
       navigate("/myaccount");
+    }
+    if (!userChecked) {
+      onToggle();
+      // console.log(error);
     }
   };
 

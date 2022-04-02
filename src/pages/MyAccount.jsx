@@ -9,6 +9,8 @@ import {
   productHoldingStatus,
 } from "../stores/holdings/selector";
 
+import { fundingStatus } from "../stores/fundings/selector";
+
 import {
   Box,
   Text,
@@ -23,7 +25,6 @@ import {
   StatHelpText,
 } from "@chakra-ui/react";
 import { GiHedgehog } from "react-icons/gi";
-import { fundingStatus } from "../stores/fundings/selector";
 
 import LocalNav from "../components/LocalNav";
 
@@ -53,10 +54,17 @@ function MyAccount() {
 
   const { totalFunds } = useRecoilValue(fundingStatus);
   const { totalHolding } = useRecoilValue(holdingStatus);
+  console.log(totalHolding);
+  console.log(holdings);
   const [totalHoldings, setTotalHoldings] = useState([]);
 
+  const { productStore } = useRecoilValue(productHoldingStatus);
+
+  console.log(productStore);
+  console.log(holdings);
+
   const [currentUser, setCurrentUser] = useRecoilState(userState);
-  const [updateUsers, setUpdateUsers] = useRecoilState(usersState);
+
   const currentUserID = useRecoilValue(currentIDState);
   const [currentCryptoPrice, setCurrentCryptoPrice] = useState("");
 
@@ -70,7 +78,6 @@ function MyAccount() {
 
   console.log(assembly);
   console.log(currentUser);
-  console.log(updateUsers);
 
   let categoryTotal = [];
   let cryptoStore = [];
@@ -119,7 +126,7 @@ function MyAccount() {
   //   }
   // }, []);
 
-  const pieData = totalHoldings.map((holding) => {
+  const pieData = productStore.map((holding) => {
     return {
       category: holding.title,
       value: holding.value,
@@ -192,52 +199,51 @@ function MyAccount() {
   };
 
   useEffect(() => {
-    if (currentUser.funds.history) {
-      const newFundings = currentUser.funds.history.filter(
-        (prevFundings) => !fundings.some((fund) => prevFundings.id === fund.id)
-      );
-      console.log(newFundings);
-      setFundings([...fundings, ...newFundings]);
-    }
-
-    if (currentUser.holdings.history) {
-      const newHoldings = currentUser.holdings.history.filter(
-        (prevHoldings) => !holdings.some((fund) => prevHoldings.id === fund.id)
-      );
-      console.log(newHoldings);
-      setHoldings([...holdings, ...newHoldings]);
-    }
+    // if (currentUser.funds.history) {
+    //   const newFundings = currentUser.funds.history.filter(
+    //     (prevFundings) => !fundings.some((fund) => prevFundings.id === fund.id)
+    //   );
+    //   console.log(newFundings);
+    //   setFundings([...fundings, ...newFundings]);
+    // }
+    // if (currentUser.holdings.history) {
+    //   const newHoldings = currentUser.holdings.history.filter(
+    //     (prevHoldings) => !holdings.some((fund) => prevHoldings.id === fund.id)
+    //   );
+    //   console.log(newHoldings);
+    //   setHoldings([...holdings, ...newHoldings]);
+    // }
   }, []);
 
   useEffect(() => {
-    setUpdateUsers(
-      updateUsers.map((user) => {
-        return {
-          ...user,
-          funds: {
-            history: fundings,
-            total: totalFunds,
-          },
-          holdings: {
-            history: holdings,
-            total: totalHolding,
-          },
-        };
-        return user;
-      })
-    );
+    // setUpdateUsers(
+    //   updateUsers.map((user) => {
+    //     return {
+    //       ...user,
+    //       funds: {
+    //         history: fundings,
+    //         total: totalFunds,
+    //       },
+    //       holdings: {
+    //         history: holdings,
+    //         total: totalHolding,
+    //       },
+    //     };
+    //     return user;
+    //   })
+    // );
 
-    setCurrentUser({
-      ...currentUser,
-      funds: {
-        history: fundings,
-        total: totalFunds,
-      },
-      holdings: {
-        history: holdings,
-        total: totalHolding,
-      },
-    });
+    // setCurrentUser({
+    //   ...currentUser,
+    //   funds: {
+    //     history: fundings,
+    //     total: totalFunds,
+    //   },
+    //   holdings: {
+    //     history: holdings,
+    //     total: totalHolding,
+    //   },
+    // });
 
     console.log(fundings);
   }, [fundings]);
@@ -288,21 +294,15 @@ function MyAccount() {
               <Text fontSize="2xl" color="white">
                 Total value: ${/* Fixa felhantering också... */}
                 {(
-                  (currentUser.funds.total && currentUser.funds.total) +
-                  (currentUser.holdings.total && currentUser.holdings.total)
+                  (totalFunds && totalFunds) + (totalHolding && totalHolding)
                 ).toLocaleString()}
               </Text>
               <Text fontSize="1xl" alignSelf="flex-end">
                 Available funds:{" "}
-                {(currentUser.funds.total
-                  ? currentUser.funds.total
-                  : 0
-                ).toLocaleString()}
+                {(totalFunds ? totalFunds : 0).toLocaleString()}
               </Text>
               <Text fontSize="1xl" alignSelf="flex-end">
-                Hedge value:{" "}
-                {currentUser.holdings.total &&
-                  currentUser.holdings.total.toLocaleString()}
+                Hedge value: {totalHolding && totalHolding.toLocaleString()}
               </Text>
             </Box>
           </Center>
@@ -370,7 +370,7 @@ function MyAccount() {
             gap={4}
             py={2}
           >
-            {totalHoldings.map(
+            {productStore.map(
               (holding) => (
                 <Box
                   maxW="350px"
@@ -388,7 +388,7 @@ function MyAccount() {
                   </Link>
                   <Text>Amont: {holding.amount.toLocaleString()}</Text>
                   <Text>
-                    Avg. Purchasing price:{" "}
+                    Avg. price:{" "}
                     {(holding.value / holding.amount).toLocaleString()}
                   </Text>
                   <Text>Value: {holding.value.toLocaleString()}</Text>
