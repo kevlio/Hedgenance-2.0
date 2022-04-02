@@ -23,13 +23,21 @@ import LocalNav from "../components/LocalNav";
 import { loginState, userState, usersState } from "../stores/auth/atom";
 
 function Settings() {
-  const [users, setUsers] = useRecoilState(usersState);
   const [user, setUser] = useRecoilState(userState);
+  const [edit, setEdit] = useState(false);
 
-  console.log(users);
   console.log(user);
 
   function editMode() {
+    setEdit(!edit);
+    const editUser = {
+      username: "",
+      password: "",
+      email: "",
+      phone: "",
+    };
+    // Update User
+    // Set Edit === false
     //   OnClick edit-icon change disabled to false
   }
 
@@ -51,7 +59,7 @@ function Settings() {
             <h1>{user.name.firstname}</h1>
             <h1>{user.name.lastname}</h1>
           </Box>
-          <FormControl isDisabled>
+          <FormControl isDisabled={!edit} onClick={editMode}>
             <Box display="flex" flexDirection="row" gap={2} alignItems="center">
               <Input type="email" defaultValue={user.email} />
               <Input type="tel" defaultValue={user.phone} />

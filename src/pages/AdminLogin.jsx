@@ -13,11 +13,12 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { loginState, adminState } from "../stores/auth/atom";
 
 function AdminLogin() {
   const [adminUsername, setAdminUsername] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
-  const [logged, setLogged] = useState("");
+  const [adminLogged, setAdminLogged] = useState(adminState);
   const navigate = useNavigate();
   const inputRef = useRef();
   const { isOpen, onToggle } = useDisclosure();
@@ -38,12 +39,13 @@ function AdminLogin() {
     })
       .then((res) => res.json())
       .then((json) => {
-        setLogged(json);
+        setAdminLogged(json);
         navigate("/admin");
       })
       .catch((error) => {
         onToggle();
         console.log(error);
+        setAdminLogged(false);
       });
   };
 

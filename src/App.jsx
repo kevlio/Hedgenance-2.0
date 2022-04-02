@@ -17,6 +17,7 @@ import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
 import Settings from "./pages/Settings";
 import { SingleCryptoPage } from "./pages/SingleCrypto";
+import AdminProducts from "./pages/AdminProducts";
 
 //
 // {!auth.token ? (
@@ -47,8 +48,10 @@ function App() {
 
         <Route path="/products" element={<ProductPage />}></Route>
         <Route path="/products/:id" element={<SingleProduct />}></Route>
+
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/adminlogin" element={<AdminLogin />}></Route>
+        <Route path="/adminproducts" element={<AdminProducts />}></Route>
 
         <Route path="/settings" element={<Settings />}></Route>
 

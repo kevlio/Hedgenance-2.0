@@ -40,6 +40,8 @@ import {
   currentIDState,
 } from "../stores/auth/atom";
 
+import { useNavigate } from "react-router-dom";
+
 const Header = () => {
   const [logged, setLogged] = useRecoilState(loginState);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -50,6 +52,8 @@ const Header = () => {
     onOpen: accOnOpen,
     onClose: accOnClose,
   } = useDisclosure();
+
+  const navigate = useNavigate();
 
   const [users, setUsers] = useRecoilState(usersState);
   const [fundings, setFundings] = useRecoilState(fundingState);
@@ -66,13 +70,17 @@ const Header = () => {
       setUsers([currentUser, ...filteredUsers]);
       // Lägga till användare i UsersState
       useResetRecoilState(fundingState);
-
       useResetRecoilState(holdingState);
-      useResetRecoilState(holdingStatus);
-      useResetRecoilState(fundingStatus);
-      useResetRecoilState(productHoldingStatus);
+      // useResetRecoilState(holdingStatus);
+      // useResetRecoilState(fundingStatus);
+      // useResetRecoilState(productHoldingStatus);
       setCurrentUser("");
     }
+  };
+
+  const navigateAdmin = () => {
+    handleLogged();
+    navigate("/adminlogin");
   };
 
   console.log(users);
@@ -95,14 +103,26 @@ const Header = () => {
       color={["white", "white", "primary.700", "primary.700"]}
     >
       {/* Logo */}
-      <Link href="/">
-        <Box display="flex" justifyContent="column" alignItems="center">
-          <Text fontSize="3xl" fontWeight="bold" pr={2}>
-            Hedgnance
+
+      <Box display="flex" justifyContent="column" alignItems="center">
+        <Box>
+          <Link href="/">
+            <Text fontSize="3xl" fontWeight="bold" pr={2}>
+              Hedgnance
+            </Text>
+          </Link>
+          <Text fontSize="smaller" color="#48BB78">
+            Double pet hog for admin
           </Text>
-          <GiHedgehog size={70} color="#48BB78" />
         </Box>
-      </Link>
+        <GiHedgehog
+          size={70}
+          color="#48BB78"
+          value="admin"
+          onDoubleClick={navigateAdmin}
+        />
+      </Box>
+
       {/* MenuToggle */}
       <Box
         display={{ base: "block", md: "none" }}
