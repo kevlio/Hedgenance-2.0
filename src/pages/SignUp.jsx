@@ -19,16 +19,26 @@ import {
   usersState,
   currentIDState,
 } from "../stores/auth/atom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { fundingState } from "../stores/fundings/atom";
 import { GiHedgehog } from "react-icons/gi";
+import { assemblyState } from "../stores/assembly/atom";
+
+import { assemblyStatus } from "../stores/assembly/atom";
 
 function SignUp() {
   const [logged, setLogged] = useRecoilState(loginState);
   const navigate = useNavigate();
   const { isOpen, onToggle } = useDisclosure();
   const [fundings, setFundings] = useRecoilState(fundingState);
+
+  console.log(assemblyStatus);
+
+  const { assemblyStore } = useRecoilValue(assemblyStatus);
+  console.log(assemblyStore);
+
+  const [assembly, setAssembly] = useRecoilState(assemblyState);
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [currentUserID, setCurrentUserID] = useRecoilState(currentIDState);
@@ -88,28 +98,26 @@ function SignUp() {
     setCurrentUser(newUser);
     setCurrentUserID(newUser.id);
 
-    console.log(users);
-
     setLogged(true);
     onToggle();
-    // let date = new Date();
-    // const yyyy = date.getFullYear();
-    // const mm = String(date.getMonth() + 1).padStart(2, "0");
-    // const dd = String(date.getDate()).padStart(2, "0");
-    // const hour = String(date.getHours()).padStart(2, "0");
-    // const min = String(date.getMinutes()).padStart(2, "0");
-    // const sec = String(date.getSeconds()).padStart(2, "0");
+    let date = new Date();
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    const hour = String(date.getHours()).padStart(2, "0");
+    const min = String(date.getMinutes()).padStart(2, "0");
+    const sec = String(date.getSeconds()).padStart(2, "0");
 
-    // date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
+    date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
 
-    // const newFund = {
-    //   input: 1000,
-    //   date: date,
-    //   id: Math.floor(Math.random() * 10000),
-    // };
-    // setFundings((prevFunds) => {
-    //   return [newFund, ...prevFunds];
-    // });
+    const newFund = {
+      input: 1000,
+      date: date,
+      id: Math.floor(Math.random() * 10000),
+    };
+    setFundings((prevFunds) => {
+      return [newFund, ...prevFunds];
+    });
 
     console.log(logged);
     console.log(username);

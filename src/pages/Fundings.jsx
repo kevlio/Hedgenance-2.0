@@ -24,7 +24,7 @@ import {
   Fade,
 } from "@chakra-ui/react";
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { fundingState, fundsTotal } from "../stores/fundings/atom";
 import { fundingStatus } from "../stores/fundings/selector";
 import LocalNav from "../components/LocalNav";
@@ -36,6 +36,8 @@ import {
   currentIDState,
 } from "../stores/auth/atom";
 
+import { assemblyStatus } from "../stores/assembly/atom";
+
 function Fundings() {
   const [users, setUsers] = useRecoilState(usersState);
   const [currentUser, setCurrentUser] = useRecoilState(userState);
@@ -44,7 +46,8 @@ function Fundings() {
   // Moves this to users LocalStorage instead
   // const [fundings, setFundings] = useRecoilState(fundingState);
   // const { totalFunds } = useRecoilValue(fundingStatus);
-  const [fundings, setFundings] = useState([]);
+  const [fundings, setFundings] = useRecoilState(fundingState);
+  // Flytta till Recpoil Fundings? vad skulle hända då
   const [userHistoryFunds, setUserHistoryFunds] = useState([]);
   const [userTotalFunds, setUserTotalFunds] = useState(0);
 
@@ -57,6 +60,9 @@ function Fundings() {
       setFundings([...fundings, ...newFundings]);
     }
   }, []);
+
+  const { assemblyStore } = useRecoilValue(assemblyStatus);
+  console.log(assemblyStore);
 
   console.log(fundings);
 

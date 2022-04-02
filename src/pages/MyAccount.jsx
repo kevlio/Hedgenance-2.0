@@ -31,12 +31,19 @@ import { PieChart, Pie, Label, ResponsiveContainer } from "recharts";
 
 import axios from "axios";
 
+import { assemblyState } from "../stores/assembly/atom";
+
+import { assemblyStatus } from "../stores/assembly/atom";
+
 function MyAccount() {
+  console.log(assemblyStatus);
+
+  const { assemblyStore } = useRecoilValue(assemblyStatus);
+  console.log(assemblyStore);
+  const [assembly, setAssembly] = useRecoilState(assemblyState);
   const [holdings, setHoldings] = useRecoilState(holdingState);
   console.log(holdings);
   const [fundings, setFundings] = useRecoilState(fundingState);
-
-  const [currentUser, setCurrentUser] = useRecoilState(userState);
 
   // const currentUserID = useRecoilValue(currentIDState);
   // const [users, setUsers] = useRecoilState(usersState);
@@ -48,52 +55,69 @@ function MyAccount() {
   const { totalHolding } = useRecoilValue(holdingStatus);
   const [totalHoldings, setTotalHoldings] = useState([]);
 
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const [updateUsers, setUpdateUsers] = useRecoilState(usersState);
+  const currentUserID = useRecoilValue(currentIDState);
+  const [currentCryptoPrice, setCurrentCryptoPrice] = useState("");
+
+  // setFundings((prevFunds) => {
+  //   return [newFund, ...prevFunds];
+  // });
+
+  // useEffect(() => {
+  //   setAssembly([{ fundings: fundings }]);
+  // }, [fundings]);
+
+  console.log(assembly);
   console.log(currentUser);
+  console.log(updateUsers);
 
-  if (currentUser.holdings.history) {
-    const cryptoAssemble = currentUser.holdings.history;
-    console.log(cryptoAssemble);
+  let categoryTotal = [];
+  let cryptoStore = [];
 
-    const uniqueCrypto = [
-      ...new Set(cryptoAssemble.map((holding) => holding.title)),
-    ];
+  // if (currentUser.holdings.history.length > 0) {
+  console.log("true has holding history");
 
-    let categoryTotal = [];
-    let cryptoStore = [];
+  // const uniqueCrypto =
+  //   currentUser.holdings
+  //     ? [
+  //         ...new Set(
+  //           currentUser.holdings.history.map((holding) => holding.title)
+  //         ),
+  //       ]
+  //     : [];
 
-    useEffect(() => {
-      for (let i = 0; i < uniqueCrypto.length; i++) {
-        categoryTotal[i] = cryptoAssemble.filter(
-          (crypto) => crypto.title === uniqueCrypto[i]
-        );
+  // console.log(uniqueCrypto);
+  // // }
 
-        const totalAmountCategory = categoryTotal[i].reduce(
-          (previousValue, currentValue) =>
-            previousValue + parseInt(currentValue.amount),
-          0
-        );
-        const totalPriceCategory = categoryTotal[i].reduce(
-          (previousValue, currentValue) =>
-            previousValue + parseInt(currentValue.price),
-          0
-        );
-        cryptoStore.push({
-          id: i,
-          title: uniqueCrypto[i],
-          amount: totalAmountCategory,
-          value: totalPriceCategory,
-        });
-        console.log(categoryTotal);
-        console.log(cryptoStore);
-      }
-    }, []);
+  // useEffect(() => {
+  //   for (let i = 0; i < uniqueCrypto.length; i++) {
+  //     categoryTotal[i] = cryptoAssemble.filter(
+  //       (crypto) => crypto.title === uniqueCrypto[i]
+  //     );
 
-    useEffect(() => {
-      console.log("setting total holdings");
-      setTotalHoldings(cryptoStore);
-      console.log(totalHoldings);
-    }, [cryptoStore.length]);
-  }
+  //     const totalAmountCategory = categoryTotal[i].reduce(
+  //       (previousValue, currentValue) =>
+  //         previousValue + parseInt(currentValue.amount),
+  //       0
+  //     );
+  //     const totalPriceCategory = categoryTotal[i].reduce(
+  //       (previousValue, currentValue) =>
+  //         previousValue + parseInt(currentValue.price),
+  //       0
+  //     );
+  //     cryptoStore.push({
+  //       id: i,
+  //       title: uniqueCrypto[i],
+  //       amount: totalAmountCategory,
+  //       value: totalPriceCategory,
+  //     });
+  //     console.log(categoryTotal);
+  //     console.log(cryptoStore);
+
+  //     // setTotalHoldings(cryptoStore);
+  //   }
+  // }, []);
 
   const pieData = totalHoldings.map((holding) => {
     return {
@@ -125,19 +149,15 @@ function MyAccount() {
       (product) => product.title === name
     );
 
-    console.log(product.coinID);
-
-    console.log(value);
-    console.log(amount);
-    console.log(title);
-
     // Get current value of this Crypto
-    const cryptoById = (name) => {
+    const cryptoById = (coinID) => {
       axios
-        .get(`https://api.coingecko.com/api/v3/coins/${name}`)
+        .get(`https://api.coingecko.com/api/v3/coins/${coinID}`)
         .then((res) => {
           setCoin(res.data);
           console.log(res.data);
+          console.log(res.data.market_data.current_price.eur);
+          setCurrentCryptoPrice(res.data.market_data.current_price.eur);
           // navigate(`/crypto/${coin}`);
         })
         .catch((error) => console.log(error));
@@ -145,17 +165,14 @@ function MyAccount() {
     cryptoById(product.coinID);
     console.log(coin);
 
-    const currentCoinPrice = coin.market_data.current_price.eur;
-    console.log(currentCoinPrice);
-
-    // if (amount <= 0) return;
+    if (amount <= 0) return;
 
     const newSell = {
       title: product.title,
       category: "Cryptocurrencies",
-      currentPrice: currentCoinPrice,
+      currentPrice: currentCryptoPrice,
       trade: "sell",
-      price: -currentCoinPrice * amount,
+      price: -currentCryptoPrice * amount,
       amount: -amount,
       date: date,
       id: Math.floor(Math.random() * 10000),
@@ -173,6 +190,57 @@ function MyAccount() {
       return [...prevFunds, increaseFunds];
     });
   };
+
+  useEffect(() => {
+    if (currentUser.funds.history) {
+      const newFundings = currentUser.funds.history.filter(
+        (prevFundings) => !fundings.some((fund) => prevFundings.id === fund.id)
+      );
+      console.log(newFundings);
+      setFundings([...fundings, ...newFundings]);
+    }
+
+    if (currentUser.holdings.history) {
+      const newHoldings = currentUser.holdings.history.filter(
+        (prevHoldings) => !holdings.some((fund) => prevHoldings.id === fund.id)
+      );
+      console.log(newHoldings);
+      setHoldings([...holdings, ...newHoldings]);
+    }
+  }, []);
+
+  useEffect(() => {
+    setUpdateUsers(
+      updateUsers.map((user) => {
+        return {
+          ...user,
+          funds: {
+            history: fundings,
+            total: totalFunds,
+          },
+          holdings: {
+            history: holdings,
+            total: totalHolding,
+          },
+        };
+        return user;
+      })
+    );
+
+    setCurrentUser({
+      ...currentUser,
+      funds: {
+        history: fundings,
+        total: totalFunds,
+      },
+      holdings: {
+        history: holdings,
+        total: totalHolding,
+      },
+    });
+
+    console.log(fundings);
+  }, [fundings]);
 
   console.log(fundings);
   console.log(holdings);
@@ -319,6 +387,10 @@ function MyAccount() {
                     {holding.title}
                   </Link>
                   <Text>Amont: {holding.amount.toLocaleString()}</Text>
+                  <Text>
+                    Avg. Purchasing price:{" "}
+                    {(holding.value / holding.amount).toLocaleString()}
+                  </Text>
                   <Text>Value: {holding.value.toLocaleString()}</Text>
                   <Button
                     colorScheme="green"

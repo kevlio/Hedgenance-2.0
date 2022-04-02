@@ -48,8 +48,12 @@ import {
   usersState,
   currentIDState,
 } from "../stores/auth/atom";
+import { assemblyStatus } from "../stores/assembly/atom";
 
 function SingleFetchedProduct() {
+  const { assemblyStore } = useRecoilValue(assemblyStatus);
+  console.log(assemblyStore);
+
   const { isOpen, onToggle } = useDisclosure();
   const [show, setShow] = React.useState(false);
 
@@ -58,7 +62,6 @@ function SingleFetchedProduct() {
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [updateUsers, setUpdateUsers] = useRecoilState(usersState);
   const currentUserID = useRecoilValue(currentIDState);
-  console.log(updateUsers);
 
   const handleToggle = () => setShow(!show);
   const params = useParams();
@@ -68,7 +71,6 @@ function SingleFetchedProduct() {
 
   const [holdings, setHoldings] = useRecoilState(holdingState);
 
-  console.log(holdings);
   const { totalFunds } = useRecoilValue(fundingStatus);
 
   const { totalHolding } = useRecoilValue(holdingStatus);
@@ -222,6 +224,7 @@ function SingleFetchedProduct() {
       trade: "buy",
       price: coinData.price * amount,
       amount: +amount,
+      // borde kunna ändra amount +- vid buy sell state
       date: date,
       id: Math.floor(Math.random() * 10000),
       coinID: coinData.id,
@@ -294,6 +297,12 @@ function SingleFetchedProduct() {
   function handleField() {
     inputRef.current.value = null;
   }
+
+  console.log(currentUser);
+  console.log(updateUsers);
+  console.log(totalFunds);
+  console.log(fundings);
+  console.log(holdings);
 
   return (
     <Center>
