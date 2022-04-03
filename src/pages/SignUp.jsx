@@ -18,7 +18,7 @@ import {
   userState,
   usersState,
   currentIDState,
-} from "../stores/auth/atom";
+} from "../stores/users/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 

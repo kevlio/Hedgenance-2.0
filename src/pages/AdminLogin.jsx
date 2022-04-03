@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { loginState, adminState } from "../stores/auth/atom";
+import { loginState, adminState } from "../stores/users/atom";
 
 function AdminLogin() {
   const [adminUsername, setAdminUsername] = useState("");

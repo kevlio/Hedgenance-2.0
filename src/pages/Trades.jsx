@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { loginState, userState, usersState } from "../stores/auth/atom";
+import { loginState, userState, usersState } from "../stores/users/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { holdingState } from "../stores/holdings/atom";
 

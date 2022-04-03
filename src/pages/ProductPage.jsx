@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useRecoilValue } from "recoil";
-import { loginState } from "../stores/auth/atom";
+import { loginState } from "../stores/users/atom";
 import AnimatedPage from "../components/AnimatedPage";
 import { useNavigate } from "react-router-dom";
 

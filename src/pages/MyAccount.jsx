@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { userState, usersState, currentIDState } from "../stores/auth/atom";
+import { userState, usersState, currentIDState } from "../stores/users/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { holdingState } from "../stores/holdings/atom";
 import { fundingState } from "../stores/fundings/atom";

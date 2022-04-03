@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { selector } from "recoil";
-import { userState } from "../auth/atom";
+import { userState } from "../users/atom";
 import { fundingState } from "../fundings/atom";
 import { holdingState } from "../holdings/atom";
 

@@ -12,10 +12,6 @@ import {
   Text,
   Link,
   Flex,
-  Menu,
-  MenuList,
-  MenuItem,
-  MenuButton,
   useDisclosure,
   useColorModeValue,
   Button,
@@ -28,17 +24,11 @@ import { fundingState } from "../stores/fundings/atom";
 import { fundingStatus } from "../stores/fundings/selector";
 
 import {
-  holdingStatus,
-  categoryHoldingStatus,
-  productHoldingStatus,
-} from "../stores/holdings/selector";
-
-import {
   loginState,
   userState,
   usersState,
   currentIDState,
-} from "../stores/auth/atom";
+} from "../stores/users/atom";
 
 import { useNavigate } from "react-router-dom";
 
@@ -68,14 +58,11 @@ const Header = () => {
       const filteredUsers = users.filter((user) => user.id !== currentUser.id);
 
       setUsers([currentUser, ...filteredUsers]);
-      // Lägga till användare i UsersState
-      useResetRecoilState(fundingState);
-      useResetRecoilState(holdingState);
-      // useResetRecoilState(holdingStatus);
-      // useResetRecoilState(fundingStatus);
-      // useResetRecoilState(productHoldingStatus);
       setCurrentUser("");
     }
+    // Ev. ta bort
+    useResetRecoilState(fundingState);
+    useResetRecoilState(holdingState);
   };
 
   const navigateAdmin = () => {
@@ -107,11 +94,19 @@ const Header = () => {
       <Box display="flex" justifyContent="column" alignItems="center">
         <Box>
           <Link href="/">
+            <Text
+              fontSize="smaller"
+              color="#48BB78"
+              alignSelf="flex-end"
+              my="-3"
+            >
+              Currency: EUR
+            </Text>
             <Text fontSize="3xl" fontWeight="bold" pr={2}>
               Hedgnance
             </Text>
           </Link>
-          <Text fontSize="smaller" color="#48BB78">
+          <Text fontSize="smaller" color="#48BB78" my="-2" mb="1">
             Double pet hog for admin
           </Text>
         </Box>
@@ -147,52 +142,16 @@ const Header = () => {
         >
           <Link href="/">home</Link>
           <Link href="/crypto">cryptos</Link>
-          <Link href="/products">commodities</Link>
+          {/* <Link href="/products">commodities</Link> */}
 
           <Link href={`${logged ? "/myaccount" : "/signup"}`}>{`${
             logged ? "account" : "sign up"
           }`}</Link>
-          {/* Funkar inte att logga ut från page myaccount */}
+          {/* Sometimes colliding toggleLogged */}
           <Link
             href={`${logged ? "/myaccount" : "/login"}`}
             onClick={handleLogged}
           >{`${logged ? "logout" : "login"}`}</Link>
-          {/* <Box>
-            <Menu isOpen={accIsOpen}>
-              <MenuButton
-                as="a"
-                href={`${logged ? "/myaccount" : "/signup"}`}
-                variant="ghost"
-                onMouseEnter={isMobile ? () => false : accOnOpen}
-                onMouseLeave={accOnClose}
-              >
-                account
-                {accIsOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-              </MenuButton>
-              <MenuList
-                bg="black"
-                onClick={accOnOpen}
-                onMouseEnter={isMobile ? () => false : accOnOpen}
-                onMouseLeave={accOnClose}
-              >
-                <MenuItem
-                  fontSize="xl"
-                  fontWeight="bold"
-                  as="a"
-                  href={`${logged ? "/myaccount" : "/login"}`}
-                  _hover={{ bg: useColorModeValue("pink.700", "blue.700") }}
-                >{`${logged ? "My Account" : "Login"}`}</MenuItem>
-                <MenuItem
-                  fontSize="xl"
-                  fontWeight="bold"
-                  as="a"
-                  href={`${logged ? "/myaccount" : "/signup"}`}
-                  onClick={handleLogged}
-                  _hover={{ bg: useColorModeValue("pink.700", "blue.700") }}
-                >{`${logged ? "Log out" : "Sign up"}`}</MenuItem>
-              </MenuList>
-            </Menu>
-          </Box> */}
         </Stack>
       </Box>
     </Flex>

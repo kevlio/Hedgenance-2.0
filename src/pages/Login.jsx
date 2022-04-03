@@ -13,7 +13,7 @@ import {
 import React, { useRef, useEffect, useState } from "react";
 import AnimatedPage from "../components/AnimatedPage";
 import { Link, useNavigate } from "react-router-dom";
-import { loginState, userState, usersState } from "../stores/auth/atom";
+import { loginState, userState, usersState } from "../stores/users/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { holdingState } from "../stores/holdings/atom";
 

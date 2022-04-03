@@ -13,15 +13,15 @@ import {
   ListIcon,
   Button,
 } from "@chakra-ui/react";
-import { usersState } from "../stores/auth/atom";
+import { usersState } from "../stores/users/atom";
 import { useRecoilState } from "recoil";
 
 import { MdCheckCircle } from "react-icons/md";
 
-import { adminState } from "../stores/auth/atom";
+import { adminState } from "../stores/users/atom";
 
 import { useNavigate } from "react-router-dom";
-
+import { AiOutlineEdit } from "react-icons/ai";
 // En admin ska kunna logga in
 // En admin ska kunna besöka en särskild sida endast en inloggad admin kan besöka, med en lista på samtliga produkter och användare
 
@@ -156,7 +156,79 @@ function Admin() {
           }}
           spacing={4}
         > */}
-        {filteredUsers.map((user) => (
+        <Box>
+          {/* <Text textColor="green.400">
+      EDIT/ADD PRODUCTS. - En admin ska kunna uppdatera och ta bort en produkt i
+      admin-panelen. FRÅGA: FRÅN EN PROFIL ELLER FRÅN CRYPTOSTATES?
+    </Text> */}
+          {filteredUsers.map((user) => (
+            <Box
+              key={user.id}
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+              textAlign="left"
+              border="#48BB78 solid 1px"
+              borderRadius="14px"
+              p={4}
+              textColor="white"
+              whiteSpace="nowrap"
+              alignItems="flex-start"
+            >
+              <Box display="flex" flexDirection="column" width="50%">
+                <Text fontSize="2xl" fontWeight="bold" color={"green.400"}>
+                  ID: {user.id}
+                </Text>
+                <Text>
+                  {user.name.firstname} {user.name.lastname}
+                </Text>
+
+                <Text>
+                  {user.username} {user.password}
+                </Text>
+                <Text></Text>
+                <Text>
+                  {user.address && user.address.street}{" "}
+                  {user.address && user.address.number}
+                </Text>
+                <Text></Text>
+                <Text>
+                  {user.address && user.address.zipcode}{" "}
+                  {user.address && user.address.city}
+                </Text>
+                <Text></Text>
+              </Box>
+
+              <Box display="flex" flexDirection="column" width="50%">
+                <Box>
+                  <Text borderBottom="1px solid #48BB78">Trading History</Text>
+                  {user.holdings.history &&
+                    user.holdings.history.map((holding) => (
+                      <Box display="flex" flexDirection="row" gap={2}>
+                        <Text>{holding.title}</Text>
+                        <Text>{holding.amount}</Text>
+                        <Text>x {holding.currentPrice}</Text>
+                        <Text>= {holding.price.toLocaleString()}</Text>
+                      </Box>
+                    ))}
+                  <Text borderTop="1px solid #48BB78">
+                    Total Holdings: {user.holdings && user.holdings.total}
+                  </Text>
+                  <Text>Total Funds: {user.funds && user.funds.total}</Text>
+                  <Text borderTop="1px solid #48BB78" textColor="blue.200">
+                    Total Account Value:{" "}
+                    {(
+                      (user.funds && user.funds.total) +
+                      (user.holdings && user.holdings.total)
+                    ).toLocaleString()}
+                  </Text>
+                </Box>
+                <AiOutlineEdit size={60} />
+              </Box>
+            </Box>
+          ))}
+        </Box>
+        {/* {filteredUsers.map((user) => (
           <List
             spacing={3}
             key={user.id}
@@ -187,15 +259,15 @@ function Admin() {
             <ListItem>{user.email}</ListItem>
             <ListItem display="flex" flexDirection="row" gap={2}>
               {/* Varför funkar det inte utan att göra &&??? */}
-              <Text>{user.address && user.address.city}</Text>
+        {/* <Text>{user.address && user.address.city}</Text>
               <Text>{user.address && user.address.street}</Text>
               <Text>{user.address && user.address.number}</Text>
               <Text>{user.address && user.address.zipcode}</Text>
             </ListItem>
-            <Box>
-              {/* <Text>Show more information [show all holdings] fade</Text> */}
-              {/* Skulle vara smutt att få till reducern här... */}
-              {user.holdings.history &&
+            <Box> */}{" "}
+        {/* <Text>Show more information [show all holdings] fade</Text> */}
+        {/* Skulle vara smutt att få till reducern här... */}
+        {/* {user.holdings.history &&
                 user.holdings.history.map((holding) => (
                   <Box display="flex" flexDirection="row" gap={2}>
                     <Text>{holding.title}</Text>
@@ -207,7 +279,7 @@ function Admin() {
             </Box>
             <ListIcon as={MdCheckCircle} color="green.500" />
           </List>
-        ))}
+        ))} */}
         {/* </SimpleGrid> */}
       </Box>
     </Center>

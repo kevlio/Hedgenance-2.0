@@ -47,7 +47,7 @@ import {
   userState,
   usersState,
   currentIDState,
-} from "../stores/auth/atom";
+} from "../stores/users/atom";
 import { assemblyStatus } from "../stores/assembly/atom";
 
 function SingleFetchedProduct() {

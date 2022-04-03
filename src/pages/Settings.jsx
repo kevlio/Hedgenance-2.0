@@ -20,7 +20,7 @@ import { useRecoilState } from "recoil";
 import { AiOutlineEdit } from "react-icons/ai";
 
 import LocalNav from "../components/LocalNav";
-import { loginState, userState, usersState } from "../stores/auth/atom";
+import { loginState, userState, usersState } from "../stores/users/atom";
 
 function Settings() {
   const [user, setUser] = useRecoilState(userState);

@@ -36,7 +36,8 @@ function App() {
     <div className="App">
       <Header />
       <Routes>
-        {/* Lösa tilgång här login läge */}
+        {/* Lösa tillgång här login läge */}
+        {/* admin läge */}
 
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
@@ -46,8 +47,9 @@ function App() {
         <Route path="/trades" element={<Trades />}></Route>
         <Route path="/fundings" element={<Fundings />}></Route>
 
-        <Route path="/products" element={<ProductPage />}></Route>
-        <Route path="/products/:id" element={<SingleProduct />}></Route>
+        {/* Next project: Continue research Commodity API/or Webscrape most popular Commodities*/}
+        {/* <Route path="/products" element={<ProductPage />}></Route>
+        <Route path="/products/:id" element={<SingleProduct />}></Route> */}
 
         <Route path="/admin" element={<Admin />}></Route>
         <Route path="/adminlogin" element={<AdminLogin />}></Route>
@@ -56,12 +58,12 @@ function App() {
         <Route path="/settings" element={<Settings />}></Route>
 
         <Route path="/crypto" element={<Crypto />}></Route>
+        <Route path="/crypto/:id" element={<SingleCryptoPage />}></Route>
 
-        {/* This should be replaced with /crypto when done */}
+        {/* This should be replaced with /crypto when done, look before useful css before delete CryptoPage */}
         <Route path="/cryptopage" element={<CryptoPage />}></Route>
         {/* <Route path="/cryptopage/:id" element={<SingleCrypto />}></Route> */}
         {/* <Route path="/crypto/:id" element={<SingleCryptoPage />}></Route> */}
-        <Route path="/crypto/:id" element={<SingleCryptoPage />}></Route>
       </Routes>
       <Footer />
     </div>

@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import ProductSlide from "../components/ProductSlide";
 import AnimatedPage from "../components/AnimatedPage";
-import { usersState } from "../stores/auth/atom";
+import { usersState } from "../stores/users/atom";
 import { useRecoilState } from "recoil";
 import React, { useRef, useEffect, useState } from "react";
 
