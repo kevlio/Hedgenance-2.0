@@ -44,9 +44,9 @@ function Crypto() {
   const [filters, setFilters] = useState("");
   const [filteredCoins, setFilteredCoins] = useState([]);
 
-  useEffect(() => {
-    setFilteredCoins(coins);
-  }, []);
+  // useEffect(() => {
+  //   setFilteredCoins(coins);
+  // }, []);
 
   useEffect(() => {
     if (filters.length === 0) {
@@ -87,7 +87,7 @@ function Crypto() {
       )
       .then((res) => {
         setCoins(res.data);
-        setFilter(res.data);
+        setFilteredCoins(res.data);
         console.log(res.data);
       })
       .catch((error) => console.log(error));
