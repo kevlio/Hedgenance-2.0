@@ -146,7 +146,7 @@ function Home() {
                   Get Started
                 </Button>
               </Link>
-              <Link href="/products">
+              <Link href="/cryptos">
                 <Button variant={"link"} colorScheme={"blue"} size={"sm"}>
                   Learn more
                 </Button>

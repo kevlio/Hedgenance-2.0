@@ -42,7 +42,7 @@ function ProductSlide() {
         >
           <Link
             color="var(--chakra-colors-pink-700)"
-            href="/crypto"
+            href="/cryptos"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -72,7 +72,7 @@ function ProductSlide() {
           </Link>
           <Link
             color="var(--chakra-colors-pink-700)"
-            href="/products"
+            href="cryptos"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -92,7 +92,7 @@ function ProductSlide() {
           </Link>
           <Link
             color="var(--chakra-colors-pink-700)"
-            href="/products"
+            href="cryptos"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -112,7 +112,7 @@ function ProductSlide() {
           </Link>
           <Link
             color="var(--chakra-colors-pink-700)"
-            href="/products"
+            href="cryptos"
             display="flex"
             flexDirection="column"
             alignItems="center"
