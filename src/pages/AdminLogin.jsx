@@ -15,6 +15,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { loginState, adminState } from "../stores/users/atom";
 
+import { holdingState } from "../stores/holdings/atom";
+import { fundingState } from "../stores/fundings/atom";
+
+import { userState, usersState } from "../stores/users/atom";
+import { useRecoilState } from "recoil";
+
 function AdminLogin() {
   const [adminUsername, setAdminUsername] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
@@ -22,6 +28,12 @@ function AdminLogin() {
   const navigate = useNavigate();
   const inputRef = useRef();
   const { isOpen, onToggle } = useDisclosure();
+  const [logged, setLogged] = useRecoilState(loginState);
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const [users, setUsers] = useRecoilState(usersState);
+  const [fundings, setFundings] = useRecoilState(fundingState);
+  const [holdings, setHoldings] = useRecoilState(holdingState);
+
   //   useEffect(() => {
   //     inputRef.current.focus();
   //   });
@@ -47,6 +59,19 @@ function AdminLogin() {
         console.log(error);
         setAdminLogged(false);
       });
+  };
+
+  const userToAdmin = () => {
+    if (logged) {
+      setLogged(false);
+      setFundings([]);
+      setHoldings([]);
+
+      const filteredUsers = users.filter((user) => user.id !== currentUser.id);
+
+      setUsers([currentUser, ...filteredUsers]);
+      setCurrentUser("");
+    }
   };
 
   return (
@@ -83,8 +108,15 @@ function AdminLogin() {
               placeholder="Password"
               type="password"
             ></Input>
-            <Button type="submit" onClick={login}>
-              Login
+            <Button
+              colorScheme="green"
+              type="submit"
+              onClick={function () {
+                login();
+                userToAdmin();
+              }}
+            >
+              Log in
             </Button>
             <Fade in={isOpen}>
               <Button

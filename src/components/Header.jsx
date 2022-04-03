@@ -66,11 +66,9 @@ const Header = () => {
   };
 
   const navigateAdmin = () => {
-    handleLogged();
+    // handleLogged();
     navigate("/adminlogin");
   };
-
-  console.log(users);
 
   const toggleMenu = () => {
     setMenuIsOpen(!menuIsOpen);
@@ -106,15 +104,24 @@ const Header = () => {
               Hedgnance
             </Text>
           </Link>
-          <Text fontSize="smaller" color="#48BB78" my="-2" mb="1">
-            Double pet hog for admin
-          </Text>
+          <Link to="/adminlogin" onClick={navigateAdmin}>
+            <Text
+              onClick={navigateAdmin}
+              fontSize="smaller"
+              color="#48BB78"
+              my="-2"
+              mb="1"
+            >
+              Double pet hog for admin
+            </Text>
+          </Link>
         </Box>
         <GiHedgehog
           size={70}
           color="#48BB78"
           value="admin"
           onDoubleClick={navigateAdmin}
+          // onClick={navigateHome}
         />
       </Box>
 
@@ -141,7 +148,7 @@ const Header = () => {
           fontSize="2xl"
         >
           <Link href="/">home</Link>
-          <Link href="/crypto">cryptos</Link>
+          <Link href="/cryptos">cryptos</Link>
           {/* <Link href="/products">commodities</Link> */}
 
           <Link href={`${logged ? "/myaccount" : "/signup"}`}>{`${

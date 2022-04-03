@@ -2,16 +2,9 @@ import React, { useState, useEffect } from "react";
 
 import {
   Box,
-  Text,
   Container,
-  SimpleGrid,
   Center,
   Button,
-  Link,
-  Stat,
-  StatArrow,
-  StatGroup,
-  StatHelpText,
   Input,
   FormControl,
 } from "@chakra-ui/react";
@@ -26,24 +19,55 @@ function Settings() {
   const [user, setUser] = useRecoilState(userState);
   const [edit, setEdit] = useState(false);
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const [city, setCity] = useState("");
+  const [street, setStreet] = useState("");
+  const [number, setNumber] = useState(0);
+  const [zipcode, setZipcode] = useState("");
+
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+
   console.log(user);
 
   function editMode() {
-    setEdit(!edit);
-    const editUser = {
-      username: "",
-      password: "",
-      email: "",
-      phone: "",
-    };
+    setEdit(true);
+
+    // setEdit(false);
     // Update User
     // Set Edit === false
     //   OnClick edit-icon change disabled to false
   }
 
+  function updateUser() {
+    const editUser = {
+      ...user,
+      username: username,
+      password: password,
+      email: email,
+      phone: phone,
+      name: {
+        firstname: firstname,
+        lastname: lastname,
+      },
+      address: {
+        city: city,
+        street: street,
+        number: number,
+        zipcode: zipcode,
+      },
+    };
+    setUser(editUser);
+    setEdit(false);
+  }
+
   // Får felmeddelande "Found 8 elements with non-unique id, fields"
   return (
-    <div>
+    <Container>
       <LocalNav />
       <Center>
         <Box
@@ -61,32 +85,67 @@ function Settings() {
           </Box>
           <FormControl isDisabled={!edit} onClick={editMode}>
             <Box display="flex" flexDirection="row" gap={2} alignItems="center">
-              <Input type="email" defaultValue={user.email} />
-              <Input type="tel" defaultValue={user.phone} />
+              <Input
+                type="email"
+                defaultValue={user.email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Input
+                type="tel"
+                defaultValue={user.phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
               <AiOutlineEdit size={60} />
             </Box>
 
             <Box display="flex" flexDirection="row" gap={2} alignItems="center">
-              <Input type="text" defaultValue={user.username} />
-              <Input type="password" defaultValue={user.password} />
+              <Input
+                type="text"
+                defaultValue={user.username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <Input
+                type="password"
+                defaultValue={user.password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
               <AiOutlineEdit size={60} />
             </Box>
 
             <Box display="flex" flexDirection="row" gap={2} alignItems="center">
-              <Input type="text" defaultValue={user.address.street} />
-              <Input type="text" defaultValue={user.address.number} />
+              <Input
+                type="text"
+                defaultValue={user.address.street}
+                onChange={(e) => setStreet(e.target.value)}
+              />
+              <Input
+                type="text"
+                defaultValue={user.address.number}
+                onChange={(e) => setNumber(e.target.value)}
+              />
               <AiOutlineEdit size={60} />
             </Box>
 
             <Box display="flex" flexDirection="row" gap={2} alignItems="center">
-              <Input type="text" defaultValue={user.address.city} />{" "}
-              <Input type="text" defaultValue={user.address.zipcode} />
+              <Input
+                type="text"
+                defaultValue={user.address.city}
+                onChange={(e) => setCity(e.target.value)}
+              />{" "}
+              <Input
+                type="text"
+                defaultValue={user.address.zipcode}
+                onChange={(e) => setZipcode(e.target.value)}
+              />
               <AiOutlineEdit size={60} />
             </Box>
           </FormControl>
+          <Button colorScheme="green" alignSelf="flex-end" onClick={updateUser}>
+            Update User
+          </Button>
         </Box>
       </Center>
-    </div>
+    </Container>
   );
 }
 

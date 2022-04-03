@@ -69,13 +69,26 @@ export const productHoldingStatus = selector({
       ...new Set(holdingStore.map((holding) => holding.title)),
     ];
 
+    const uniqueID = [
+      ...new Set(holdingStore.map((holding) => holding.coinID)),
+    ];
+
     let productTotal = [];
     let productStore = [];
+    let coinIdStore = [];
 
     for (let i = 0; i < uniqueProduct.length; i++) {
       productTotal[i] = holdingStore.filter(
         (product) => product.title === uniqueProduct[i]
       );
+
+      console.log(uniqueID);
+
+      // coinIdStore[i] = holdingStore.map((product) => {
+      //   product.coinID = uniqueID[i];
+      // });
+
+      console.log(holdingStore);
 
       console.log(productTotal);
 
@@ -104,6 +117,7 @@ export const productHoldingStatus = selector({
       productStore.push({
         id: i,
         title: uniqueProduct[i],
+        coinID: uniqueID[i],
         amount: totalAmountProduct,
         value: currentCryptoHolding,
       });

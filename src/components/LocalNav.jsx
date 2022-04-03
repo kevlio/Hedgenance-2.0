@@ -34,7 +34,7 @@ function LocalNav() {
           >
             account
           </Button>
-          <Button color="white" variant="link" as="a" href="/crypto" bg="none">
+          <Button color="white" variant="link" as="a" href="/cryptos" bg="none">
             cryptos
           </Button>
           <Button

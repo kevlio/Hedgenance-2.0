@@ -8,6 +8,7 @@ import {
   Progress,
   Text,
   Fade,
+  Collapse,
   useDisclosure,
   FormLabel,
 } from "@chakra-ui/react";
@@ -23,9 +24,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 
 import { GiHedgehog } from "react-icons/gi";
-import { assemblyState } from "../stores/assembly/atom";
-
-import { assemblyStatus } from "../stores/assembly/atom";
 
 import { fundingStatus } from "../stores/fundings/selector";
 
@@ -44,13 +42,6 @@ function SignUp() {
   const navigate = useNavigate();
   const { isOpen, onToggle } = useDisclosure();
   const [fundings, setFundings] = useRecoilState(fundingState);
-
-  console.log(assemblyStatus);
-
-  const { assemblyStore } = useRecoilValue(assemblyStatus);
-  console.log(assemblyStore);
-
-  const [assembly, setAssembly] = useRecoilState(assemblyState);
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [currentUserID, setCurrentUserID] = useRecoilState(currentIDState);
@@ -82,7 +73,7 @@ function SignUp() {
   //   inputRef.current.focus();
   // });
 
-  useEffect(() => {
+  function welcomeFund() {
     let date = new Date();
     const yyyy = date.getFullYear();
     const mm = String(date.getMonth() + 1).padStart(2, "0");
@@ -103,12 +94,17 @@ function SignUp() {
         return [newFund, ...prevFunds];
       });
     }
-  }, []);
-
-  console.log(fundings);
-  console.log(fundings.length);
+  }
 
   const login = () => {
+    // Borde checka av att användarnamn inte redan finns
+
+    const userChecked = users.find((user) => user.username === username);
+    if (userChecked) {
+      onToggle();
+    }
+    if (userChecked) return;
+
     setLogged(true);
     onToggle();
 
@@ -135,28 +131,12 @@ function SignUp() {
       // holdings: [{ holdings: 0 }, { total: 0 }],
     };
 
-    // setUsers((prevUsers) => {
-    //   return [newUser, ...prevUsers];
-    // });
-
     setCurrentUser(newUser);
     setCurrentUserID(newUser.id);
-
-    // setCurrentUser({
-    //   ...currentUser,
-    //   funds: {
-    //     history: fundings,
-    //     total: totalFunds,
-    //   },
-    // });
-
-    console.log(logged);
-    console.log(username);
 
     navigate("/myaccount");
   };
 
-  console.log(users);
   return (
     <AnimatedPage>
       <Center height="100vh" alignItems="flex-start">
@@ -232,7 +212,6 @@ function SignUp() {
                 ></Input>
               </Box>
 
-              {/* <Fade in={isOpen}> */}
               <FormLabel color="white">User address</FormLabel>
               <Box display="flex" flexDirection="row">
                 <Input
@@ -269,12 +248,19 @@ function SignUp() {
               <Button
                 colorScheme="green"
                 type="submit"
-                onClick={login}
+                onClick={function () {
+                  login();
+                  welcomeFund();
+                }}
                 rightIcon={<GiHedgehog />}
               >
                 Sign up and get 1000 EUR =)
               </Button>
-              {/* </Fade> */}
+              <Collapse in={isOpen}>
+                <Button bg="red" color="white" width="100%">
+                  User already exist, please choose another one
+                </Button>
+              </Collapse>
               <Progress value={20} size="xs" colorScheme="pink" />
             </Stack>
           </Box>

@@ -49,28 +49,6 @@ function Login() {
   );
 
   const loginb = () => {
-    // fetch("https://k4backend.osuka.dev/auth/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     username: username,
-    //     password: password,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     setLogged(json);
-    //     setUser(userChecked);
-    //     navigate("/myaccount");
-    //   })
-    //   .catch((error) => {
-    //     if (!userChecked) {
-    //       onToggle();
-    //       console.log(error);
-    //     }
-    //   });
 
     console.log(userChecked);
 
@@ -90,7 +68,7 @@ function Login() {
     }
     if (!userChecked) {
       onToggle();
-      // console.log(error);
+  
     }
   };
 

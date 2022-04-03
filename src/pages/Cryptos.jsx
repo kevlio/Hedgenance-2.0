@@ -41,6 +41,44 @@ function Crypto() {
   const [rank, setRank] = useState([1, 100]);
   const [filter, setFilter] = useState([]);
   const [watchlist, setWatchlist] = useRecoilState(watchCryptoState);
+  const [filters, setFilters] = useState("");
+  const [filteredCoins, setFilteredCoins] = useState([]);
+
+  useEffect(() => {
+    setFilteredCoins(coins);
+  }, []);
+
+  useEffect(() => {
+    if (filters.length === 0) {
+      setFilteredCoins(coins);
+    }
+    if (filters.includes("high24h")) {
+      let highToLow = coins.slice(0);
+      highToLow.sort(function (a, b) {
+        return b.price_change_percentage_24h - a.price_change_percentage_24h;
+      });
+
+      setFilteredCoins(highToLow);
+    }
+    if (filters.includes("low24h")) {
+      let lowToHigh = coins.slice(0);
+      lowToHigh.sort(function (a, b) {
+        return a.price_change_percentage_24h - b.price_change_percentage_24h;
+      });
+
+      setFilteredCoins(lowToHigh);
+    }
+  }, [filters]);
+
+  // function handleCheck(event) {
+  //   const name = event.target.name;
+  //   if (!filters.includes(name)) {
+  //     setFilters([...filters, name]);
+  //   }
+  //   if (filters.includes(name)) {
+  //     setFilters(filters.filter((f) => f !== name));
+  //   }
+  // }
 
   useEffect(() => {
     axios
@@ -61,7 +99,7 @@ function Crypto() {
       .then((res) => {
         setCoin(res.data);
         console.log(res.data);
-        navigate(`/crypto/${coin}`);
+        navigate(`/cryptos/${coin}`);
       })
       .catch((error) => console.log(error));
   };
@@ -73,7 +111,7 @@ function Crypto() {
     const filteredCryptos = coins.filter((coin) =>
       coin.name.toLowerCase().includes(search.toLowerCase())
     );
-    setFilter(filteredCryptos);
+    setFilteredCoins(filteredCryptos);
   };
 
   const rankingChange = (val) => {
@@ -83,7 +121,7 @@ function Crypto() {
       (coin) =>
         rank[0] <= coin.market_cap_rank && coin.market_cap_rank <= rank[1]
     );
-    setFilter(filterTest);
+    setFilteredCoins(filterTest);
   };
 
   const watchlistCrypto = (e) => {
@@ -109,11 +147,11 @@ function Crypto() {
       watchlist.includes(crypto.name)
     );
     console.log(watchlistFilter);
-    setFilter(watchlistFilter);
+    setFilteredCoins(watchlistFilter);
   };
 
   const showAll = () => {
-    setFilter(coins);
+    setFilteredCoins(coins);
   };
 
   return (
@@ -174,8 +212,20 @@ function Crypto() {
           color="gray.300"
         >
           <Text>Sort by % Change 24h</Text>
-          <Checkbox name="All">High, Low</Checkbox>
-          <Checkbox name="All">Low, High</Checkbox>
+          <Checkbox
+            name="high24h"
+            onChange={(e) => setFilters(e.target.name)}
+            isChecked={filters.includes("high24h")}
+          >
+            High, Low
+          </Checkbox>
+          <Checkbox
+            name="low24h"
+            onChange={(e) => setFilters(e.target.name)}
+            isChecked={filters.includes("low24h")}
+          >
+            Low, High
+          </Checkbox>
         </Stack>
       </CheckboxGroup>
       <SimpleGrid
@@ -183,8 +233,8 @@ function Crypto() {
         spacing={8}
         my={4}
       >
-        {coins &&
-          filter.map((coin) => (
+        {filteredCoins &&
+          filteredCoins.map((coin) => (
             <Box
               key={coin.id}
               display="flex"

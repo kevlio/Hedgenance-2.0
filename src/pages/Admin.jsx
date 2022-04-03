@@ -73,25 +73,6 @@ function Admin() {
     }
   }, [filters]);
 
-  console.log(filters);
-
-  console.log(filteredUsers);
-
-  // const filteredUsers =
-  // filters.length === 0
-  //   ? users
-  //   : users.filter((user) => filters.includes(product.category));
-
-  // function handleCheckAll() {
-  //   setFiltersAll(!filtersAll);
-  //   setFilters(allProducts.map((product) => product.category));
-  //   if (filtersAll) {
-  //     setFilters([]);
-  //   }
-  // }
-
-  console.log(users);
-
   return (
     <Center>
       <Box display="flex" flexDirection="column">
@@ -148,19 +129,7 @@ function Admin() {
             </Checkbox>
           </Stack>
         </CheckboxGroup>
-        {/* <SimpleGrid
-          templateColumns={{
-            base: "1fr 1fr",
-            sm: "1fr 1fr",
-            md: "1fr 1fr 1fr",
-          }}
-          spacing={4}
-        > */}
         <Box>
-          {/* <Text textColor="green.400">
-      EDIT/ADD PRODUCTS. - En admin ska kunna uppdatera och ta bort en produkt i
-      admin-panelen. FRÅGA: FRÅN EN PROFIL ELLER FRÅN CRYPTOSTATES?
-    </Text> */}
           {filteredUsers.map((user) => (
             <Box
               key={user.id}

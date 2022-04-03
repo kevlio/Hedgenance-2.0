@@ -36,35 +36,34 @@ import {
   Td,
   List,
   ListItem,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Link,
 } from "@chakra-ui/react";
-import { MdCall } from "react-icons/md";
+import { MdCall, MdOutlineOpenInBrowser } from "react-icons/md";
 import { productHoldingStatus } from "../stores/holdings/selector";
 
 import { cryptoState, singleCryptoState } from "../stores/products/cryptos";
 import axios from "axios";
-import {
-  loginState,
-  userState,
-  usersState,
-  currentIDState,
-} from "../stores/users/atom";
-import { assemblyStatus } from "../stores/assembly/atom";
+import { loginState, userState } from "../stores/users/atom";
 
 function SingleFetchedProduct() {
-  const { assemblyStore } = useRecoilValue(assemblyStatus);
-  console.log(assemblyStore);
-
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const [show, setShow] = React.useState(false);
 
   const [orderMode, setOrderMode] = useState("");
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
-  const [updateUsers, setUpdateUsers] = useRecoilState(usersState);
-  const currentUserID = useRecoilValue(currentIDState);
+
+  const logged = useRecoilValue(loginState);
 
   const handleToggle = () => setShow(!show);
-  const params = useParams();
+
   const [coin, setCoin] = useRecoilState(singleCryptoState);
   const [amount, setAmount] = useState("");
   const [amountMax, setAmountMax] = useState(0);
@@ -75,10 +74,6 @@ function SingleFetchedProduct() {
 
   const [holdings, setHoldings] = useRecoilState(holdingState);
   const [fundings, setFundings] = useRecoilState(fundingState);
-  console.log(totalHolding);
-  console.log(totalFunds);
-  console.log(holdings);
-  console.log(fundings);
 
   const coinData = {
     name: coin.name,
@@ -99,9 +94,6 @@ function SingleFetchedProduct() {
     mcap_rank: coin.market_data.market_cap_rank,
   };
 
-  console.log(coinData);
-  console.log(currentUser);
-
   const { productStore } = useRecoilValue(productHoldingStatus);
 
   const holdingSingleProduct = productStore.find(
@@ -116,26 +108,6 @@ function SingleFetchedProduct() {
     console.log(amount);
   }
 
-  useEffect(() => {
-    // if (currentUser.funds.history) {
-    //   const newFundings = currentUser.funds.history.filter(
-    //     (prevFundings) => !fundings.some((fund) => prevFundings.id === fund.id)
-    //   );
-    //   console.log(newFundings);
-    //   setFundings([...fundings, ...newFundings]);
-    // }
-    // if (currentUser.holdings.history) {
-    //   const newHolding = currentUser.holdings.history.filter(
-    //     (prevHoldings) =>
-    //       !holdings.some((holding) => prevHoldings.id === holding.id)
-    //   );
-    //   console.log(newHolding);
-    //   setHoldings([...holdings, ...newHolding]);
-    // }
-  }, []);
-
-  useEffect(() => {}, [holdings]);
-
   // Definiera alla coins etc så vi kan återanvända dom direkt.
   // Ändra mins eller plus tecken beroende på buy sell mode
 
@@ -143,6 +115,9 @@ function SingleFetchedProduct() {
   function selectedMode(e) {
     const mode = e.target.value;
     setOrderMode(mode);
+    if (!logged) {
+      onOpen();
+    }
   }
 
   function maxAmount() {
@@ -157,9 +132,6 @@ function SingleFetchedProduct() {
       setAmountMax(maxSell);
     }
   }
-  console.log(holdingSingleProduct);
-  //   console.log(holdingSingleProduct.amount);
-  //   console.log(holdingSingleProduct.value);
 
   function placeOrder() {
     if (orderMode === "buy") {
@@ -181,6 +153,13 @@ function SingleFetchedProduct() {
   // Maybe put these together
   const buy = () => {
     console.log(coin.market_data.current_price.eur * amount);
+
+    const buyingConditions =
+      amount <= 0 || totalFunds < coin.market_data.current_price.eur * amount;
+
+    if (buyingConditions) {
+      onToggle();
+    }
 
     if (amount <= 0 || totalFunds < coin.market_data.current_price.eur * amount)
       return;
@@ -226,13 +205,16 @@ function SingleFetchedProduct() {
   };
 
   const sell = () => {
-    if (
+    const sellingConditions =
       amount <= 0 ||
       !holdingSingleProduct ||
       holdingSingleProduct.amount <= 0 ||
-      holdingSingleProduct.amount < amount
-    )
-      return;
+      holdingSingleProduct.amount < amount;
+
+    if (sellingConditions) {
+      onToggle();
+    }
+    if (sellingConditions) return;
 
     // Alert not sufficient amount
     const newSell = {
@@ -270,21 +252,6 @@ function SingleFetchedProduct() {
     console.log(fundings);
   };
 
-  // useEffect(() => {
-  //   setCurrentUser({
-  //     ...currentUser,
-  //     // funds: {
-  //     //   history: fundings,
-  //     //   total: totalFunds,
-  //     // },
-  //     holdings: {
-  //       history: holdings,
-  //       total: totalHolding,
-  //     },
-  //   });
-  //   console.log(fundings);
-  // }, [holdings]);
-
   function handleChange(event) {
     const value = event.target.value;
     setAmount(value);
@@ -305,12 +272,6 @@ function SingleFetchedProduct() {
   function handleField() {
     inputRef.current.value = null;
   }
-
-  console.log(currentUser);
-  console.log(updateUsers);
-  console.log(totalFunds);
-  console.log(fundings);
-  console.log(holdings);
 
   return (
     <Center>
@@ -359,21 +320,39 @@ function SingleFetchedProduct() {
         </Box>
         <Box>
           <Button
+            as="a"
+            href="/cryptos"
             width="200px"
             ml="130px"
             mr="50px"
             colorScheme="green"
-            bg="green.500"
+            bg="none"
             variant="outline"
             value="buy"
             textColor="white"
           >
             All products
           </Button>
+          <Button
+            as="a"
+            href="/myaccount"
+            width="200px"
+            mt={1}
+            ml="130px"
+            mr="50px"
+            colorScheme="green"
+            bg="none"
+            variant="outline"
+            value="buy"
+            textColor="white"
+          >
+            My Account
+          </Button>
           <Box display="flex" flexDirection="column">
             <Text ml="130px" mr="50px">
               Available funds: €{totalFunds.toLocaleString()}
             </Text>
+
             <Box display="flex" flexDirection="row" ml="130px">
               <Button
                 width="100px"
@@ -425,12 +404,13 @@ function SingleFetchedProduct() {
             </Button>
             <Input defaultValue={coinData.price} maxW="200px" />
           </Box>
-          <Box display="flex">
+          {/* To next project update */}
+          {/* <Box display="flex">
             <Button colorScheme="green" bg="none" width="130px">
               Desired price
             </Button>
             <Input defaultValue={coinData.price} maxW="200px" />
-          </Box>
+          </Box> */}
           <Box display="flex">
             <Button colorScheme="green" bg="none" width="130px">
               Total price
@@ -441,6 +421,7 @@ function SingleFetchedProduct() {
               defaultValue={amount && amount * coinData.price}
             />
           </Box>
+
           <Button
             colorScheme="green"
             ml="130px"
@@ -454,6 +435,20 @@ function SingleFetchedProduct() {
           >
             Place order
           </Button>
+          <Collapse in={logged && isOpen}>
+            <Button
+              bg="red"
+              ml="130px"
+              mr="50px"
+              mt={1}
+              width="200px"
+              marginY={1}
+              as="a"
+              href="/myaccount"
+            >
+              !Sufficient funds/amount
+            </Button>
+          </Collapse>
 
           <Button
             colorScheme="green"
@@ -462,6 +457,9 @@ function SingleFetchedProduct() {
             mr="50px"
             mt={1}
             width="200px"
+            bg={show ? "green.400" : "none"}
+            variant="outline"
+            color="white"
           >
             {show ? "Hide" : "More"} information
           </Button>
@@ -485,7 +483,10 @@ function SingleFetchedProduct() {
             <Tr>
               <Td>Total value</Td>
               <Td isNumeric>
-                {holdingSingleProduct && holdingSingleProduct.value.toFixed(4)}
+                {holdingSingleProduct &&
+                  (holdingSingleProduct.value > 0
+                    ? holdingSingleProduct.value.toFixed(2)
+                    : holdingSingleProduct.value.toFixed(5))}
               </Td>
             </Tr>
           </Tbody>
@@ -494,9 +495,13 @@ function SingleFetchedProduct() {
               <Td>Avg. purchase price</Td>
               <Td isNumeric>
                 {holdingSingleProduct &&
-                  (
-                    holdingSingleProduct.value / holdingSingleProduct.amount
-                  ).toFixed(4)}
+                  (holdingSingleProduct.value / holdingSingleProduct.amount > 0
+                    ? (
+                        holdingSingleProduct.value / holdingSingleProduct.amount
+                      ).toFixed(2)
+                    : (
+                        holdingSingleProduct.value / holdingSingleProduct.amount
+                      ).toFixed(5))}
               </Td>
             </Tr>
           </Tbody>
@@ -580,6 +585,28 @@ function SingleFetchedProduct() {
         </Table>
         {/* </Collapse> */}
       </SimpleGrid>
+      <Modal isOpen={!logged && isOpen} onClose={!logged && onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Oups! Before you can get started...</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
+              Please Login or Sign up to invest. <br />
+              It only takes 3 minutes to Sign up. Sign up now and get $1000 for
+              trades. Let's hedge.
+            </Text>
+          </ModalBody>
+          <ModalFooter gap={1}>
+            <Link href="/login">
+              <Button colorScheme="green">Log in</Button>
+            </Link>
+            <Link href="/signup">
+              <Button colorScheme="green">Sign up</Button>
+            </Link>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Center>
   );
 }

@@ -5,19 +5,17 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import ProductPage from "./pages/ProductPage";
-import SingleProduct from "./pages/SingleProduct";
 import MyAccount from "./pages/MyAccount";
 import Trades from "./pages/Trades";
 import Fundings from "./pages/Fundings";
-import Crypto from "./pages/Crypto";
-import CryptoPage from "./pages/CryptoPage";
-// import SingleCrypto from "./pages/SingleCrypto";
+import Crypto from "./pages/Cryptos";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
 import Settings from "./pages/Settings";
 import { SingleCryptoPage } from "./pages/SingleCrypto";
 import AdminProducts from "./pages/AdminProducts";
+// import ProductPage from "./pages/ProductPage";
+// import SingleProduct from "./pages/SingleProduct";
 
 //
 // {!auth.token ? (
@@ -57,13 +55,8 @@ function App() {
 
         <Route path="/settings" element={<Settings />}></Route>
 
-        <Route path="/crypto" element={<Crypto />}></Route>
-        <Route path="/crypto/:id" element={<SingleCryptoPage />}></Route>
-
-        {/* This should be replaced with /crypto when done, look before useful css before delete CryptoPage */}
-        <Route path="/cryptopage" element={<CryptoPage />}></Route>
-        {/* <Route path="/cryptopage/:id" element={<SingleCrypto />}></Route> */}
-        {/* <Route path="/crypto/:id" element={<SingleCryptoPage />}></Route> */}
+        <Route path="/cryptos" element={<Crypto />}></Route>
+        <Route path="/cryptos/:id" element={<SingleCryptoPage />}></Route>
       </Routes>
       <Footer />
     </div>

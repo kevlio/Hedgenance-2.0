@@ -36,22 +36,16 @@ import {
   currentIDState,
 } from "../stores/users/atom";
 
-import { assemblyStatus } from "../stores/assembly/atom";
 
 function Fundings() {
   // const [users, setUsers] = useRecoilState(usersState);
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [input, setInput] = useState("");
-  // const currentUserID = useRecoilValue(currentIDState);
-  // Moves this to users LocalStorage instead
-  // const [fundings, setFundings] = useRecoilState(fundingState);
+
   const { totalFunds } = useRecoilValue(fundingStatus);
   console.log(totalFunds);
 
   const [fundings, setFundings] = useRecoilState(fundingState);
-  // Flytta till Recpoil Fundings? vad skulle hända då
-  // const [userHistoryFunds, setUserHistoryFunds] = useState([]);
-  // const [userTotalFunds, setUserTotalFunds] = useState(0);
 
   useEffect(() => {
     if (currentUser.funds.history) {
@@ -63,39 +57,12 @@ function Fundings() {
     }
   }, []);
 
-  const { assemblyStore } = useRecoilValue(assemblyStatus);
-  console.log(assemblyStore);
 
   console.log(fundings);
 
   console.log(currentUser);
 
-  // const totalFunds2 =
-  //   fundings &&
-  //   fundings.reduce((total, current) => {
-  //     const formattedAmount = parseInt(current.input);
-  //     return total + formattedAmount;
-  //   }, 0);
-
-  // console.log(totalFunds2);
-
   useEffect(() => {
-    // console.log(totalFunds2);
-    // setUserHistoryFunds(fundings);
-    // setUserTotalFunds(totalFunds2);
-    // setUsers(
-    //   users.map((user) => {
-    //     if (user.id === currentUserID) {
-    //       return {
-    //         ...user,
-    //         funds: { history: fundings, total: totalFunds2 },
-    //       };
-    //     }
-    //     return user;
-    //   })
-    // );
-    // const user = users.filter((user) => user.id === currentUserID);
-
     setCurrentUser({
       ...currentUser,
       funds: { history: fundings, total: totalFunds },
@@ -110,9 +77,6 @@ function Fundings() {
     event.preventDefault();
   }
   const todoRef = useRef();
-
-  // console.log(currentUser);
-  // console.log(users);
 
   const createFunding = () => {
     if (input <= 0) return;
@@ -207,7 +171,7 @@ function Fundings() {
                   <Fade in={isOpen}>
                     <Button
                       as="a"
-                      href="/crypto"
+                      href="/cryptos"
                       color="white"
                       mt="2"
                       colorScheme="pink"
@@ -223,8 +187,7 @@ function Fundings() {
                 <Text fontSize="3xl">Funding history</Text>
                 <Text fontSize="2xl" color="gray.400">
                   Total available funds:{" "}
-                  {/* {user[0].funds && user[0].funds.total.toLocaleString()} USD */}
-                  {/* {totalFundsUser && totalFundsUser.toLocaleString()} */}
+  
                   {(currentUser.funds.total
                     ? currentUser.funds.total
                     : 0
