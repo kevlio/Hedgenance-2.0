@@ -30,8 +30,7 @@ function Admin() {
     navigate("/adminlogin");
   }
 
-  // Denna sida är väldigt seg. Se över UseEffects logiken...
-  
+  // Denna borde förbättras
   function handleCheck(event) {
     const name = event.target.name;
     if (!filters.includes(name)) {
@@ -40,30 +39,22 @@ function Admin() {
     if (filters.includes(name)) {
       setFilters(filters.filter((f) => f !== name));
     }
-  }
-
-  useEffect(() => {
-    if (filters.length === 0) {
-      setFilteredUsers(users);
-    }
-
     if (filters.includes("funds")) {
-      const filteredByFunds = users.filter((user) => user.funds.total > 0);
-      setFilteredUsers(filteredByFunds);
+      setFilteredUsers(users.filter((user) => user.funds.total > 0));
     }
     if (filters.includes("holdings")) {
-      const filteredByHoldings = users.filter(
-        (user) => user.holdings.total > 0
-      );
-      setFilteredUsers(filteredByHoldings);
+      setFilteredUsers(users.filter((user) => user.holdings.total > 0));
     }
     if (filters.includes("both")) {
-      const filteredByBoth = users.filter(
-        (user) => user.funds.total > 0 && user.holdings.total > 0
+      setFilteredUsers(
+        users.filter((user) => user.funds.total > 0 && user.holdings.total > 0)
       );
-      setFilteredUsers(filteredByBoth);
     }
-  }, [filters]);
+  }
+
+  console.log(filters);
+
+  const filterUsers = filters.length === 0 ? users : filteredUsers;
 
   return (
     <Center>
@@ -120,7 +111,7 @@ function Admin() {
             </Stack>
           </CheckboxGroup>
           <Box>
-            {filteredUsers.map((user) => (
+            {filterUsers.map((user) => (
               <Box
                 key={user.id}
                 display="flex"
@@ -131,12 +122,12 @@ function Admin() {
                 borderRadius="14px"
                 p={4}
                 textColor="white"
-                whiteSpace="nowrap"
+                // whiteSpace="nowrap"
                 alignItems="flex-start"
                 my={4}
               >
                 <Box
-                  width="40%"
+                  width="35%"
                   display="flex"
                   flexDirection="column"
                   fontSize={{ base: "smaller", sm: "md", md: "1xl" }}
@@ -164,7 +155,7 @@ function Admin() {
                   <Text></Text>
                 </Box>
 
-                <Box display="flex" flexDirection="column" width="60%">
+                <Box display="flex" flexDirection="column" width="65%">
                   <Box>
                     <Text borderBottom="1px solid #48BB78">
                       Trading History
