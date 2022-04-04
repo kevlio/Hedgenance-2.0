@@ -142,10 +142,12 @@ function AdminProducts() {
               type="text"
               textColor="white"
               onChange={searchCrypto}
+              my={1}
             ></Input>
           </Collapse>
           <Box display="flex" flexDirection="column" gap={0} maxW="100%">
             <Input
+              my={1}
               type="text"
               placeholder="Change product image"
               textColor="white"
