@@ -14,22 +14,16 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useRef, useEffect } from "react";
 import AnimatedPage from "../components/AnimatedPage";
-import {
-  loginState,
-  userState,
-  usersState,
-  currentIDState,
-} from "../stores/users/atom";
+import { loginState, userState, usersState } from "../stores/users/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 
 import { GiHedgehog } from "react-icons/gi";
 
+import { fundingState } from "../stores/fundings/atom";
 import { fundingStatus } from "../stores/fundings/selector";
 
 import { holdingState } from "../stores/holdings/atom";
-
-import { fundingState } from "../stores/fundings/atom";
 
 import {
   holdingStatus,
@@ -44,7 +38,6 @@ function SignUp() {
   const [fundings, setFundings] = useRecoilState(fundingState);
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
-  const [currentUserID, setCurrentUserID] = useRecoilState(currentIDState);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -65,8 +58,6 @@ function SignUp() {
 
   const { totalFunds } = useRecoilValue(fundingStatus);
   const { totalHolding } = useRecoilValue(holdingStatus);
-
-  // Update list of users
 
   const inputRef = useRef();
   // useEffect(() => {
@@ -97,8 +88,6 @@ function SignUp() {
   }
 
   const login = () => {
-    // Borde checka av att användarnamn inte redan finns
-
     const userChecked = users.find((user) => user.username === username);
     if (userChecked) {
       onToggle();
@@ -132,8 +121,6 @@ function SignUp() {
     };
 
     setCurrentUser(newUser);
-    setCurrentUserID(newUser.id);
-
     navigate("/myaccount");
   };
 

@@ -35,9 +35,3 @@ export const usersState = atom({
   default: [],
   effects_UNSTABLE: [localStorageEffect("users")],
 });
-
-export const currentIDState = atom({
-  key: "current-id",
-  default: [],
-  effects_UNSTABLE: [localStorageEffect("current-id")],
-});

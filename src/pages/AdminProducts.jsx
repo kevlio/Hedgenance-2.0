@@ -1,7 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import { cryptoState } from "../stores/products/cryptos";
-import { useRecoilState } from "recoil";
-import axios from "axios";
 
 import {
   Box,
@@ -21,9 +18,11 @@ import {
 import { AiOutlineEdit } from "react-icons/ai";
 import { AiFillDelete } from "react-icons/ai";
 
-import { adminState } from "../stores/users/atom";
+import { useRecoilState } from "recoil";
 
-import { useNavigate } from "react-router-dom";
+import { adminState } from "../stores/users/atom";
+import { cryptoState } from "../stores/products/cryptos";
+import axios from "axios";
 
 function AdminProducts() {
   const [adminLogged, setAdminLogged] = useState(adminState);
@@ -54,7 +53,6 @@ function AdminProducts() {
   }, [search]);
 
   const searchCrypto = (e) => {
-    console.log(e.target.value);
     setSearch(e.target.value);
 
     const filteredCryptos = coins.filter((coin) =>
@@ -65,7 +63,6 @@ function AdminProducts() {
 
   // Change this logic
   function updateMode(coinID) {
-    console.log(coinID);
     setCoinID(coinID);
   }
 
@@ -106,13 +103,10 @@ function AdminProducts() {
         )
         .then((res) => {
           setCoins(res.data);
-          console.log(res.data);
         })
         .catch((error) => console.log(error));
     }
   }, []);
-
-  console.log(coins);
 
   return (
     <Center>
@@ -140,7 +134,7 @@ function AdminProducts() {
             textTransform="capitalize"
             fontSize={{ base: "1xl", sm: "1xl", md: "2xl" }}
           >
-            Updating: {coinID}{" "}
+            Updating Coin: {coinID}{" "}
           </Text>
           <Collapse in={!isOpen}>
             <Input
@@ -211,10 +205,15 @@ function AdminProducts() {
                 // whiteSpace="nowrap"
                 // gap={10}
               >
-                <Box display="flex" flexDirection="row" gap={1}>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  gap={1}
+                  alignItems="center"
+                >
                   <Image boxSize={10} src={coin.image}></Image>
                   <Text
-                    fontSize="2xl"
+                    fontSize="1xl"
                     fontWeight="bold"
                     color={"green.400"}
                     textColor={coin.id === coinID ? "blue.400" : "white"}

@@ -32,17 +32,7 @@ import { MdRemove } from "react-icons/md";
 
 function Crypto() {
   // https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false: NOTERA ANVÄNDBART: EUR, ORDER !, PER PAGE https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=price_change_percentage_desc&per_page=100&page=1&sparkline=false
-
-  const params = useParams();
-  const navigate = useNavigate();
-  const [coins, setCoins] = useRecoilState(cryptoState);
-  const [coin, setCoin] = useRecoilState(singleCryptoState);
-  const [search, setSearch] = useState("");
-  const [rank, setRank] = useState([1, 100]);
-  const [filter, setFilter] = useState([]);
-  const [watchlist, setWatchlist] = useRecoilState(watchCryptoState);
-  const [filters, setFilters] = useState("");
-  const [filteredCoins, setFilteredCoins] = useState([]);
+  // const [filter, setFilter] = useState([]);
 
   // useEffect(() => {
   //   setFilteredCoins(coins);
@@ -57,6 +47,16 @@ function Crypto() {
   //     setFilters(filters.filter((f) => f !== name));
   //   }
   // }
+
+  const params = useParams();
+  const navigate = useNavigate();
+  const [coins, setCoins] = useRecoilState(cryptoState);
+  const [coin, setCoin] = useRecoilState(singleCryptoState);
+  const [search, setSearch] = useState("");
+  const [rank, setRank] = useState([1, 100]);
+  const [watchlist, setWatchlist] = useRecoilState(watchCryptoState);
+  const [filters, setFilters] = useState("");
+  const [filteredCoins, setFilteredCoins] = useState([]);
 
   useEffect(() => {
     if (filters.length === 0) {
@@ -127,20 +127,15 @@ function Crypto() {
   };
 
   const watchlistCrypto = (e) => {
-    // Lära mig denna logik perfekt. Går den att skriva på andra sätt?
     const newCrypto = e.target.name;
-    console.log(watchlist);
-    // if (!watchlist.includes(newCrypto)) {
     setWatchlist((prevCrypto) => {
       return [...prevCrypto, newCrypto];
     });
-    // }
     if (watchlist.includes(newCrypto)) {
       console.log("already exist");
 
       const removeArr = [...watchlist].filter((crypto) => crypto !== newCrypto);
       setWatchlist(removeArr);
-      // setWatchlist(watchlist.splice(indexOf(newCrypto)));
     }
   };
 

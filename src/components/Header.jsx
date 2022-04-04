@@ -23,12 +23,7 @@ import { holdingState } from "../stores/holdings/atom";
 import { fundingState } from "../stores/fundings/atom";
 import { fundingStatus } from "../stores/fundings/selector";
 
-import {
-  loginState,
-  userState,
-  usersState,
-  currentIDState,
-} from "../stores/users/atom";
+import { loginState, userState, usersState } from "../stores/users/atom";
 
 import { useNavigate } from "react-router-dom";
 
@@ -154,7 +149,6 @@ const Header = () => {
           <Link href={`${logged ? "/myaccount" : "/signup"}`}>{`${
             logged ? "account" : "sign up"
           }`}</Link>
-          {/* Sometimes colliding toggleLogged */}
           <Link
             href={`${logged ? "/myaccount" : "/login"}`}
             onClick={handleLogged}

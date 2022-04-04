@@ -9,13 +9,6 @@ import React, {
 import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { holdingState } from "../stores/holdings/atom";
-
-import { fundingState } from "../stores/fundings/atom";
-import { fundingStatus } from "../stores/fundings/selector";
-
-import { holdingStatus } from "../stores/holdings/selector";
-
 import {
   Box,
   Text,
@@ -49,31 +42,33 @@ import { MdCall, MdOutlineOpenInBrowser } from "react-icons/md";
 import { productHoldingStatus } from "../stores/holdings/selector";
 
 import { cryptoState, singleCryptoState } from "../stores/products/cryptos";
-import axios from "axios";
 import { loginState, userState } from "../stores/users/atom";
+
+import { holdingState } from "../stores/holdings/atom";
+import { holdingStatus } from "../stores/holdings/selector";
+
+import { fundingState } from "../stores/fundings/atom";
+import { fundingStatus } from "../stores/fundings/selector";
 
 function SingleFetchedProduct() {
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const [show, setShow] = React.useState(false);
-
+  const logged = useRecoilValue(loginState);
   const [orderMode, setOrderMode] = useState("");
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
-
-  const logged = useRecoilValue(loginState);
-
-  const handleToggle = () => setShow(!show);
 
   const [coin, setCoin] = useRecoilState(singleCryptoState);
   const [amount, setAmount] = useState("");
   const [amountMax, setAmountMax] = useState(0);
 
+  const [fundings, setFundings] = useRecoilState(fundingState);
   const { totalFunds } = useRecoilValue(fundingStatus);
 
+  const [holdings, setHoldings] = useRecoilState(holdingState);
   const { totalHolding } = useRecoilValue(holdingStatus);
 
-  const [holdings, setHoldings] = useRecoilState(holdingState);
-  const [fundings, setFundings] = useRecoilState(fundingState);
+  const handleToggle = () => setShow(!show);
 
   const coinData = {
     name: coin.name,
@@ -100,18 +95,11 @@ function SingleFetchedProduct() {
     (holding) => holding.title === coinData.name
   );
 
-  console.log(holdingSingleProduct);
-
   function handleChange(event) {
     const value = event.target.value;
     setAmount(value);
-    console.log(amount);
   }
 
-  // Definiera alla coins etc så vi kan återanvända dom direkt.
-  // Ändra mins eller plus tecken beroende på buy sell mode
-
-  // Maybe put these together. med event.target.value
   function selectedMode(e) {
     const mode = e.target.value;
     setOrderMode(mode);
@@ -123,12 +111,10 @@ function SingleFetchedProduct() {
   function maxAmount() {
     if (orderMode === "buy") {
       const maxBuy = Math.floor(totalFunds / coinData.price);
-      console.log(maxBuy);
       setAmountMax(maxBuy);
     }
     if (orderMode === "sell") {
       const maxSell = holdingSingleProduct.amount;
-      console.log(maxSell);
       setAmountMax(maxSell);
     }
   }
@@ -150,7 +136,8 @@ function SingleFetchedProduct() {
   const sec = String(date.getSeconds()).padStart(2, "0");
 
   date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
-  // Maybe put these together
+
+  // Put buy/sell together when time, just change +- depending on mode
   const buy = () => {
     console.log(coin.market_data.current_price.eur * amount);
 
@@ -188,8 +175,7 @@ function SingleFetchedProduct() {
     setFundings((prevFunds) => {
       return [...prevFunds, reduceFunds];
     });
-    console.log(holdings);
-    console.log(fundings);
+
     setCurrentUser({
       ...currentUser,
       funds: {
@@ -201,7 +187,6 @@ function SingleFetchedProduct() {
         total: totalHolding,
       },
     });
-    console.log(fundings);
   };
 
   const sell = () => {
@@ -249,7 +234,6 @@ function SingleFetchedProduct() {
         total: totalHolding,
       },
     });
-    console.log(fundings);
   };
 
   function handleChange(event) {
@@ -260,8 +244,6 @@ function SingleFetchedProduct() {
   if (!coin) {
     return <p>Loading profile...</p>;
   }
-
-  console.log(amountMax);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -418,7 +400,7 @@ function SingleFetchedProduct() {
             <Input
               maxW="200px"
               placeholder="amount x price"
-              defaultValue={amount && amount * coinData.price}
+              defaultValue={amount && (amount * coinData.price).toFixed(3)}
             />
           </Box>
 

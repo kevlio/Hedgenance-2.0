@@ -37,8 +37,6 @@ function Home() {
     const newUsers = fetchedUsers.filter(
       (fetchedUser) => !users.some((user) => fetchedUser.id === user.id)
     );
-    console.log(newUsers);
-    console.log(newUsers.length);
 
     const addData = {
       funds: { history: 0, total: 0 },
@@ -55,7 +53,6 @@ function Home() {
       console.log(users);
     }
 
-    // { funds: { history: 0, total: 0 }, holdings: { history: 0, total: 0 } },
     if (users.length > 0 && newUsers.length > 0) {
       console.log("New Users + Prev users");
       setUsers([...newUsers, ...users]);

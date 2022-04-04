@@ -7,10 +7,7 @@ import {
   Stack,
   Heading,
   Text,
-  Flex,
   FormControl,
-  FormLabel,
-  Spinner,
   Table,
   Thead,
   Tbody,
@@ -18,23 +15,23 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
-  Link,
   useDisclosure,
   Fade,
+  Flex,
+  FormLabel,
+  Spinner,
+  TableCaption,
+  Link,
 } from "@chakra-ui/react";
-import React, { useState, useRef, useCallback, useEffect } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { fundingState, fundsTotal } from "../stores/fundings/atom";
-import { fundingStatus } from "../stores/fundings/selector";
 import LocalNav from "../components/LocalNav";
 
-import {
-  loginState,
-  userState,
-  usersState,
-  currentIDState,
-} from "../stores/users/atom";
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+
+import { fundingState, fundsTotal } from "../stores/fundings/atom";
+import { fundingStatus } from "../stores/fundings/selector";
+
+import { loginState, userState, usersState } from "../stores/users/atom";
 
 function Fundings() {
   // const [users, setUsers] = useRecoilState(usersState);

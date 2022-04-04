@@ -20,6 +20,10 @@ import { holdingState } from "../stores/holdings/atom";
 import { fundingState } from "../stores/fundings/atom";
 // https://k4backend.osuka.dev/
 // https://k4backend.osuka.dev/docs/
+// useEffect(() => {
+//   inputRef.current.focus();
+// });
+// const inputRef = useRef();
 
 function Login() {
   const [user, setUser] = useRecoilState(userState);
@@ -35,23 +39,11 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const inputRef = useRef();
-  // useEffect(() => {
-  //   inputRef.current.focus();
-  // });
-
-  // finns inga updatedusers här..
-
-  console.log(users);
-
   const userChecked = users.find(
     (user) => user.username === username && user.password === password
   );
 
   const loginb = () => {
-
-    console.log(userChecked);
-
     if (userChecked) {
       setUser(userChecked);
 
@@ -62,13 +54,11 @@ function Login() {
         setHoldings(userChecked.holdings.history);
       }
 
-      console.log(userChecked);
       setLogged(true);
       navigate("/myaccount");
     }
     if (!userChecked) {
       onToggle();
-  
     }
   };
 

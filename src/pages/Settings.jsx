@@ -87,11 +87,13 @@ function Settings() {
             <Box display="flex" flexDirection="row" gap={2} alignItems="center">
               <Input
                 type="email"
+                placeholder="Email"
                 defaultValue={user.email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <Input
                 type="tel"
+                placeholder="Tel. Number"
                 defaultValue={user.phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
@@ -101,11 +103,13 @@ function Settings() {
             <Box display="flex" flexDirection="row" gap={2} alignItems="center">
               <Input
                 type="text"
+                placeholder="Username"
                 defaultValue={user.username}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <Input
                 type="password"
+                placeholder="Password"
                 defaultValue={user.password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -115,11 +119,13 @@ function Settings() {
             <Box display="flex" flexDirection="row" gap={2} alignItems="center">
               <Input
                 type="text"
+                placeholder="Street"
                 defaultValue={user.address.street}
                 onChange={(e) => setStreet(e.target.value)}
               />
               <Input
                 type="text"
+                placeholder="Street Number"
                 defaultValue={user.address.number}
                 onChange={(e) => setNumber(e.target.value)}
               />
@@ -129,11 +135,13 @@ function Settings() {
             <Box display="flex" flexDirection="row" gap={2} alignItems="center">
               <Input
                 type="text"
+                placeholder="City"
                 defaultValue={user.address.city}
                 onChange={(e) => setCity(e.target.value)}
               />{" "}
               <Input
                 type="text"
+                placeholder="Zipcode"
                 defaultValue={user.address.zipcode}
                 onChange={(e) => setZipcode(e.target.value)}
               />

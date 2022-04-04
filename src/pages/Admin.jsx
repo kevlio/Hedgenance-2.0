@@ -16,18 +16,13 @@ import { adminState } from "../stores/users/atom";
 
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
-// En admin ska kunna logga in
-// En admin ska kunna besöka en särskild sida endast en inloggad admin kan besöka, med en lista på samtliga produkter och användare
 
 function Admin() {
   const [users, setUsers] = useRecoilState(usersState);
   const [adminLogged, setAdminLogged] = useState(adminState);
-
   const [filters, setFilters] = useState([]);
   const [filtersAll, setFiltersAll] = useState(false);
-
   const [filteredUsers, setFilteredUsers] = useState([]);
-
   const navigate = useNavigate();
 
   function handleLogged() {
@@ -35,6 +30,8 @@ function Admin() {
     navigate("/adminlogin");
   }
 
+  // Denna sida är väldigt seg. Se över UseEffects logiken...
+  
   function handleCheck(event) {
     const name = event.target.name;
     if (!filters.includes(name)) {
@@ -49,6 +46,7 @@ function Admin() {
     if (filters.length === 0) {
       setFilteredUsers(users);
     }
+
     if (filters.includes("funds")) {
       const filteredByFunds = users.filter((user) => user.funds.total > 0);
       setFilteredUsers(filteredByFunds);
@@ -138,7 +136,7 @@ function Admin() {
                 my={4}
               >
                 <Box
-                  width="50%"
+                  width="40%"
                   display="flex"
                   flexDirection="column"
                   fontSize={{ base: "smaller", sm: "md", md: "1xl" }}
@@ -166,7 +164,7 @@ function Admin() {
                   <Text></Text>
                 </Box>
 
-                <Box display="flex" flexDirection="column" width="50%">
+                <Box display="flex" flexDirection="column" width="60%">
                   <Box>
                     <Text borderBottom="1px solid #48BB78">
                       Trading History
@@ -181,12 +179,12 @@ function Admin() {
                           fontSize={{
                             base: "smaller",
                             sm: "smaller",
-                            md: "lg",
+                            md: "small",
                           }}
                         >
-                          <Text>{holding.title}</Text>
+                          <Text>{holding.title}:</Text>
                           <Text>{holding.amount}</Text>
-                          <Text> x {holding.currentPrice}</Text>
+                          <Text>x {holding.currentPrice}</Text>
                           <Text> = {holding.price.toLocaleString()}</Text>
                         </Box>
                       ))}
@@ -194,13 +192,17 @@ function Admin() {
                       fontSize={{
                         base: "smaller",
                         sm: "smaller",
-                        md: "lg",
+                        md: "small",
                       }}
                     >
                       <Text borderTop="1px solid #48BB78">
-                        Total Holdings: {user.holdings && user.holdings.total}
+                        Total Holdings:{" "}
+                        {user.holdings && user.holdings.total.toLocaleString()}
                       </Text>
-                      <Text>Total Funds: {user.funds && user.funds.total}</Text>
+                      <Text>
+                        Total Funds:{" "}
+                        {user.funds && user.funds.total.toLocaleString()}
+                      </Text>
                       <Text borderTop="1px solid #48BB78" textColor="blue.200">
                         Total Account Value:{" "}
                         {(

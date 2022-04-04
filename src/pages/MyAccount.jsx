@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { userState, usersState, currentIDState } from "../stores/users/atom";
+import { userState, usersState } from "../stores/users/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { holdingState } from "../stores/holdings/atom";
 import { fundingState } from "../stores/fundings/atom";
@@ -38,22 +38,13 @@ function MyAccount() {
   const { isOpen, onToggle } = useDisclosure();
 
   const [holdings, setHoldings] = useRecoilState(holdingState);
-  console.log(holdings);
   const [fundings, setFundings] = useRecoilState(fundingState);
-
   const { totalFunds } = useRecoilValue(fundingStatus);
   const { totalHolding } = useRecoilValue(holdingStatus);
-  console.log(totalHolding);
-  console.log(holdings);
-
   const { productStore } = useRecoilValue(productHoldingStatus);
-
-  console.log(productStore);
-  console.log(holdings);
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
 
-  const currentUserID = useRecoilValue(currentIDState);
   const [currentCryptoPrice, setCurrentCryptoPrice] = useState(0);
 
   const pieData = productStore.map((holding) => {
@@ -85,8 +76,7 @@ function MyAccount() {
     });
     console.log(product);
 
-    // varför fula []
-    // verkar onödigt komplicerat. se över
+    // Verkar onödigt komplicerat. Se över
 
     const coinID = product[0].coinID;
     const amount = product[0].amount;
@@ -109,8 +99,6 @@ function MyAccount() {
         .catch((error) => console.log(error));
     };
     cryptoById(coinID);
-    console.log(coin);
-    console.log(currentCryptoPrice);
 
     if (amount <= 0) return;
 
@@ -167,9 +155,6 @@ function MyAccount() {
       },
     });
   }, [fundings]);
-
-  console.log(fundings);
-  console.log(holdings);
 
   return (
     <Box minH="100vh">
