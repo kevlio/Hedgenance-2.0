@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { cryptoState } from "../stores/products/cryptos";
 import { useRecoilState } from "recoil";
 import axios from "axios";
@@ -14,34 +14,69 @@ import {
   FormControl,
   Image,
   Center,
+  Container,
+  Stack,
 } from "@chakra-ui/react";
 
 import { AiOutlineEdit } from "react-icons/ai";
 import { AiFillDelete } from "react-icons/ai";
 
+import { adminState } from "../stores/users/atom";
+
+import { useNavigate } from "react-router-dom";
+
 function AdminProducts() {
+  const [adminLogged, setAdminLogged] = useState(adminState);
   const [coins, setCoins] = useRecoilState(cryptoState);
   const { isOpen, onToggle } = useDisclosure();
   const [image, setImage] = useState("");
+
+  const [filteredCoins, setFilteredCoins] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const [courtage, setCourtage] = useState("");
+  // const [edit, setEdit] = useState(false);
+  // function editMode() {
+  //   setEdit(!edit);
+  // }
+
   const [coinID, setCoinID] = useState("");
 
-  // Varför emittar den coinID så dåligt? Fråga Oscar
+  function handleLogged() {
+    setAdminLogged(false);
+    navigate("/adminlogin");
+  }
 
+  useEffect(() => {
+    if (search.length === 0) {
+      setFilteredCoins(coins);
+    }
+  }, [search]);
+
+  const searchCrypto = (e) => {
+    console.log(e.target.value);
+    setSearch(e.target.value);
+
+    const filteredCryptos = coins.filter((coin) =>
+      coin.name.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredCoins(filteredCryptos);
+  };
+
+  // Change this logic
   function updateMode(coinID) {
     console.log(coinID);
     setCoinID(coinID);
-    onToggle();
   }
 
+  const inputRef = useRef();
+
   function updateProduct() {
-    console.log(coinID);
-    console.log(image);
+    onToggle();
     const updateCoin = coins.filter((coin) => coin.id === coinID);
     const filteredCoins = coins.filter((coin) => coin.id !== coinID);
-    console.log(updateCoin);
-    console.log(filteredCoins);
 
-    if (coinID && image) {
+    if (image) {
       const updatedCoin = updateCoin.map((coin) => {
         return {
           ...coin,
@@ -52,15 +87,15 @@ function AdminProducts() {
       console.log(updatedCoin);
       setCoinID("");
       setCoins([...updatedCoin, ...filteredCoins]);
+      setFilteredCoins([...updatedCoin, ...filteredCoins]);
+      inputRef.current.value = null;
     }
   }
 
   function deleteProduct(coinID) {
-    if (coinID) {
-      console.log(coinID);
-      const filteredCoins = coins.filter((coin) => coin.id !== coinID);
-      setCoins(filteredCoins);
-    }
+    const filteredCoins = coins.filter((coin) => coin.id !== coinID);
+    setCoins(filteredCoins);
+    setFilteredCoins(filteredCoins);
   }
 
   useEffect(() => {
@@ -77,27 +112,63 @@ function AdminProducts() {
     }
   }, []);
 
+  console.log(coins);
+
   return (
     <Center>
-      <Box>
+      <Container>
+        <Stack
+          display="flex"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          my={2}
+          spacing={[1, 5]}
+          direction={["column", "row"]}
+        >
+          <Button bg="none" textColor="white" as="a" href="/admin">
+            Users Information
+          </Button>
+          <Button bg="none" textColor="white" as="a" href="/adminproducts">
+            Product Information
+          </Button>
+          <Button bg="none" textColor="white" onClick={handleLogged}>
+            Log out admin
+          </Button>
+        </Stack>
         <FormControl textColor="white" mb={4}>
-          <Text textTransform="capitalize" fontSize="2xl">
+          <Text
+            textTransform="capitalize"
+            fontSize={{ base: "1xl", sm: "1xl", md: "2xl" }}
+          >
             Updating: {coinID}{" "}
           </Text>
-          <Box display="flex" flexDirection="row" gap={2}>
+          <Collapse in={!isOpen}>
+            <Input
+              placeholder="Search Hedge"
+              type="text"
+              textColor="white"
+              onChange={searchCrypto}
+            ></Input>
+          </Collapse>
+          <Box display="flex" flexDirection="column" gap={0} maxW="100%">
             <Input
               type="text"
-              // defaultValue={coin.image}
               placeholder="Change product image"
               textColor="white"
               onChange={(e) => setImage(e.target.value)}
+              ref={inputRef}
             />
-            <Button width="40%" colorScheme="green" onClick={updateProduct}>
+            <Button
+              minWidth="max-content"
+              colorScheme="green"
+              onClick={updateProduct}
+              fontSize={{ base: "md", sm: "lg", md: "1xl" }}
+            >
               {coinID ? "Submit Coin Update" : "Choose Coin to Modify"}
             </Button>
           </Box>
 
-          <Collapse in={coinID && isOpen}>
+          <Collapse in={isOpen}>
             <Text>URL Sugestions</Text>
             <Input
               type="url"
@@ -120,21 +191,27 @@ function AdminProducts() {
           </Collapse>
         </FormControl>
 
-        {coins &&
-          coins.map((coin) => (
-            <Box key={coin.id}>
+        {filteredCoins &&
+          filteredCoins.map((coin) => (
+            <Box
+              key={coin.id}
+              border="#48BB78 solid 2px"
+              my={2}
+              borderRadius="14px"
+            >
               <Box
+                maxW="100%"
                 display="flex"
                 flexDirection="row"
                 justifyContent="space-between"
                 alignItems="center"
                 textAlign="left"
-                border="#48BB78 solid 1px"
                 borderRadius="14px"
-                p={4}
-                whiteSpace="nowrap"
+                p={2}
+                // whiteSpace="nowrap"
+                // gap={10}
               >
-                <Box display="flex" flexDirection="row" gap={2}>
+                <Box display="flex" flexDirection="row" gap={1}>
                   <Image boxSize={10} src={coin.image}></Image>
                   <Text
                     fontSize="2xl"
@@ -146,28 +223,51 @@ function AdminProducts() {
                     {coin.name}
                   </Text>
                 </Box>
-                <Box display="flex" flexDirection="row" gap={2}>
+
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  gap={1}
+                  alignItems="center"
+                >
                   <Button
-                    fontSize="2xl"
                     fontWeight="bold"
                     colorScheme="red"
-                    onClick={(e) => deleteProduct(e.target.value)}
-                    value={coin.id}
-                    rightIcon={<AiFillDelete />}
-                  ></Button>
+                    onClick={() => deleteProduct(coin.id)}
+                  >
+                    <AiFillDelete />
+                  </Button>
                   <Button
-                    fontSize="2xl"
                     fontWeight="bold"
                     colorScheme="green"
-                    value={coin.id}
-                    onClick={(e) => updateMode(e.target.value)}
-                    rightIcon={<AiOutlineEdit />}
-                  ></Button>
+                    onClick={function () {
+                      updateMode(coin.id);
+                      onToggle();
+                    }}
+                  >
+                    <AiOutlineEdit />
+                  </Button>
                 </Box>
               </Box>
+              {/* <FormControl isDisabled={!edit} onClick={editMode}>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  textColor="white"
+                >
+                  <Text minW="min-content">Current Courtage: 0,15%</Text>
+
+                  <Input
+                    type="text"
+                    placeholder="Change Courtage %"
+                    onChange={(e) => setCourtage(e.target.value)}
+                  />
+                </Box>
+              </FormControl> */}
             </Box>
           ))}
-      </Box>
+      </Container>
     </Center>
   );
 }

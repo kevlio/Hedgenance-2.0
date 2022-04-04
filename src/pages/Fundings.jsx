@@ -36,7 +36,6 @@ import {
   currentIDState,
 } from "../stores/users/atom";
 
-
 function Fundings() {
   // const [users, setUsers] = useRecoilState(usersState);
   const [currentUser, setCurrentUser] = useRecoilState(userState);
@@ -57,7 +56,6 @@ function Fundings() {
     }
   }, []);
 
-
   console.log(fundings);
 
   console.log(currentUser);
@@ -76,7 +74,7 @@ function Fundings() {
   function handleSubmit(event) {
     event.preventDefault();
   }
-  const todoRef = useRef();
+  const inputRef = useRef();
 
   const createFunding = () => {
     if (input <= 0) return;
@@ -109,10 +107,10 @@ function Fundings() {
   };
 
   function handleField() {
-    todoRef.current.value = null;
+    inputRef.current.value = null;
   }
   useEffect(() => {
-    todoRef.current.focus();
+    inputRef.current.focus();
   });
 
   return (
@@ -140,7 +138,7 @@ function Fundings() {
               <form onSubmit={handleSubmit}>
                 <FormControl isRequired>
                   <Input
-                    ref={todoRef}
+                    ref={inputRef}
                     maxW="100%"
                     autoComplete="off"
                     color={"green.400"}
@@ -187,7 +185,6 @@ function Fundings() {
                 <Text fontSize="3xl">Funding history</Text>
                 <Text fontSize="2xl" color="gray.400">
                   Total available funds:{" "}
-  
                   {(currentUser.funds.total
                     ? currentUser.funds.total
                     : 0

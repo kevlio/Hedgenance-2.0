@@ -48,6 +48,16 @@ function Crypto() {
   //   setFilteredCoins(coins);
   // }, []);
 
+  // function handleCheck(event) {
+  //   const name = event.target.name;
+  //   if (!filters.includes(name)) {
+  //     setFilters([...filters, name]);
+  //   }
+  //   if (filters.includes(name)) {
+  //     setFilters(filters.filter((f) => f !== name));
+  //   }
+  // }
+
   useEffect(() => {
     if (filters.length === 0) {
       setFilteredCoins(coins);
@@ -70,27 +80,19 @@ function Crypto() {
     }
   }, [filters]);
 
-  // function handleCheck(event) {
-  //   const name = event.target.name;
-  //   if (!filters.includes(name)) {
-  //     setFilters([...filters, name]);
-  //   }
-  //   if (filters.includes(name)) {
-  //     setFilters(filters.filter((f) => f !== name));
-  //   }
-  // }
-
   useEffect(() => {
-    axios
-      .get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false"
-      )
-      .then((res) => {
-        setCoins(res.data);
-        setFilteredCoins(res.data);
-        console.log(res.data);
-      })
-      .catch((error) => console.log(error));
+    if (coins === 0) {
+      axios
+        .get(
+          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+        )
+        .then((res) => {
+          setCoins(res.data);
+          setFilteredCoins(res.data);
+          console.log(res.data);
+        })
+        .catch((error) => console.log(error));
+    }
   }, []);
 
   const cryptoById = (coin) => {

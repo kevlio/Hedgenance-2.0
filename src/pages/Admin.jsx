@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
   Center,
-  Container,
   Box,
-  SimpleGrid,
   Text,
   Checkbox,
   Stack,
   CheckboxGroup,
-  List,
-  ListItem,
-  ListIcon,
   Button,
+  Container,
 } from "@chakra-ui/react";
 import { usersState } from "../stores/users/atom";
 import { useRecoilState } from "recoil";
-
-import { MdCheckCircle } from "react-icons/md";
 
 import { adminState } from "../stores/users/atom";
 
@@ -75,182 +69,153 @@ function Admin() {
 
   return (
     <Center>
-      <Box display="flex" flexDirection="column">
-        <Box
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-around"
-          alignItems="center"
-        >
-          <Button bg="none" textColor="white">
-            Users Information
-          </Button>
-          <Button bg="none" textColor="white" as="a" href="/adminproducts">
-            Product information [link]
-          </Button>
-          <Button
-            width="200px"
-            alignSelf="flex-end"
-            colorScheme="green"
-            onClick={handleLogged}
-          >
-            Log out admin
-          </Button>
-        </Box>
-        <CheckboxGroup colorScheme="green">
+      <Container>
+        <Box display="flex" flexDirection="column">
           <Stack
-            my={5}
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            my={2}
             spacing={[1, 5]}
             direction={["column", "row"]}
-            color="gray.300"
           >
-            <Text>Filter Users with: </Text>
-
-            <Checkbox
-              name="funds"
-              onChange={handleCheck}
-              isChecked={filters.includes("funds")}
-            >
-              Funds
-            </Checkbox>
-            <Checkbox
-              name="holdings"
-              onChange={handleCheck}
-              isChecked={filters.includes("holdings")}
-            >
-              Holdings
-            </Checkbox>
-            <Checkbox
-              name="both"
-              onChange={handleCheck}
-              isChecked={filters.includes("both")}
-            >
-              Both
-            </Checkbox>
+            <Button bg="none" textColor="white" as="a" href="/admin">
+              Users Information
+            </Button>
+            <Button bg="none" textColor="white" as="a" href="/adminproducts">
+              Product Information
+            </Button>
+            <Button bg="none" textColor="white" onClick={handleLogged}>
+              Log out admin
+            </Button>
           </Stack>
-        </CheckboxGroup>
-        <Box>
-          {filteredUsers.map((user) => (
-            <Box
-              key={user.id}
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-between"
-              textAlign="left"
-              border="#48BB78 solid 1px"
-              borderRadius="14px"
-              p={4}
-              textColor="white"
-              whiteSpace="nowrap"
-              alignItems="flex-start"
+          <CheckboxGroup colorScheme="green">
+            <Stack
+              my={5}
+              spacing={[1, 5]}
+              direction={["column", "row"]}
+              color="gray.300"
             >
-              <Box display="flex" flexDirection="column" width="50%">
-                <Text fontSize="2xl" fontWeight="bold" color={"green.400"}>
-                  ID: {user.id}
-                </Text>
-                <Text>
-                  {user.name.firstname} {user.name.lastname}
-                </Text>
+              <Text>Filter Users with: </Text>
 
-                <Text>
-                  {user.username} {user.password}
-                </Text>
-                <Text></Text>
-                <Text>
-                  {user.address && user.address.street}{" "}
-                  {user.address && user.address.number}
-                </Text>
-                <Text></Text>
-                <Text>
-                  {user.address && user.address.zipcode}{" "}
-                  {user.address && user.address.city}
-                </Text>
-                <Text></Text>
-              </Box>
+              <Checkbox
+                name="funds"
+                onChange={handleCheck}
+                isChecked={filters.includes("funds")}
+              >
+                Funds
+              </Checkbox>
+              <Checkbox
+                name="holdings"
+                onChange={handleCheck}
+                isChecked={filters.includes("holdings")}
+              >
+                Holdings
+              </Checkbox>
+              <Checkbox
+                name="both"
+                onChange={handleCheck}
+                isChecked={filters.includes("both")}
+              >
+                Both
+              </Checkbox>
+            </Stack>
+          </CheckboxGroup>
+          <Box>
+            {filteredUsers.map((user) => (
+              <Box
+                key={user.id}
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                textAlign="left"
+                border="#48BB78 solid 1px"
+                borderRadius="14px"
+                p={4}
+                textColor="white"
+                whiteSpace="nowrap"
+                alignItems="flex-start"
+                my={4}
+              >
+                <Box
+                  width="50%"
+                  display="flex"
+                  flexDirection="column"
+                  fontSize={{ base: "smaller", sm: "md", md: "1xl" }}
+                >
+                  <Text fontWeight="bold" color={"green.400"}>
+                    ID: {user.id}
+                  </Text>
+                  <Text>
+                    {user.name.firstname} {user.name.lastname}
+                  </Text>
 
-              <Box display="flex" flexDirection="column" width="50%">
-                <Box>
-                  <Text borderBottom="1px solid #48BB78">Trading History</Text>
-                  {user.holdings.history &&
-                    user.holdings.history.map((holding) => (
-                      <Box display="flex" flexDirection="row" gap={2}>
-                        <Text>{holding.title}</Text>
-                        <Text>{holding.amount}</Text>
-                        <Text>x {holding.currentPrice}</Text>
-                        <Text>= {holding.price.toLocaleString()}</Text>
-                      </Box>
-                    ))}
-                  <Text borderTop="1px solid #48BB78">
-                    Total Holdings: {user.holdings && user.holdings.total}
+                  <Text>
+                    {user.username} {user.password}
                   </Text>
-                  <Text>Total Funds: {user.funds && user.funds.total}</Text>
-                  <Text borderTop="1px solid #48BB78" textColor="blue.200">
-                    Total Account Value:{" "}
-                    {(
-                      (user.funds && user.funds.total) +
-                      (user.holdings && user.holdings.total)
-                    ).toLocaleString()}
+                  <Text></Text>
+                  <Text>
+                    {user.address && user.address.street}{" "}
+                    {user.address && user.address.number}
                   </Text>
+                  <Text></Text>
+                  <Text>
+                    {user.address && user.address.zipcode}{" "}
+                    {user.address && user.address.city}
+                  </Text>
+                  <Text></Text>
                 </Box>
-                <AiOutlineEdit size={60} />
-              </Box>
-            </Box>
-          ))}
-        </Box>
-        {/* {filteredUsers.map((user) => (
-          <List
-            spacing={3}
-            key={user.id}
-            display="flex"
-            flexDirection="row"
-            border="1px solid white"
-            // whiteSpace="nowrap"
-            textColor="white"
-            // alignItems="flex-start"
-            mt={2}
-            p={2}
-          >
-            <ListItem mt="var(--chakra-space-3)">
-              Funds: {user.funds && user.funds.total}
-            </ListItem>
-            <ListItem>
-              Holdings: {user.holdings && user.holdings.total}
-            </ListItem>
-            <ListItem display="flex" flexDirection="row" gap={2}>
-              <Text>ID: {user.id}</Text>
-              <Text>{user.name.firstname}</Text>
-              <Text>{user.name.lastname}</Text>
-            </ListItem>
-            <ListItem display="flex" flexDirection="row" gap={2}>
-              <Text>{user.username}</Text>
-              <Text>{user.password}</Text>
-            </ListItem>
-            <ListItem>{user.email}</ListItem>
-            <ListItem display="flex" flexDirection="row" gap={2}>
-              {/* Varför funkar det inte utan att göra &&??? */}
-        {/* <Text>{user.address && user.address.city}</Text>
-              <Text>{user.address && user.address.street}</Text>
-              <Text>{user.address && user.address.number}</Text>
-              <Text>{user.address && user.address.zipcode}</Text>
-            </ListItem>
-            <Box> */}{" "}
-        {/* <Text>Show more information [show all holdings] fade</Text> */}
-        {/* Skulle vara smutt att få till reducern här... */}
-        {/* {user.holdings.history &&
-                user.holdings.history.map((holding) => (
-                  <Box display="flex" flexDirection="row" gap={2}>
-                    <Text>{holding.title}</Text>
-                    <Text>{holding.amount}</Text>
-                    <Text>x {holding.currentPrice}</Text>
-                    <Text>= {holding.price.toLocaleString()}</Text>
+
+                <Box display="flex" flexDirection="column" width="50%">
+                  <Box>
+                    <Text borderBottom="1px solid #48BB78">
+                      Trading History
+                    </Text>
+                    {user.holdings.history &&
+                      user.holdings.history.map((holding) => (
+                        <Box
+                          display="flex"
+                          flexDirection="row"
+                          gap={2}
+                          key={holding.title}
+                          fontSize={{
+                            base: "smaller",
+                            sm: "smaller",
+                            md: "lg",
+                          }}
+                        >
+                          <Text>{holding.title}</Text>
+                          <Text>{holding.amount}</Text>
+                          <Text> x {holding.currentPrice}</Text>
+                          <Text> = {holding.price.toLocaleString()}</Text>
+                        </Box>
+                      ))}
+                    <Box
+                      fontSize={{
+                        base: "smaller",
+                        sm: "smaller",
+                        md: "lg",
+                      }}
+                    >
+                      <Text borderTop="1px solid #48BB78">
+                        Total Holdings: {user.holdings && user.holdings.total}
+                      </Text>
+                      <Text>Total Funds: {user.funds && user.funds.total}</Text>
+                      <Text borderTop="1px solid #48BB78" textColor="blue.200">
+                        Total Account Value:{" "}
+                        {(
+                          (user.funds && user.funds.total) +
+                          (user.holdings && user.holdings.total)
+                        ).toLocaleString()}
+                      </Text>
+                    </Box>
                   </Box>
-                ))}
-            </Box>
-            <ListIcon as={MdCheckCircle} color="green.500" />
-          </List>
-        ))} */}
-        {/* </SimpleGrid> */}
-      </Box>
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      </Container>
     </Center>
   );
 }
