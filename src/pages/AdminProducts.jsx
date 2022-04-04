@@ -24,6 +24,8 @@ import { adminState } from "../stores/users/atom";
 import { cryptoState } from "../stores/products/cryptos";
 import axios from "axios";
 
+import { useNavigate } from "react-router-dom";
+
 function AdminProducts() {
   const [adminLogged, setAdminLogged] = useState(adminState);
   const [coins, setCoins] = useRecoilState(cryptoState);
@@ -38,6 +40,8 @@ function AdminProducts() {
   // function editMode() {
   //   setEdit(!edit);
   // }
+
+  const navigate = useNavigate();
 
   const [coinID, setCoinID] = useState("");
 

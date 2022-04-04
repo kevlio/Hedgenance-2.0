@@ -31,23 +31,6 @@ import { GrAdd } from "react-icons/gr";
 import { MdRemove } from "react-icons/md";
 
 function Crypto() {
-  // https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false: NOTERA ANVÄNDBART: EUR, ORDER !, PER PAGE https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=price_change_percentage_desc&per_page=100&page=1&sparkline=false
-  // const [filter, setFilter] = useState([]);
-
-  // useEffect(() => {
-  //   setFilteredCoins(coins);
-  // }, []);
-
-  // function handleCheck(event) {
-  //   const name = event.target.name;
-  //   if (!filters.includes(name)) {
-  //     setFilters([...filters, name]);
-  //   }
-  //   if (filters.includes(name)) {
-  //     setFilters(filters.filter((f) => f !== name));
-  //   }
-  // }
-
   const params = useParams();
   const navigate = useNavigate();
   const [coins, setCoins] = useRecoilState(cryptoState);
@@ -57,6 +40,23 @@ function Crypto() {
   const [watchlist, setWatchlist] = useRecoilState(watchCryptoState);
   const [filters, setFilters] = useState("");
   const [filteredCoins, setFilteredCoins] = useState([]);
+
+  useEffect(() => {
+    if (coins.length === 0) {
+      axios
+        .get(
+          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+        )
+        .then((res) => {
+          setCoins(res.data);
+          setFilteredCoins(res.data);
+          console.log(res.data);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, []);
+
+  console.log(coins);
 
   useEffect(() => {
     if (filters.length === 0) {
@@ -79,21 +79,6 @@ function Crypto() {
       setFilteredCoins(lowToHigh);
     }
   }, [filters]);
-
-  useEffect(() => {
-    if (coins === 0) {
-      axios
-        .get(
-          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false"
-        )
-        .then((res) => {
-          setCoins(res.data);
-          setFilteredCoins(res.data);
-          console.log(res.data);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, []);
 
   const cryptoById = (coin) => {
     axios
