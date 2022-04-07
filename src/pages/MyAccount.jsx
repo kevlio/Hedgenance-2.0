@@ -64,10 +64,6 @@ function MyAccount() {
   date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
 
   const [coin, setCoin] = useState([]);
-  console.log(coin);
-  console.log(coin.id);
-
-  console.log(productStore);
 
   const sellAll = (emittedID) => {
     onToggle();
@@ -260,69 +256,76 @@ function MyAccount() {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
-          <SimpleGrid
-            templateColumns={{
-              base: "1fr 1fr",
-              sm: "1fr 1fr 1fr",
-              md: "1fr 1fr 1fr",
-              lg: "1fr 1fr 1fr 1fr",
-            }}
-            spacing={4}
-            gap={4}
-            py={2}
-          >
-            {productStore &&
-              productStore.map((holding) =>
-                holding.value ? (
-                  <Box
-                    maxW="350px"
-                    display="flex"
-                    flexDirection="column"
-                    border="1px white solid"
-                    borderRadius="12px"
-                    key={holding.id}
-                    alignItems="flex-start"
-                    p={2}
-                    fontSize={{ base: "smaller", sm: "lg", md: "lg" }}
-                  >
-                    <Link href="#" fontWeight="bold">
-                      {holding.title}
-                    </Link>
-                    <Text>Amont: {holding.amount.toLocaleString()}</Text>
-                    <Text>
-                      Avg. price:{" "}
-                      {holding.value / holding.amount
-                        ? (holding.value / holding.amount).toLocaleString()
-                        : "-"}
-                    </Text>
-                    <Text>Value: {holding.value.toLocaleString()}</Text>
-                    <Button
-                      colorScheme="green"
-                      width="100%"
-                      bg={holding.coinID === coin.id ? "red" : "green.400"}
-                      // wordWrap="break-word"
-                      whiteSpace="normal"
-                      size="sm"
-                      fontSize={{
-                        base: "smaller",
-                        sm: "sm",
-                        md: "sm",
-                        lg: "medium",
+          <Center>
+            <SimpleGrid
+              templateColumns={{
+                base: "1fr 1fr",
+                sm: "1fr 1fr 1fr",
+                md: "1fr 1fr 1fr",
+                lg: "1fr 1fr 1fr",
+              }}
+              gap={4}
+              my={4}
+            >
+              {productStore &&
+                productStore.map((holding) =>
+                  holding.value ? (
+                    <Box
+                      maxW="250px"
+                      minW={{
+                        base: "160px",
+                        sm: "160px",
+                        md: "200px",
+                        lg: "220px",
                       }}
-                      name={holding.coinID}
-                      onClick={() => sellAll(holding.coinID)}
+                      display="flex"
+                      flexDirection="column"
+                      border="1px white solid"
+                      borderRadius="12px"
+                      key={holding.id}
+                      alignItems="flex-start"
+                      p={2}
+                      fontSize={{ base: "smaller", sm: "lg", md: "lg" }}
                     >
-                      {holding.coinID === coin.id
-                        ? "Are you sure?"
-                        : `Sell All ${holding.title}s`}
-                      {/* Sell All {holding.title}s */}
-                    </Button>
-                  </Box>
-                ) : (
-                  <></>
-                )
-              )}
-          </SimpleGrid>
+                      <Link href="#" fontWeight="bold">
+                        {holding.title}
+                      </Link>
+                      <Text>Amont: {holding.amount.toLocaleString()}</Text>
+                      <Text>
+                        Avg. price:{" "}
+                        {holding.value / holding.amount
+                          ? (holding.value / holding.amount).toLocaleString()
+                          : "-"}
+                      </Text>
+                      <Text>Value: {holding.value.toLocaleString()}</Text>
+                      <Button
+                        colorScheme="green"
+                        width="100%"
+                        bg={holding.coinID === coin.id ? "red" : "green.400"}
+                        // wordWrap="break-word"
+                        whiteSpace="normal"
+                        size="sm"
+                        fontSize={{
+                          base: "smaller",
+                          sm: "sm",
+                          md: "sm",
+                          lg: "medium",
+                        }}
+                        name={holding.coinID}
+                        onClick={() => sellAll(holding.coinID)}
+                      >
+                        {holding.coinID === coin.id
+                          ? "Are you sure?"
+                          : `Sell All ${holding.title}s`}
+                        {/* Sell All {holding.title}s */}
+                      </Button>
+                    </Box>
+                  ) : (
+                    <></>
+                  )
+                )}
+            </SimpleGrid>
+          </Center>
         </Container>
       </Center>
     </Box>

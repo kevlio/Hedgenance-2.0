@@ -246,6 +246,7 @@ function SingleFetchedProduct() {
         total: totalHolding,
       },
     });
+    setAmount(0);
   };
 
   function handleChange(event) {
