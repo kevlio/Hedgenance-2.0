@@ -85,7 +85,6 @@ function AdminProducts() {
         };
       });
 
-      console.log(updatedCoin);
       setCoinID("");
       setCoins([...updatedCoin, ...filteredCoins]);
       setFilteredCoins([...updatedCoin, ...filteredCoins]);

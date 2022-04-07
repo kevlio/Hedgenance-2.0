@@ -48,19 +48,14 @@ function Home() {
     });
 
     if (newUsers.length > 0 && users.length === 0) {
-      console.log("First User Object Created");
       setUsers(newUsers);
       console.log(users);
     }
 
     if (users.length > 0 && newUsers.length > 0) {
-      console.log("New Users + Prev users");
       setUsers([...newUsers, ...users]);
     }
   }, [fetchedUsers]);
-
-  console.log(fetchedUsers);
-  console.log(users);
 
   return (
     <>

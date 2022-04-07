@@ -32,8 +32,6 @@ function Settings() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
 
-  console.log(user);
-
   function editMode() {
     setEdit(true);
 

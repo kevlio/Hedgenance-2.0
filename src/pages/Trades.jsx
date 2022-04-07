@@ -21,17 +21,23 @@ function Trades() {
   const currentUser = useRecoilValue(userState);
 
   return (
-    <Box minH="100vh" maxW="100%">
+    <Box minH="100vh">
       <LocalNav />
-      <Center>
-        <Container
-          color="var(--chakra-colors-gray-300)"
-          px={{ base: "0", sm: "5", md: "12" }}
-        >
-          <Text fontSize="3xl" my={2}>
-            Trading history
-          </Text>
-          <Table size="sm" variant="simple">
+
+      <Container
+        p={0}
+        color="var(--chakra-colors-gray-300)"
+        // px={{ base: "0", sm: "5", md: "12" }}
+      >
+        <Text fontSize="3xl" my={2}>
+          Trading history
+        </Text>
+        <Center>
+          <Table
+            size="sm"
+            variant="simple"
+            whiteSpace={{ base: "pre-wrap", sm: "nowrap" }}
+          >
             {/* Todo: Dynamic sizing table */}
             <Thead>
               <Tr>
@@ -61,8 +67,8 @@ function Trades() {
               </Tr>
             </Tfoot>
           </Table>
-        </Container>
-      </Center>
+        </Center>
+      </Container>
     </Box>
   );
 }

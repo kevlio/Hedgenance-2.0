@@ -39,32 +39,23 @@ function Fundings() {
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [input, setInput] = useState("");
 
-  const { totalFunds } = useRecoilValue(fundingStatus);
-  console.log(totalFunds);
-
   const [fundings, setFundings] = useRecoilState(fundingState);
+  const { totalFunds } = useRecoilValue(fundingStatus);
 
   useEffect(() => {
     if (currentUser.funds.history) {
       const newFundings = currentUser.funds.history.filter(
         (prevFundings) => !fundings.some((fund) => prevFundings.id === fund.id)
       );
-      console.log(newFundings);
       setFundings([...fundings, ...newFundings]);
     }
   }, []);
-
-  console.log(fundings);
-
-  console.log(currentUser);
 
   useEffect(() => {
     setCurrentUser({
       ...currentUser,
       funds: { history: fundings, total: totalFunds },
     });
-
-    console.log(currentUser);
   }, [fundings]);
 
   const { isOpen, onToggle } = useDisclosure();

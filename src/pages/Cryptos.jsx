@@ -90,7 +90,6 @@ function Crypto() {
   };
 
   const searchCrypto = (e) => {
-    console.log(e.target.value);
     setSearch(e.target.value);
 
     const filteredCryptos = coins.filter((coin) =>
@@ -100,7 +99,6 @@ function Crypto() {
   };
 
   const rankingChange = (val) => {
-    console.log(val);
     setRank(val);
     const filterTest = coins.filter(
       (coin) =>
@@ -115,8 +113,6 @@ function Crypto() {
       return [...prevCrypto, newCrypto];
     });
     if (watchlist.includes(newCrypto)) {
-      console.log("already exist");
-
       const removeArr = [...watchlist].filter((crypto) => crypto !== newCrypto);
       setWatchlist(removeArr);
     }
@@ -126,7 +122,6 @@ function Crypto() {
     const watchlistFilter = coins.filter((crypto) =>
       watchlist.includes(crypto.name)
     );
-    console.log(watchlistFilter);
     setFilteredCoins(watchlistFilter);
   };
 

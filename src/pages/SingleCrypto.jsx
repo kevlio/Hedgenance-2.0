@@ -148,8 +148,6 @@ function SingleFetchedProduct() {
 
   // Put buy/sell together when time, just change +- depending on mode
   const buy = () => {
-    console.log(coin.market_data.current_price.eur * amount);
-
     const buyingConditions =
       amount <= 0 || totalFunds < coin.market_data.current_price.eur * amount;
 
