@@ -355,11 +355,13 @@ function SingleFetchedProduct() {
               My Account
             </Button>
           </Collapse>
-          <Box display="flex" flexDirection="column">
-            <Text ml="130px" mr="50px" mb={1}>
-              Available funds: €{totalFunds.toLocaleString()}
-            </Text>
 
+          <Box display="flex" flexDirection="column">
+            <Collapse in={logged}>
+              <Text ml="130px" mr="50px" mb={1}>
+                Available funds: €{totalFunds.toLocaleString()}
+              </Text>
+            </Collapse>
             <Box display="flex" flexDirection="row" ml="130px" gap="2px">
               <Button
                 width="99px"
