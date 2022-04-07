@@ -64,25 +64,22 @@ function MyAccount() {
   date = `${yyyy}-${mm}-${dd} ${hour}:${min}:${sec}`;
 
   const [coin, setCoin] = useState([]);
+  console.log(coin);
+  console.log(coin.id);
 
-  const sellAll = (event) => {
+  console.log(productStore);
+
+  const sellAll = (emittedID) => {
     onToggle();
-    const name = event.target.name;
-    console.log(name);
-    console.log(currentUser.holdings.history);
     const product = productStore.filter((crypto) => {
-      return crypto.coinID === event.target.name;
+      return crypto.coinID === emittedID;
     });
-    console.log(product);
 
     // Verkar onödigt komplicerat. Se över
-
     const coinID = product[0].coinID;
     const amount = product[0].amount;
     const title = product[0].title;
     const value = product[0].value;
-
-    console.log(coinID, amount, title, value);
 
     // Get current value of this Crypto
     const cryptoById = (coinID) => {
@@ -90,10 +87,7 @@ function MyAccount() {
         .get(`https://api.coingecko.com/api/v3/coins/${coinID}`)
         .then((res) => {
           setCoin(res.data);
-          console.log(res.data);
-          console.log(res.data.market_data.current_price.eur);
           setCurrentCryptoPrice(res.data.market_data.current_price.eur);
-          // navigate(`/crypto/${coin}`);
         })
         .catch((error) => console.log(error));
     };
@@ -138,6 +132,7 @@ function MyAccount() {
           total: totalFunds,
         },
       });
+      setCoin("");
     }
   };
 
@@ -315,7 +310,7 @@ function MyAccount() {
                         lg: "medium",
                       }}
                       name={holding.coinID}
-                      onClick={sellAll}
+                      onClick={() => sellAll(holding.coinID)}
                     >
                       {holding.coinID === coin.id
                         ? "Are you sure?"

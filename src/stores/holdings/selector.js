@@ -29,18 +29,17 @@ export const productHoldingStatus = selector({
       ...new Set(holdingStore.map((holding) => holding.title)),
     ];
 
-    const uniqueID = [
-      ...new Set(holdingStore.map((holding) => holding.coinID)),
-    ];
-
     let productTotal = [];
     let productStore = [];
-    let coinIdStore = [];
 
     for (let i = 0; i < uniqueProduct.length; i++) {
       productTotal[i] = holdingStore.filter(
         (product) => product.title === uniqueProduct[i]
       );
+
+      const uniqueID = [
+        ...new Set(holdingStore.map((holding) => holding.coinID)),
+      ];
 
       const totalAmountProduct = productTotal[i].reduce(
         (previousValue, currentValue) =>
@@ -73,43 +72,3 @@ export const productHoldingStatus = selector({
     };
   },
 });
-
-// export const categoryHoldingStatus = selector({
-//   key: "categoryHoldingStatus",
-//   get: ({ get }) => {
-//     const holdingStore = get(holdingState);
-
-//     const uniqueCategory = [
-//       ...new Set(holdingStore.map((holding) => holding.category)),
-//     ];
-
-//     let categoryTotal = [];
-//     let categoryStore = [];
-
-//     for (let i = 0; i < uniqueCategory.length; i++) {
-//       categoryTotal[i] = holdingStore.filter(
-//         (category) => category.category === uniqueCategory[i]
-//       );
-
-//       const totalAmountCategory = categoryTotal[i].reduce(
-//         (previousValue, currentValue) =>
-//           previousValue + parseInt(currentValue.amount),
-//         0
-//       );
-//       const totalPriceCategory = categoryTotal[i].reduce(
-//         (previousValue, currentValue) =>
-//           previousValue + parseInt(currentValue.price),
-//         0
-//       );
-//       categoryStore.push({
-//         id: i,
-//         category: uniqueCategory[i],
-//         amount: totalAmountCategory,
-//         value: totalPriceCategory,
-//       });
-//     }
-//     return {
-//       categoryStore,
-//     };
-//   },
-// });

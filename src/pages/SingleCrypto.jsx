@@ -222,6 +222,7 @@ function SingleFetchedProduct() {
       amount: -amount,
       date: date,
       id: Math.floor(Math.random() * 10000),
+      coinID: coinData.id,
     };
     setHoldings((prevSell) => {
       return [...prevSell, newSell];
