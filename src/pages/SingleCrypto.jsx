@@ -336,23 +336,25 @@ function SingleFetchedProduct() {
           >
             All products
           </Button> */}
-          <Button
-            as="a"
-            href="/myaccount"
-            width="200px"
-            mt={1}
-            ml="130px"
-            mr="50px"
-            colorScheme="black"
-            variant="link"
-            mb={2}
-            value="buy"
-            leftIcon={<FiUser />}
-            // textColor="white"
-            // bg="none"
-          >
-            My Account
-          </Button>
+          <Collapse in={logged}>
+            <Button
+              as="a"
+              href="/myaccount"
+              width="200px"
+              mt={1}
+              ml="130px"
+              mr="50px"
+              colorScheme="black"
+              variant="link"
+              mb={2}
+              value="buy"
+              leftIcon={<FiUser />}
+              // textColor="white"
+              // bg="none"
+            >
+              My Account
+            </Button>
+          </Collapse>
           <Box display="flex" flexDirection="column">
             <Text ml="130px" mr="50px" mb={1}>
               Available funds: €{totalFunds.toLocaleString()}
