@@ -2,11 +2,11 @@ import React, {
   useState,
   useRef,
   useEffect,
-  useCallback,
-  Suspense,
+  // useCallback,
+  // Suspense,
 } from "react";
 
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import {
@@ -38,10 +38,14 @@ import {
   ModalFooter,
   Link,
 } from "@chakra-ui/react";
-import { MdCall, MdOutlineOpenInBrowser } from "react-icons/md";
+import { MdCall } from "react-icons/md";
+import { FiUser, FiDollarSign } from "react-icons/fi";
+
+import { GiHedgehog } from "react-icons/gi";
+
 import { productHoldingStatus } from "../stores/holdings/selector";
 
-import { cryptoState, singleCryptoState } from "../stores/products/cryptos";
+import { singleCryptoState } from "../stores/products/cryptos";
 import { loginState, userState } from "../stores/users/atom";
 
 import { holdingState } from "../stores/holdings/atom";
@@ -55,6 +59,8 @@ function SingleFetchedProduct() {
   const [show, setShow] = React.useState(false);
   const logged = useRecoilValue(loginState);
   const [orderMode, setOrderMode] = useState("");
+
+  const [alertNotSufficient, setAlertNotSufficient] = useState(null);
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
 
@@ -120,6 +126,9 @@ function SingleFetchedProduct() {
   }
 
   function placeOrder() {
+    if (orderMode === "") {
+      onToggle();
+    }
     if (orderMode === "buy") {
       buy();
     }
@@ -145,6 +154,7 @@ function SingleFetchedProduct() {
       amount <= 0 || totalFunds < coin.market_data.current_price.eur * amount;
 
     if (buyingConditions) {
+      setAlertNotSufficient(true);
       onToggle();
     }
 
@@ -197,6 +207,7 @@ function SingleFetchedProduct() {
       holdingSingleProduct.amount < amount;
 
     if (sellingConditions) {
+      setAlertNotSufficient(false);
       onToggle();
     }
     if (sellingConditions) return;
@@ -289,7 +300,16 @@ function SingleFetchedProduct() {
             </Text>
             <Text>Coin rank: {coinData.rank}</Text>
           </Box>
-          <Box display="flex" flexDirection="column">
+          <Box
+            display="flex"
+            flexDirection="column"
+            color="blue.300"
+            // alignItems="flex-start"
+            // ml={2}
+          >
+            <Text textDecor="underline" textColor="gray.200">
+              Categories
+            </Text>
             {coinData.categories.map((category) => (
               <List key={category}>
                 <ListItem fontSize="smaller">{category}</ListItem>
@@ -298,23 +318,24 @@ function SingleFetchedProduct() {
           </Box>
         </Box>
         <Box display="flex" flexDirection="row">
-          <Image src="https://assets.coinbase.com/exchange/assets/pro-trading-viewbc7481fccd81a9210688b5f0ca42fde5.png"></Image>
+          <Image
+            maxW={{ base: "100%", md: "120%" }}
+            src="https://assets.coinbase.com/exchange/assets/pro-trading-viewbc7481fccd81a9210688b5f0ca42fde5.png"
+          ></Image>
         </Box>
         <Box>
-          <Button
+          {/* <Button
             as="a"
             href="/cryptos"
             width="200px"
             ml="130px"
             mr="50px"
-            colorScheme="green"
-            bg="none"
+            colorScheme="black"
             variant="outline"
             value="buy"
-            textColor="white"
           >
             All products
-          </Button>
+          </Button> */}
           <Button
             as="a"
             href="/myaccount"
@@ -322,24 +343,26 @@ function SingleFetchedProduct() {
             mt={1}
             ml="130px"
             mr="50px"
-            colorScheme="green"
-            bg="none"
-            variant="outline"
+            colorScheme="black"
+            variant="link"
+            mb={2}
             value="buy"
-            textColor="white"
+            leftIcon={<FiUser />}
+            // textColor="white"
+            // bg="none"
           >
             My Account
           </Button>
           <Box display="flex" flexDirection="column">
-            <Text ml="130px" mr="50px">
+            <Text ml="130px" mr="50px" mb={1}>
               Available funds: €{totalFunds.toLocaleString()}
             </Text>
 
-            <Box display="flex" flexDirection="row" ml="130px">
+            <Box display="flex" flexDirection="row" ml="130px" gap="2px">
               <Button
-                width="100px"
+                width="99px"
                 rightIcon={<MdCall />}
-                colorScheme="green"
+                colorScheme="black"
                 variant="outline"
                 value="buy"
                 onClick={selectedMode}
@@ -349,20 +372,19 @@ function SingleFetchedProduct() {
                 Buy
               </Button>
               <Button
-                width="100px"
+                width="99px"
                 rightIcon={<MdCall />}
-                colorScheme="blue"
+                colorScheme="black"
                 variant="outline"
                 value="sell"
                 onClick={selectedMode}
                 bg={orderMode === "sell" ? "green.500" : "none"}
-                textColor="white"
               >
                 Sell
               </Button>
             </Box>
           </Box>
-          <Box display="flex">
+          <Box display="flex" mt={0.5}>
             <Button
               colorScheme="green"
               bg="none"
@@ -378,13 +400,14 @@ function SingleFetchedProduct() {
               onChange={handleChange}
               maxW="200px"
               defaultValue={amountMax ? amountMax : null}
+              isRequired
             />
           </Box>
-          <Box display="flex">
+          <Box display="flex" mt={0.5}>
             <Button colorScheme="green" bg="none" width="130px">
               Current price
             </Button>
-            <Input defaultValue={coinData.price} maxW="200px" />
+            <Input defaultValue={coinData.price} maxW="200px" isReadOnly />
           </Box>
           {/* To next project update */}
           {/* <Box display="flex">
@@ -393,7 +416,7 @@ function SingleFetchedProduct() {
             </Button>
             <Input defaultValue={coinData.price} maxW="200px" />
           </Box> */}
-          <Box display="flex">
+          <Box display="flex" mt={0.5}>
             <Button colorScheme="green" bg="none" width="130px">
               Total price
             </Button>
@@ -401,9 +424,9 @@ function SingleFetchedProduct() {
               maxW="200px"
               placeholder="amount x price"
               defaultValue={amount && (amount * coinData.price).toFixed(3)}
+              isReadOnly
             />
           </Box>
-
           <Button
             colorScheme="green"
             ml="130px"
@@ -427,19 +450,24 @@ function SingleFetchedProduct() {
               marginY={1}
               as="a"
               href="/myaccount"
+              leftIcon={alertNotSufficient && <FiUser />}
             >
-              !Sufficient funds/amount
+              {!orderMode
+                ? "Please choose trademode"
+                : alertNotSufficient
+                ? "Not Sufficient Funds"
+                : "Not Sufficient Amount"}
             </Button>
           </Collapse>
 
           <Button
-            colorScheme="green"
+            colorScheme="black"
             onClick={handleToggle}
             ml="130px"
             mr="50px"
             mt={1}
             width="200px"
-            bg={show ? "green.400" : "none"}
+            bg={show ? "blue.600" : "none"}
             variant="outline"
             color="white"
           >
@@ -451,10 +479,13 @@ function SingleFetchedProduct() {
             </Text>
           </Collapse>
         </Box>
-
-        {/* <Collapse startingHeight={200} in={show}> */}
-        <Table variant="simple" size="sm" whiteSpace="nowrap">
-          {/* Todo: Dynamic sizing table  size={{ base: "sm", sm: "md", md: "md" }} */}
+        <Table
+          variant="simple"
+          size="sm"
+          width={{ base: "100%", md: "120%" }}
+          height="100%"
+          whiteSpace="nowrap"
+        >
           <Thead>
             <Tr>
               <Th>{coinData.updated}</Th>
@@ -570,14 +601,27 @@ function SingleFetchedProduct() {
       <Modal isOpen={!logged && isOpen} onClose={!logged && onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Oups! Before you can get started...</ModalHeader>
+          <ModalHeader>Let's get on the hogtrain =)</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>
-              Please Login or Sign up to invest. <br />
-              It only takes 3 minutes to Sign up. Sign up now and get $1000 for
-              trades. Let's hedge.
-            </Text>
+            <Box display="flex" flexDirection="column">
+              <Box>
+                <Text>
+                  Please Login or Sign up to invest. <br />
+                  It only takes 3 minutes to become a hog.
+                  <br />
+                  Sign up now and get €1000 to start you off.
+                </Text>
+              </Box>
+              <Box>
+                <Box display="flex" gap={2}>
+                  <GiHedgehog size={50} color="#2F855A" />
+                  <GiHedgehog size={50} color="#2F855A" />
+                  <GiHedgehog size={50} color="#2F855A" />
+                </Box>
+                <Text fontWeight="medium">Come come Young Hogowan</Text>
+              </Box>
+            </Box>
           </ModalBody>
           <ModalFooter gap={1}>
             <Link href="/login">

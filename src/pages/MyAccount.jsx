@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { userState, usersState } from "../stores/users/atom";
+import { userState } from "../stores/users/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { holdingState } from "../stores/holdings/atom";
 import { fundingState } from "../stores/fundings/atom";
 import {
   holdingStatus,
-  categoryHoldingStatus,
   productHoldingStatus,
 } from "../stores/holdings/selector";
 
@@ -173,8 +172,10 @@ function MyAccount() {
             alignItems="center"
             gap={2}
           >
-            <Text fontSize="3xl">Hey hog: {currentUser.username}</Text>
-            <GiHedgehog size={50} />
+            <Text textColor="gray.50" fontSize="2xl" fontWeight="lighter">
+              {currentUser.username}
+            </Text>
+            <GiHedgehog size={50} color="rgb(136, 132, 216)" />
           </Box>
           <StatGroup
             color="var(--chakra-colors-gray-300)"
@@ -196,8 +197,8 @@ function MyAccount() {
               pb={4}
             >
               {" "}
-              <Text fontSize="2xl" color="white">
-                Total value: ${/* Fixa felhantering också... */}
+              <Text fontSize="2xl" textColor="gray.50" fontWeight="lighter">
+                Total value: €
                 {(
                   (totalFunds && totalFunds) + (totalHolding && totalHolding)
                 ).toLocaleString()}
@@ -243,7 +244,7 @@ function MyAccount() {
                       textAnchor={x > cx ? "start" : "end"}
                       dominantBaseline="central"
                     >
-                      {(percent * 100).toFixed(0)}%, {category},{" "}
+                      {(percent * 100).toFixed(0)}%, {category}, €
                       {value.toLocaleString()}
                     </text>
                   );
@@ -254,7 +255,7 @@ function MyAccount() {
                   // angle={270}
                   position="insideLeft"
                   offset={10}
-                  value="Hedges by Cat."
+                  value="Crypto Allocation."
                   style={{
                     textAnchor: "middle",
                     // fontSize: "150%",

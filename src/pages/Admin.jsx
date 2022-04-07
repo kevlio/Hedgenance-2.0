@@ -21,7 +21,6 @@ function Admin() {
   const [users, setUsers] = useRecoilState(usersState);
   const [adminLogged, setAdminLogged] = useState(adminState);
   const [filters, setFilters] = useState([]);
-  const [filtersAll, setFiltersAll] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const navigate = useNavigate();
 
@@ -39,22 +38,17 @@ function Admin() {
     if (filters.includes(name)) {
       setFilters(filters.filter((f) => f !== name));
     }
+  }
+
+  useEffect(() => {
+    if (filters.length === 0) setFilteredUsers(users);
     if (filters.includes("funds")) {
       setFilteredUsers(users.filter((user) => user.funds.total > 0));
     }
     if (filters.includes("holdings")) {
       setFilteredUsers(users.filter((user) => user.holdings.total > 0));
     }
-    if (filters.includes("both")) {
-      setFilteredUsers(
-        users.filter((user) => user.funds.total > 0 && user.holdings.total > 0)
-      );
-    }
-  }
-
-  console.log(filters);
-
-  const filterUsers = filters.length === 0 ? users : filteredUsers;
+  }, [filters]);
 
   return (
     <Center>
@@ -68,13 +62,27 @@ function Admin() {
             spacing={[1, 5]}
             direction={["column", "row"]}
           >
-            <Button bg="none" textColor="white" as="a" href="/admin">
-              Users Information
+            <Button
+              as="a"
+              href="/admin"
+              colorScheme="black"
+              _hover={{ bg: "green.400" }}
+            >
+              User Information
             </Button>
-            <Button bg="none" textColor="white" as="a" href="/adminproducts">
+            <Button
+              as="a"
+              href="/adminproducts"
+              colorScheme="black"
+              _hover={{ bg: "green.400" }}
+            >
               Product Information
             </Button>
-            <Button bg="none" textColor="white" onClick={handleLogged}>
+            <Button
+              onClick={handleLogged}
+              colorScheme="black"
+              _hover={{ bg: "green.400" }}
+            >
               Log out admin
             </Button>
           </Stack>
@@ -84,6 +92,7 @@ function Admin() {
               spacing={[1, 5]}
               direction={["column", "row"]}
               color="gray.300"
+              px={3}
             >
               <Text>Filter Users with: </Text>
 
@@ -101,17 +110,10 @@ function Admin() {
               >
                 Holdings
               </Checkbox>
-              <Checkbox
-                name="both"
-                onChange={handleCheck}
-                isChecked={filters.includes("both")}
-              >
-                Both
-              </Checkbox>
             </Stack>
           </CheckboxGroup>
           <Box>
-            {filterUsers.map((user) => (
+            {filteredUsers.map((user) => (
               <Box
                 key={user.id}
                 display="flex"
@@ -124,15 +126,20 @@ function Admin() {
                 textColor="white"
                 // whiteSpace="nowrap"
                 alignItems="flex-start"
-                my={4}
+                my={2}
+                gap={2}
               >
                 <Box
                   width="35%"
                   display="flex"
                   flexDirection="column"
-                  fontSize={{ base: "smaller", sm: "md", md: "1xl" }}
+                  fontSize={{ base: "smaller", sm: "small", md: "1xl" }}
                 >
-                  <Text fontWeight="bold" color={"green.400"}>
+                  <Text
+                    fontWeight="bold"
+                    color={"green.400"}
+                    fontSize={{ base: "small", sm: "md", md: "1xl" }}
+                  >
                     ID: {user.id}
                   </Text>
                   <Text>
@@ -160,7 +167,7 @@ function Admin() {
                     <Text borderBottom="1px solid #48BB78">
                       Trading History
                     </Text>
-                    {user.holdings.history &&
+                    {user.holdings.history ? (
                       user.holdings.history.map((holding) => (
                         <Box
                           display="flex"
@@ -175,10 +182,13 @@ function Admin() {
                         >
                           <Text>{holding.title}:</Text>
                           <Text>{holding.amount}</Text>
-                          <Text>x {holding.currentPrice}</Text>
+                          <Text>x {holding.currentPrice.toLocaleString()}</Text>
                           <Text> = {holding.price.toLocaleString()}</Text>
                         </Box>
-                      ))}
+                      ))
+                    ) : (
+                      <></>
+                    )}
                     <Box
                       fontSize={{
                         base: "smaller",

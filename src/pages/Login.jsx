@@ -31,7 +31,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [logged, setLogged] = useRecoilState(loginState);
 
-  const [users, setUsers] = useRecoilState(usersState);
+  const users = useRecoilValue(usersState);
   const [holdings, setHoldings] = useRecoilState(holdingState);
   const [fundings, setFundings] = useRecoilState(fundingState);
 
@@ -100,7 +100,7 @@ function Login() {
                 placeholder="Password"
                 type="password"
               ></Input>
-              <Button type="submit" onClick={loginb}>
+              <Button type="submit" onClick={loginb} colorScheme="green">
                 Login
               </Button>
               <Fade in={isOpen}>

@@ -22,6 +22,7 @@ import {
   Spinner,
   TableCaption,
   Link,
+  Collapse,
 } from "@chakra-ui/react";
 import LocalNav from "../components/LocalNav";
 
@@ -115,7 +116,12 @@ function Fundings() {
       <LocalNav />
       <Center>
         <Box flex-direction="column">
-          <Text textColor="white">{currentUser.username}</Text>
+          <Text
+            fontSize={{ base: "2xl", sm: "2xl", md: "2xl" }}
+            textColor="gray.500"
+          >
+            {currentUser.username}
+          </Text>
           <Box>
             <Heading
               fontWeight={600}
@@ -145,7 +151,6 @@ function Fundings() {
                     type="number"
                     mb={1}
                   ></Input>
-
                   <Button
                     type="submit"
                     width="100%"
@@ -163,7 +168,7 @@ function Fundings() {
                   >
                     Insert funds
                   </Button>
-                  <Fade in={isOpen}>
+                  <Collapse in={isOpen}>
                     <Button
                       as="a"
                       href="/cryptos"
@@ -175,12 +180,21 @@ function Fundings() {
                     >
                       Take me to the hedges
                     </Button>
-                  </Fade>
+                  </Collapse>
                 </FormControl>
               </form>
               <Container color="gray.300" maxW="100%">
-                <Text fontSize="3xl">Funding history</Text>
-                <Text fontSize="2xl" color="gray.400">
+                <Text
+                  fontWeight="medium"
+                  fontSize={{ base: "2xl", sm: "2xl", md: "3xl" }}
+                >
+                  Funding history
+                </Text>
+                <Text
+                  color="green.300"
+                  fontSize={{ base: "1xl", sm: "2xl", md: "2xl" }}
+                  mt={-1}
+                >
                   Total available funds:{" "}
                   {(currentUser.funds.total
                     ? currentUser.funds.total

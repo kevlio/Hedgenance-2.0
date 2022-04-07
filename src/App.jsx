@@ -14,8 +14,6 @@ import AdminLogin from "./pages/AdminLogin";
 import Settings from "./pages/Settings";
 import { SingleCryptoPage } from "./pages/SingleCrypto";
 import AdminProducts from "./pages/AdminProducts";
-// import ProductPage from "./pages/ProductPage";
-// import SingleProduct from "./pages/SingleProduct";
 
 //
 // {!auth.token ? (

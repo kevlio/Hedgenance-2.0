@@ -7,7 +7,6 @@ import {
   Heading,
   Progress,
   Text,
-  Fade,
   Collapse,
   useDisclosure,
   FormLabel,
@@ -23,13 +22,7 @@ import { GiHedgehog } from "react-icons/gi";
 import { fundingState } from "../stores/fundings/atom";
 import { fundingStatus } from "../stores/fundings/selector";
 
-import { holdingState } from "../stores/holdings/atom";
-
-import {
-  holdingStatus,
-  categoryHoldingStatus,
-  productHoldingStatus,
-} from "../stores/holdings/selector";
+import { holdingStatus } from "../stores/holdings/selector";
 
 function SignUp() {
   const [logged, setLogged] = useRecoilState(loginState);
@@ -114,10 +107,8 @@ function SignUp() {
       id: Math.floor(Math.random() * 10000),
       role: "user",
       phone: phone,
-      // funds: [{ history: 0 }, { total: 0 }],
       funds: { history: fundings, total: 0 },
       holdings: { history: 0, total: 0 },
-      // holdings: [{ holdings: 0 }, { total: 0 }],
     };
 
     setCurrentUser(newUser);

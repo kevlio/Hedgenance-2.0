@@ -1,66 +1,102 @@
 import React from "react";
-import { Box, Text, Container, Center, Button, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Container,
+  Center,
+  Button,
+  Stack,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import { MdBuild } from "react-icons/md";
+import {
+  FiMenu,
+  FiHome,
+  FiCalendar,
+  FiUser,
+  FiDollarSign,
+  FiBriefcase,
+  FiSettings,
+} from "react-icons/fi";
+
+import { userState } from "../stores/users/atom";
+import { useRecoilValue, useRecoilState } from "recoil";
 
 function LocalNav() {
+  const currentUser = useRecoilValue(userState);
   return (
     <Center>
-      <Container
-        color="var(--chakra-colors-gray-300)"
-        maxW="100%"
+      <SimpleGrid
+        // my={2}
+        mb={4}
+        mx={10}
         alignItems="center"
+        // fontSize="lg"
         justifyContent="center"
-        fontSize="2xl"
-        mb={2}
+        gap={{
+          base: 2,
+          sm: 2,
+        }}
+        fontSize={{
+          base: "md",
+          sm: "lg",
+          md: "1xl",
+        }}
+        templateColumns={{
+          base: "1fr 1fr 1fr 1fr",
+          sm: "1fr 1fr 1fr 1fr",
+          md: "1fr 1fr 1fr 1fr",
+        }}
       >
-        <Stack
-          display="flex"
-          justifyContent="center"
-          // color="white"
-          gap={8}
-          my={2}
-          // <Stack
-          // my={5}
-          spacing={[1, 5]}
-          // Kanske bättre att använda SimpleGrid här? Fult att visa 5 på rad
-          direction={["column", "row"]}
-        >
+        <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
+          <FiUser color="#E2E8F0" />
           <Button
-            color="white"
+            color="gray.50"
             variant="link"
             as="a"
             href="/myaccount"
             bg="none"
           >
-            account
+            {currentUser.username}
           </Button>
-          <Button color="white" variant="link" as="a" href="/cryptos" bg="none">
-            cryptos
-          </Button>
+        </Box>
+        <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
+          <FiBriefcase color="#E2E8F0" />
           <Button
-            color="white"
+            color="gray.50"
+            variant="link"
+            as="a"
+            href="/trades"
+            bg="none"
+          >
+            trades
+          </Button>
+        </Box>
+        <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
+          <FiDollarSign color="#E2E8F0" />
+          <Button
+            color="gray.50"
             variant="link"
             as="a"
             href="/fundings"
             bg="none"
           >
-            insert funds
+            funds
           </Button>
-          <Button color="white" variant="link" as="a" href="/trades" bg="none">
-            trading history
-          </Button>
+        </Box>
+        <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
+          <FiSettings color="#E2E8F0" />
           <Button
-            color="white"
+            color="gray.50"
             variant="link"
             as="a"
             href="/settings"
             bg="none"
-            rightIcon={<MdBuild size={15} />}
           >
             settings
           </Button>
-        </Stack>
-      </Container>
+        </Box>
+      </SimpleGrid>
     </Center>
   );
 }

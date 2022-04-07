@@ -31,7 +31,7 @@ import { GrAdd } from "react-icons/gr";
 import { MdRemove } from "react-icons/md";
 
 function Crypto() {
-  const params = useParams();
+  // const params = useParams();
   const navigate = useNavigate();
   const [coins, setCoins] = useRecoilState(cryptoState);
   const [coin, setCoin] = useRecoilState(singleCryptoState);
@@ -55,8 +55,6 @@ function Crypto() {
         .catch((error) => console.log(error));
     }
   }, []);
-
-  console.log(coins);
 
   useEffect(() => {
     if (filters.length === 0) {

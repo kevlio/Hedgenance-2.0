@@ -123,22 +123,36 @@ function AdminProducts() {
           spacing={[1, 5]}
           direction={["column", "row"]}
         >
-          <Button bg="none" textColor="white" as="a" href="/admin">
-            Users Information
+          <Button
+            as="a"
+            href="/admin"
+            colorScheme="black"
+            _hover={{ bg: "green.400" }}
+          >
+            User Information
           </Button>
-          <Button bg="none" textColor="white" as="a" href="/adminproducts">
+          <Button
+            as="a"
+            href="/adminproducts"
+            colorScheme="black"
+            _hover={{ bg: "green.400" }}
+          >
             Product Information
           </Button>
-          <Button bg="none" textColor="white" onClick={handleLogged}>
+          <Button
+            onClick={handleLogged}
+            colorScheme="black"
+            _hover={{ bg: "green.400" }}
+          >
             Log out admin
           </Button>
         </Stack>
-        <FormControl textColor="white" mb={4}>
+        <FormControl textColor="white" mt={4}>
           <Text
             textTransform="capitalize"
             fontSize={{ base: "1xl", sm: "1xl", md: "2xl" }}
           >
-            Updating Coin: {coinID}{" "}
+            {isOpen ? ` Updating: ${coinID}` : ""}
           </Text>
           <Collapse in={!isOpen}>
             <Input
@@ -150,47 +164,47 @@ function AdminProducts() {
             ></Input>
           </Collapse>
           <Box display="flex" flexDirection="column" gap={0} maxW="100%">
-            <Input
-              my={1}
-              type="text"
-              placeholder="Change product image"
-              textColor="white"
-              onChange={(e) => setImage(e.target.value)}
-              ref={inputRef}
-            />
+            <Collapse in={isOpen}>
+              <Input
+                my={1}
+                type="text"
+                placeholder="Change product image"
+                textColor="white"
+                onChange={(e) => setImage(e.target.value)}
+                ref={inputRef}
+              />
+            </Collapse>
             <Button
               minWidth="max-content"
               colorScheme="green"
               onClick={updateProduct}
               fontSize={{ base: "md", sm: "lg", md: "1xl" }}
             >
-              {coinID ? "Submit Coin Update" : "Choose Coin to Modify"}
+              {isOpen ? "Submit Coin Update" : "Choose Coin to Modify"}
             </Button>
           </Box>
-
           <Collapse in={isOpen}>
-            <Text>URL Sugestions</Text>
+            <Text>URL Suggestions:</Text>
             <Input
               type="url"
               placeholder="URL suggestion"
               defaultValue="https://i0.wp.com/www.wjbf.com/wp-content/uploads/sites/47/2019/11/Kanye-West.png?w=2000&ssl=1"
-              textColor="white"
+              textColor="green.200"
             />{" "}
             <Input
               type="url"
               placeholder="URL suggestion"
-              defaultValue="https://i0.wp.com/s1.favim.com/orig/23/animal-aww-awww-cat-cute-Favim.com-215286.jpg"
-              textColor="white"
-            />
+              defaultValue="https://c8.alamy.com/zooms/9/822a00bfc0ed4cfe8974c7e1acff656f/t17e90.jpg"
+              textColor="green.200"
+            />{" "}
             <Input
               type="url"
               placeholder="URL suggestion"
-              defaultValue="https://images.aftonbladet-cdn.se/v2/images/baa7fae4-fdc0-4480-b873-79fb8b7fdbf5?fit=crop&format=auto&h=1327&q=50&w=1900&s=31f4ea1ef964d8260047b4cbd748993102acd69a"
-              textColor="white"
+              defaultValue="https://ichef.bbci.co.uk/news/976/cpsprodpb/7727/production/_103330503_musk3.jpg"
+              textColor="green.200"
             />{" "}
           </Collapse>
         </FormControl>
-
         {filteredCoins &&
           filteredCoins.map((coin) => (
             <Box
@@ -217,12 +231,19 @@ function AdminProducts() {
                   gap={1}
                   alignItems="center"
                 >
-                  <Image boxSize={10} src={coin.image}></Image>
+                  <Image
+                    boxSize={16}
+                    borderRadius="12px"
+                    src={coin.image}
+                    objectFit="cover"
+                  ></Image>
                   <Text
                     fontSize="1xl"
                     fontWeight="bold"
                     color={"green.400"}
-                    textColor={coin.id === coinID ? "blue.400" : "white"}
+                    textColor={
+                      coin.id === coinID && isOpen ? "blue.400" : "white"
+                    }
                   >
                     {" "}
                     {coin.name}
