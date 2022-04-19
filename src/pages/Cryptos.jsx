@@ -41,6 +41,9 @@ function Crypto() {
   const [filters, setFilters] = useState("");
   const [filteredCoins, setFilteredCoins] = useState([]);
 
+  // Fel tidzon uppdatering datum...? Eller ändra köp/sälj datum.
+  // Vill man ens ha svensk tid? Kanske inställning i User
+
   useEffect(() => {
     if (coins.length === 0) {
       axios
