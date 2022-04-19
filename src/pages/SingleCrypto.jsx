@@ -125,6 +125,8 @@ function SingleFetchedProduct() {
     }
   }
 
+  console.log(amount);
+
   function placeOrder() {
     if (orderMode === "") {
       onToggle();
@@ -195,6 +197,7 @@ function SingleFetchedProduct() {
         total: totalHolding,
       },
     });
+    setAmount(null);
   };
 
   const sell = () => {
@@ -244,7 +247,7 @@ function SingleFetchedProduct() {
         total: totalHolding,
       },
     });
-    setAmount(0);
+    setAmount(null);
   };
 
   function handleChange(event) {
@@ -433,6 +436,7 @@ function SingleFetchedProduct() {
           </Box>
           <Button
             colorScheme="green"
+            border={`${amount && "1.4px solid blue"}`}
             ml="130px"
             mr="50px"
             width="200px"
@@ -442,7 +446,10 @@ function SingleFetchedProduct() {
               handleField();
             }}
           >
-            Place order
+            {!amount
+              ? "Place order"
+              : `Buy ${amount} x ${coinData.price}
+                `}
           </Button>
           <Collapse in={logged && isOpen}>
             <Button
@@ -463,7 +470,6 @@ function SingleFetchedProduct() {
                 : "Not Sufficient Amount"}
             </Button>
           </Collapse>
-
           <Button
             colorScheme="black"
             onClick={handleToggle}
